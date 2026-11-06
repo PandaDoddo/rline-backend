@@ -1,0 +1,107 @@
+name: rline-backend
+
+services:
+  app:
+    build:
+      context: .
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/var/www/html
+      - vendor:/var/www/html/vendor
+      - storage:/var/www/html/storage
+
+  worker:
+    build:
+      context: .
+    env_file:
+      - .env
+    command: ["php", "artisan", "queue:work", "--sleep=1", "--tries=3", "--timeout=60", "--max-time=3600"]
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/var/www/html
+      - vendor:/var/www/html/vendor
+      - storage:/var/www/html/storage
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:80"
+    depends_on:
+      app:
+        condition: service_started
+    volumes:
+      - ./public:/var/www/html/public:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/up"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: "${DB_DATABASE:-rline}"
+      POSTGRES_USER: "${DB_USERNAME:-rline}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD:?Set DB_PASSWORD in .env}"
+    ports:
+      - "127.0.0.1:${FORWARD_DB_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  db-test:
+    image: postgres:18
+    profiles: ["test"]
+    environment:
+      POSTGRES_DB: rline_test
+      POSTGRES_USER: rline_test
+      POSTGRES_PASSWORD: rline_test_local
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  test:
+    build:
+      context: .
+    profiles: ["test"]
+    environment:
+      APP_ENV: testing
+      APP_KEY: "base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+      APP_CONFIG_CACHE: /tmp/rline-test-config.php
+      DB_CONNECTION: pgsql
+      DB_HOST: db-test
+      DB_PORT: 5432
+      DB_DATABASE: rline_test
+      DB_USERNAME: rline_test
+      DB_PASSWORD: rline_test_local
+    depends_on:
+      db-test:
+        condition: service_healthy
+    command: ["php", "artisan", "test", "--no-ansi"]
+    volumes:
+      - .:/var/www/html
+      - vendor:/var/www/html/vendor
+      - test_storage:/var/www/html/storage
+
+volumes:
+  postgres_data:
+  vendor:
+  storage:
+  test_storage:
