@@ -62,6 +62,10 @@ PostgreSQL доступен с хоста по `localhost:5433`. Внутри к
 
 ## Работа с окружением
 
+Локальные стенды frontend: [main](http://main.rline.test), [testing](http://testing.rline.test), [demo](http://demo.rline.test). Общий backend, отдельные сборки и атомарное переключение симлинков. [Управление стендами](docs/local-stands.md).
+
+Документация API автоматически формируется Scramble: [интерфейс](http://localhost:8080/docs/api), [OpenAPI JSON](http://localhost:8080/docs/api.json). Включены авторизация, CSRF и тенанты. Экспорт, доступ и CI описаны в [docs/api-documentation.md](docs/api-documentation.md).
+
 ```sh
 docker compose up -d --wait
 docker compose logs -f app nginx db worker

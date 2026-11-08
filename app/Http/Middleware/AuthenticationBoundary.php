@@ -31,7 +31,7 @@ class AuthenticationBoundary
             $request->session()->forget(['login', 'challenge_id', 'challenge_expires_at']);
         }
         if ($request->user() && $request->is('api/*') && ! $request->is('api/health')
-            && $request->user()->auth_provider !== 'multifactor' && ! $request->user()->two_factor_confirmed_at) {
+            && $context->requiresTotp($request->user()->auth_provider) && ! $request->user()->two_factor_confirmed_at) {
             abort(403, 'Сначала настройте двухфакторную аутентификацию.');
         }
         if ($request->is('auth/two-factor-challenge') && $request->isMethod('post')) {

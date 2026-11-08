@@ -1,6 +1,31 @@
 name: rline-backend
 
 services:
+  stands:
+    image: nginx:stable-alpine
+    profiles: ["stands"]
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${STAND_PORT:-80}:80"
+    depends_on:
+      nginx:
+        condition: service_healthy
+    volumes:
+      - stand_releases:/srv:ro
+      - ./deploy/nginx-stands.conf:/etc/nginx/conf.d/default.conf:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/stand-health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  stand-manager:
+    image: nginx:stable-alpine
+    profiles: ["stand-tools"]
+    entrypoint: ["sh", "/opt/manage-releases.sh"]
+    volumes:
+      - stand_releases:/srv
+      - ./deploy/manage-releases.sh:/opt/manage-releases.sh:ro
+      - ${STAND_DIST_DIR:-../frontend/dist}:/incoming:ro
   app:
     build:
       context: .
@@ -101,6 +126,7 @@ services:
       - test_storage:/var/www/html/storage
 
 volumes:
+  stand_releases:
   postgres_data:
   vendor:
   storage:

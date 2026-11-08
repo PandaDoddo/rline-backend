@@ -1,0 +1,32 @@
+name: Backend tests and OpenAPI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Prepare environment
+        run: cp .env.example .env
+      - name: Test on PostgreSQL and generate OpenAPI
+        run: >-
+          docker compose --profile test run --build --rm test sh -lc
+          'composer validate --strict && composer lint && php artisan test && php artisan migrate --force && composer docs:check'
+      - name: Upload OpenAPI
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: rline-openapi
+          path: build/openapi.json
+          if-no-files-found: error
+      - name: Stop containers
+        if: always()
+        run: docker compose --profile test down --volumes

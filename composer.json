@@ -14,6 +14,7 @@
     "ext-mbstring": "*",
     "ext-pdo_pgsql": "*",
     "ext-zip": "*",
+    "dedoc/scramble": "^0.13.53",
     "firebase/php-jwt": "^7.2",
     "laravel/fortify": "^1.41",
     "laravel/framework": "^13.17",
@@ -57,7 +58,15 @@
     "pre-package-uninstall": [
       "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
     ],
-    "lint": "pint --test"
+    "lint": "pint --test",
+    "docs:export": [
+      "@php -r \"is_dir('build') || mkdir('build', 0775, true);\"",
+      "@php artisan scramble:export"
+    ],
+    "docs:check": [
+      "@docs:export",
+      "@php artisan scramble:analyze --fail-on-empty"
+    ]
   },
   "extra": {
     "laravel": {

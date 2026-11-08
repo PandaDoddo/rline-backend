@@ -24,6 +24,11 @@ class AuthPluginManager
         $this->providers[$id] = $provider;
     }
 
+    public function credentialProviderIds(): array
+    {
+        return array_keys($this->providers);
+    }
+
     public function resolve(string $id): CredentialProvider
     {
         if (! (app(TenantContext::class)->provider($id)['enabled'] ?? false) || ! isset($this->providers[$id])) {
@@ -33,6 +38,7 @@ class AuthPluginManager
         return $this->providers[$id];
     }
 
+    /** @return list<array{id: string, label: string, enabled: bool, type: string, status: string}> */
     public function listing(): array
     {
         return collect(config('authentication.providers'))->map(fn ($base, $id) => app(TenantContext::class)->provider($id))->map(fn ($config, $id) => [

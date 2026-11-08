@@ -1,0 +1,293 @@
+{
+  "version": "fc416-aa5ae932482d42df",
+  "source": "frontend/src/domain/calculations/fincost.js __FC416M",
+  "entries": [
+    {
+      "group": "base",
+      "name": "Углеродистая сталь",
+      "english": "Carbon steel",
+      "factor": 1,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "1,25Cr-0,5Mo",
+      "english": "1.25Cr-0.5Mo",
+      "factor": 1.3,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "2,25Cr-1Mo",
+      "english": "2.25Cr-1Mo",
+      "factor": 1.7,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "5Cr-0,5Mo",
+      "english": "5Cr-0.5Mo",
+      "factor": 1.7,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "7Cr-0,5Mo",
+      "english": "7Cr-0.5Mo",
+      "factor": 2,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Стекловолокно",
+      "english": "Fiberglass",
+      "factor": 2.5,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "9Cr-1Mo",
+      "english": "9Cr-1Mo",
+      "factor": 2.6,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Нержавеющая сталь 405",
+      "english": "405 SS",
+      "factor": 2.8,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Нержавеющая сталь 410",
+      "english": "410 SS",
+      "factor": 2.8,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Нержавеющая сталь 304",
+      "english": "304 SS",
+      "factor": 3.2,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Нержавеющая сталь 316",
+      "english": "316 SS",
+      "factor": 4.8,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Сплав C70600",
+      "english": "90/10 Cu/Ni",
+      "factor": 6.8,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Сплав 800",
+      "english": "Alloy 800",
+      "factor": 8.4,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Сплав C71500",
+      "english": "70/30 Cu/Ni",
+      "factor": 8.5,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "904L",
+      "english": "904L",
+      "factor": 8.8,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Сплав 20",
+      "english": "Alloy 20",
+      "factor": 11,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Сплав 400",
+      "english": "Alloy 400",
+      "factor": 15,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Сплав 600",
+      "english": "Alloy 600",
+      "factor": 15,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Никель",
+      "english": "Nickel",
+      "factor": 18,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Сплав 625",
+      "english": "Alloy 625",
+      "factor": 26,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Титан",
+      "english": "Titanium",
+      "factor": 28,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Сплав \"C\"",
+      "english": "Alloy “C”",
+      "factor": 29,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Цирконий",
+      "english": "Zirconium",
+      "factor": 34,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Сплав \"B\"",
+      "english": "Alloy “B”",
+      "factor": 36,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Тантал",
+      "english": "Tantalum",
+      "factor": 535,
+      "adapted": false
+    },
+    {
+      "group": "clad",
+      "name": "Нержавеющая сталь 304 (плакировка)",
+      "english": "Clad 304 SS",
+      "factor": 2.1,
+      "adapted": false
+    },
+    {
+      "group": "clad",
+      "name": "Нержавеющая сталь 316 (плакировка)",
+      "english": "Clad 316 SS",
+      "factor": 3.3,
+      "adapted": false
+    },
+    {
+      "group": "clad",
+      "name": "Облицовка из сплавов (полосы / ленты / strips)",
+      "english": "Strip lined alloy",
+      "factor": 3.3,
+      "adapted": false
+    },
+    {
+      "group": "clad",
+      "name": "Сплав 400 (плакировка)",
+      "english": "Clad Alloy 400",
+      "factor": 6.4,
+      "adapted": false
+    },
+    {
+      "group": "clad",
+      "name": "Сплав 600 (плакировка)",
+      "english": "Clad Alloy 600",
+      "factor": 7,
+      "adapted": false
+    },
+    {
+      "group": "clad",
+      "name": "Никель (плакировка)",
+      "english": "Clad nickel",
+      "factor": 8,
+      "adapted": false
+    },
+    {
+      "group": "coat",
+      "name": "Органическое покрытие (< 2 мм)",
+      "english": "Organic coatings (< 80 mil)",
+      "factor": 1.2,
+      "adapted": false
+    },
+    {
+      "group": "coat",
+      "name": "Полипропиленовая облицовка (liner)",
+      "english": "PP lined",
+      "factor": 2.5,
+      "adapted": false
+    },
+    {
+      "group": "coat",
+      "name": "Органическое покрытие (> 2 мм)",
+      "english": "Organic coating (> 80 mil)",
+      "factor": 3.4,
+      "adapted": false
+    },
+    {
+      "group": "coat",
+      "name": "Сарановое покрытие",
+      "english": "CS “saran” lined",
+      "factor": 3.4,
+      "adapted": false
+    },
+    {
+      "group": "coat",
+      "name": "Резиновое покрытие",
+      "english": "CS rubber lined",
+      "factor": 4.4,
+      "adapted": false
+    },
+    {
+      "group": "coat",
+      "name": "Стеклянное (эмалевое) покрытие",
+      "english": "CS glass lined",
+      "factor": 5.8,
+      "adapted": false
+    },
+    {
+      "group": "coat",
+      "name": "Тефлоновое (PTFE) покрытие",
+      "english": "CS PTFE lined",
+      "factor": 7.8,
+      "adapted": false
+    },
+    {
+      "group": "lin",
+      "name": "Кирпич кислотный",
+      "english": "Acid brick",
+      "factor": 20,
+      "adapted": false
+    },
+    {
+      "group": "lin",
+      "name": "Огнеупорная футеровка",
+      "english": "Refractory",
+      "factor": 20,
+      "adapted": false
+    },
+    {
+      "group": "base",
+      "name": "Низколегированная сталь",
+      "english": "— (дополнено)",
+      "factor": 1.3,
+      "adapted": true
+    }
+  ]
+}

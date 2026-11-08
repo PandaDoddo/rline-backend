@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Auth\AuthAudit;
 use App\Auth\AuthPluginManager;
+use App\Http\Requests\UpdateTenantAuthenticationRequest;
 use App\Jobs\ProvisionTenantDatabase;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
+use App\Tenancy\StandAccess;
 use App\Tenancy\TenantAuthSettings;
 use App\Tenancy\TenantContext;
 use Illuminate\Http\Request;
@@ -36,13 +38,14 @@ class TenantController extends Controller
     {
         abort_unless($request->user()->is_platform_admin, 403);
 
-        return Tenant::orderBy('id')->paginate(30);
+        return app(StandAccess::class)->scope($request, Tenant::query())->orderBy('id')->paginate(30);
     }
 
     public function store(Request $request)
     {
         abort_unless($request->user()->is_platform_admin, 403);
         $data = $request->validate(['slug' => 'required|string|max:63|regex:/^[a-z0-9][a-z0-9-]*$/D|unique:tenants,slug', 'name' => 'required|string|max:255']);
+        app(StandAccess::class)->ensureAllowed($request, $data['slug']);
         $tenant = DB::transaction(function () use ($data, $request) {
             $tenant = Tenant::create($data + ['auth_config' => ['local' => ['enabled' => true]]]);
             TenantMembership::create(['tenant_id' => $tenant->id, 'user_id' => $request->user()->id, 'role' => 'owner', 'auth_provider' => 'local']);
@@ -58,8 +61,9 @@ class TenantController extends Controller
 
     public function update(Request $request, Tenant $tenant)
     {
+        app(StandAccess::class)->ensureAllowed($request, $tenant->slug);
         abort_unless($request->user()->is_platform_admin, 403);
-        $data = $request->validate(['name' => 'sometimes|required|string|max:255', 'status' => ['sometimes', Rule::in(['active', 'suspended'])]]);
+        $data = $request->validate(['name' => 'sometimes|required|string|max:255', 'status' => ['sometimes', 'string', Rule::in(['active', 'suspended'])]]);
         abort_if(($data['status'] ?? null) === 'suspended' && $tenant->id === app(TenantContext::class)->id(), 422, 'Нельзя приостановить текущий тенант.');
         $tenant = DB::transaction(function () use ($data, $tenant) {
             $locked = Tenant::whereKey($tenant->id)->lockForUpdate()->firstOrFail();
@@ -75,16 +79,22 @@ class TenantController extends Controller
         return $tenant;
     }
 
-    public function settings(Request $request, Tenant $tenant, TenantAuthSettings $settings)
+    /** Настройки провайдеров без значений секретов. */
+    public function showAuthentication(Request $request, Tenant $tenant, TenantAuthSettings $settings)
     {
-        $membership = TenantMembership::where('tenant_id', $tenant->id)->where('user_id', $request->user()->id)->where('is_active', true)->first();
-        abort_unless($request->user()->is_platform_admin || ($tenant->id === app(TenantContext::class)->id() && in_array($membership?->role, ['owner', 'admin'], true)), 403);
-        if ($request->isMethod('put')) {
-            $data = $request->validate(['providers' => 'required|array']);
-            $settings->update($tenant, $data['providers']);
-            $tenant->refresh();
-            AuthAudit::record('tenant_auth_updated', $request->user()->id, targetTenantId: $tenant->id);
-        }
+        app(StandAccess::class)->ensureAllowed($request, $tenant->slug);
+        abort_unless($settings->canManage($request->user(), $tenant), 403);
+
+        return ['tenant' => $tenant->only('id', 'slug', 'name', 'status', 'database_status'), 'providers' => $settings->present($tenant)];
+    }
+
+    /** Обновить провайдеры; отсутствующие поля и секреты сохраняются. Прежние сеансы завершаются. */
+    public function updateAuthentication(UpdateTenantAuthenticationRequest $request, Tenant $tenant, TenantAuthSettings $settings)
+    {
+        app(StandAccess::class)->ensureAllowed($request, $tenant->slug);
+        $settings->update($tenant, $request->validated('providers'));
+        $tenant->refresh();
+        AuthAudit::record('tenant_auth_updated', $request->user()->id, targetTenantId: $tenant->id);
 
         return ['tenant' => $tenant->only('id', 'slug', 'name', 'status', 'database_status'), 'providers' => $settings->present($tenant)];
     }

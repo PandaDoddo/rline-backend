@@ -1,0 +1,228 @@
+{
+  "version": "di-1198f722b683f0c6",
+  "systems": [
+    {
+      "n": "1",
+      "sys": "det",
+      "cls": "A",
+      "ru": "Системы обнаружения утечек по изменению давления или расхода с использованием КИП",
+      "en": "Instrumentation designed specifically to detect material losses by changes in operating conditions (i.e. loss of pressure or flow) in the system."
+    },
+    {
+      "n": "2",
+      "sys": "det",
+      "cls": "B",
+      "ru": "Системы с применением детекторов технологической среды в атмосфере",
+      "en": "Suitably located detectors to determine when the material is present outside the pressure-containing envelope."
+    },
+    {
+      "n": "3",
+      "sys": "det",
+      "cls": "C",
+      "ru": "Системы визуального обнаружения утечек, камеры или детекторы с малым охватом",
+      "en": "Visual detection, cameras, or detectors with marginal coverage."
+    },
+    {
+      "n": "4",
+      "sys": "iso",
+      "cls": "A",
+      "ru": "Автоматические системы изоляции / отключения (активируемые непосредственно от КИП без вмешательства оператора)",
+      "en": "Isolation or shutdown systems activated directly from process instrumentation or detectors, with no operator intervention."
+    },
+    {
+      "n": "5",
+      "sys": "iso",
+      "cls": "B",
+      "ru": "Автоматизированные системы изоляции / отключения (управляемые операторами в диспетчерской или других местах, удалённых от места утечки)",
+      "en": "Isolation or shutdown systems activated by operators in the control room or other suitable locations remote from the leak."
+    },
+    {
+      "n": "6",
+      "sys": "iso",
+      "cls": "C",
+      "ru": "Системы изоляции / отключения с ручным управлением",
+      "en": "Isolation dependent on manually operated valves."
+    }
+  ],
+  "release": [
+    {
+      "d": "A",
+      "i": "A",
+      "p": 25,
+      "f": "0.25"
+    },
+    {
+      "d": "A",
+      "i": "B",
+      "p": 20,
+      "f": "0.20"
+    },
+    {
+      "d": "A",
+      "i": "C",
+      "p": 10,
+      "f": "0.10"
+    },
+    {
+      "d": "B",
+      "i": "A",
+      "p": 20,
+      "f": "0.20",
+      "add": true
+    },
+    {
+      "d": "B",
+      "i": "B",
+      "p": 15,
+      "f": "0.15"
+    },
+    {
+      "d": "B",
+      "i": "C",
+      "p": 10,
+      "f": "0.10"
+    },
+    {
+      "d": "C",
+      "i": "A",
+      "p": 10,
+      "f": "0.10",
+      "add": true
+    },
+    {
+      "d": "C",
+      "i": "B",
+      "p": 5,
+      "f": "0.05",
+      "add": true
+    },
+    {
+      "d": "C",
+      "i": "C",
+      "p": 0,
+      "f": "0.00"
+    }
+  ],
+  "duration": [
+    {
+      "d": "A",
+      "i": "A",
+      "ld": [
+        20,
+        10,
+        5,
+        60
+      ]
+    },
+    {
+      "d": "A",
+      "i": "B",
+      "ld": [
+        30,
+        20,
+        10,
+        60
+      ]
+    },
+    {
+      "d": "A",
+      "i": "C",
+      "ld": [
+        40,
+        30,
+        20,
+        60
+      ]
+    },
+    {
+      "d": "B",
+      "i": "A",
+      "ld": [
+        40,
+        30,
+        20,
+        60
+      ]
+    },
+    {
+      "d": "B",
+      "i": "B",
+      "ld": [
+        40,
+        30,
+        20,
+        60
+      ]
+    },
+    {
+      "d": "B",
+      "i": "C",
+      "ld": [
+        60,
+        30,
+        20,
+        60
+      ]
+    },
+    {
+      "d": "C",
+      "i": "A",
+      "ld": [
+        60,
+        40,
+        20,
+        60
+      ]
+    },
+    {
+      "d": "C",
+      "i": "B",
+      "ld": [
+        60,
+        40,
+        20,
+        60
+      ]
+    },
+    {
+      "d": "C",
+      "i": "C",
+      "ld": [
+        60,
+        40,
+        20,
+        60
+      ]
+    }
+  ],
+  "mitigation": [
+    [
+      "Продувка запаса в сочетании с системой изоляции классификационной группы B или выше",
+      "Inventory blowdown, coupled with isolation system classification B or higher",
+      "Уменьшить площадь последствий на 25 %",
+      "Reduce consequence area by 25%",
+      0.25
+    ],
+    [
+      "Система пожаротушения противопожарной водой и лафетные стволы",
+      "Fire water deluge system and monitors",
+      "Уменьшить площадь последствий на 20 %",
+      "Reduce consequence area by 20%",
+      0.2
+    ],
+    [
+      "Только лафетные стволы подачи противопожарной воды",
+      "Fire water monitors only",
+      "Уменьшить площадь последствий на 5 %",
+      "Reduce consequence area by 5%",
+      0.05
+    ],
+    [
+      "Система распыления пены",
+      "Foam spray system",
+      "Уменьшить площадь последствий на 15 %",
+      "Reduce consequence area by 15%",
+      0.15
+    ]
+  ]
+}

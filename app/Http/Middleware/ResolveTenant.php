@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Tenant;
+use App\Tenancy\StandAccess;
 use App\Tenancy\TenantContext;
 use Closure;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class ResolveTenant
         }
         $slug ??= 'rline';
         abort_unless(is_string($slug) && preg_match('/^[a-z0-9][a-z0-9-]{0,62}$/D', $slug), 404, 'Организация не найдена.');
+        app(StandAccess::class)->ensureAllowed($request, $slug);
         $tenant = Tenant::where('slug', $slug)->where('status', 'active')->first();
         abort_unless($tenant, 404, 'Организация недоступна.');
         if ($request->hasSession() && $request->session()->has('tenant_id')

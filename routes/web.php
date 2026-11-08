@@ -7,7 +7,7 @@ use App\Http\Controllers\TenantController;
 use App\Http\Middleware\AuthenticationBoundary;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/auth/providers', fn () => app(AuthPluginManager::class)->listing());
+Route::get('/auth/providers', fn () => app(AuthPluginManager::class)->listing())->name('auth.providers');
 Route::post('/auth/tenant', [TenantController::class, 'select'])->middleware('throttle:auth-actions');
 Route::get('/auth/multifactor/redirect', [MultifactorController::class, 'redirect'])->middleware('throttle:auth-actions');
 Route::get('/auth/multifactor/callback', [MultifactorController::class, 'callback'])->middleware('throttle:auth-actions')->block(10, 10);

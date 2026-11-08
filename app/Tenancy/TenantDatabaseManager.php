@@ -33,7 +33,8 @@ class TenantDatabaseManager
                 $connection->unprepared('CREATE DATABASE "'.$name.'" OWNER "'.$role.'"');
             }
             $connection->unprepared('REVOKE ALL ON DATABASE "'.$name.'" FROM PUBLIC');
-            $tenant->forceFill(['database_status' => 'ready'])->save();
+            // Configure the connection in memory; expose ready only after all migrations succeed.
+            $tenant->forceFill(['database_status' => 'ready']);
             app(TenantContext::class)->set($tenant);
             DB::connection('tenant')->statement('CREATE TABLE IF NOT EXISTS tenant_identity (tenant_id bigint PRIMARY KEY)');
             DB::connection('tenant')->table('tenant_identity')->insertOrIgnore(['tenant_id' => $tenant->id]);
@@ -41,6 +42,8 @@ class TenantDatabaseManager
             if ((int) $identity->tenant_id !== $tenant->id) {
                 throw new \RuntimeException('Tenant database identity mismatch.');
             }
+            app(TenantSchemaMigrator::class)->migrate($tenant);
+            $tenant->save();
         } catch (Throwable $exception) {
             $tenant->forceFill(['database_status' => 'failed'])->save();
             throw new \RuntimeException('Tenant database provisioning failed for tenant '.$tenant->id.' (code '.$exception->getCode().').');

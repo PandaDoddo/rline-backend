@@ -6,6 +6,12 @@
 
 | Документ | Назначение |
 | --- | --- |
+| [local-password-login.md](local-password-login.md) | Политика Local: только пароль либо обязательный TOTP по тенанту |
+| [installations.md](installations.md) | Tenant-структура предприятия, установки, паспорт, версии и миграции |
+| [process-flows.md](process-flows.md) | Дерево потоков, составы, свойства смеси, проверки и снимки |
+| [equipment-flow-contacts.md](equipment-flow-contacts.md) | Контакты ЕО, стороны, наследование, змеевики и доли режимов |
+| [local-stands.md](local-stands.md) | Локальные main/testing/demo, публикация сборок и переключение симлинков |
+| [api-documentation.md](api-documentation.md) | Scramble: живая документация API, cookie/CSRF, экспорт OpenAPI и CI |
 | [FEATURES.md](FEATURES.md) | Фичи, пользовательские действия, данные и состояние реализации во frontend |
 | [DECOMPOSITION.md](DECOMPOSITION.md) | Индекс полной декомпозиции и первый сквозной сценарий |
 | [ROADMAP.md](ROADMAP.md) | Последовательность поставок, зависимости и покрытие всех фич |

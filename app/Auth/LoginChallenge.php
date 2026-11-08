@@ -7,6 +7,16 @@ use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 
 class LoginChallenge extends RedirectIfTwoFactorAuthenticatable
 {
+    public function handle($request, $next)
+    {
+        if ($request->input('provider', 'local') === 'local' && ! app(TenantContext::class)->requiresTotp('local')) {
+            // Fortify's next pipeline action still validates credentials and establishes the session.
+            return $next($request);
+        }
+
+        return parent::handle($request, $next);
+    }
+
     protected function twoFactorChallengeResponse($request, $user)
     {
         $request->session()->regenerate();

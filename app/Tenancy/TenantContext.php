@@ -29,6 +29,15 @@ class TenantContext
         return $this->tenant?->id;
     }
 
+    public function requiresTotp(?string $provider): bool
+    {
+        if ($provider === 'multifactor') {
+            return false;
+        }
+
+        return $provider !== 'local' || (bool) ($this->provider('local')['require_totp'] ?? true);
+    }
+
     public function membership(int $userId): ?TenantMembership
     {
         if (! $this->id()) {

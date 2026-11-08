@@ -1,0 +1,170 @@
+{
+  "source": "Original __fcMaroAcc, baseline33, no browser overrides",
+  "entries": [
+    {
+      "code": "m1",
+      "name": "ВСт3сп",
+      "factor": 1
+    },
+    {
+      "code": "m2",
+      "name": "ст6сп",
+      "factor": 1
+    },
+    {
+      "code": "m3",
+      "name": "ст10",
+      "factor": 1
+    },
+    {
+      "code": "m4",
+      "name": "ст20",
+      "factor": 1
+    },
+    {
+      "code": "m5",
+      "name": "17Г1С",
+      "factor": 1.3
+    },
+    {
+      "code": "m6",
+      "name": "09Г2С",
+      "factor": 1.3
+    },
+    {
+      "code": "m7",
+      "name": "10Г2",
+      "factor": 1.3
+    },
+    {
+      "code": "m8",
+      "name": "15ХСНД",
+      "factor": 1.3
+    },
+    {
+      "code": "m9",
+      "name": "A204 Gr.A",
+      "factor": 1.3
+    },
+    {
+      "code": "m10",
+      "name": "12ХМ",
+      "factor": 1.3
+    },
+    {
+      "code": "m11",
+      "name": "15ХМ",
+      "factor": 1.3
+    },
+    {
+      "code": "m12",
+      "name": "12Х1МФ",
+      "factor": 1.3
+    },
+    {
+      "code": "m13",
+      "name": "10Х2М",
+      "factor": 1.7
+    },
+    {
+      "code": "m14",
+      "name": "12Х2М",
+      "factor": 1.7
+    },
+    {
+      "code": "m15",
+      "name": "18X3МВ",
+      "factor": 1.7
+    },
+    {
+      "code": "m16",
+      "name": "15Х5М",
+      "factor": 1.7
+    },
+    {
+      "code": "m17",
+      "name": "10Х9МФБ",
+      "factor": 2.6
+    },
+    {
+      "code": "m18",
+      "name": "03Х17Н14М3",
+      "factor": 4.8
+    },
+    {
+      "code": "m19",
+      "name": "10Х17Н13М2Т",
+      "factor": 4.8
+    },
+    {
+      "code": "m20",
+      "name": "08Х18Н10",
+      "factor": 3.2
+    },
+    {
+      "code": "m21",
+      "name": "08Х18Н10Т",
+      "factor": 3.2
+    },
+    {
+      "code": "m22",
+      "name": "08Х18Н12Б",
+      "factor": 3.2
+    },
+    {
+      "code": "m23",
+      "name": "12Х18Н10Т",
+      "factor": 3.2
+    },
+    {
+      "code": "m24",
+      "name": "20Х23Н18",
+      "factor": 4.8
+    },
+    {
+      "code": "m25",
+      "name": "20Х25Н20С2",
+      "factor": 4.8
+    },
+    {
+      "code": "m26",
+      "name": "1.4104",
+      "factor": 2.8
+    },
+    {
+      "code": "m27",
+      "name": "08Х13",
+      "factor": 2.8
+    },
+    {
+      "code": "m28",
+      "name": "08Х17Т",
+      "factor": 2.8
+    },
+    {
+      "code": "m29",
+      "name": "10Х13СЮ",
+      "factor": 2.8
+    },
+    {
+      "code": "m30",
+      "name": "12Х17",
+      "factor": 2.8
+    },
+    {
+      "code": "m31",
+      "name": "15Х18СЮ",
+      "factor": 2.8
+    },
+    {
+      "code": "m32",
+      "name": "15Х25Т",
+      "factor": 2.8
+    },
+    {
+      "code": "m33",
+      "name": "15Х28",
+      "factor": 2.8
+    }
+  ]
+}

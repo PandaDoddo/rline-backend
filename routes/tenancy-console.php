@@ -5,9 +5,37 @@ use App\Models\TenantMembership;
 use App\Models\User;
 use App\Tenancy\TenantAuthSettings;
 use App\Tenancy\TenantDatabaseManager;
+use App\Tenancy\TenantSchemaMigrator;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+
+Artisan::command('tenant:migrate {--tenant=}', function () {
+    $query = Tenant::where('database_status', 'ready');
+    if ($this->option('tenant')) {
+        $query->where('slug', $this->option('tenant'));
+    }
+    if (! $query->exists()) {
+        $this->error('Нет подготовленных БД для миграции.');
+
+        return 1;
+    }
+    $failed = false;
+    $query->chunkById(50, function ($tenants) use (&$failed) {
+        foreach ($tenants as $tenant) {
+            try {
+                app(TenantSchemaMigrator::class)->migrate($tenant);
+                $this->info('Миграции применены: '.$tenant->slug);
+            } catch (Throwable $exception) {
+                report($exception);
+                $failed = true;
+                $this->error('Не удалось обновить: '.$tenant->slug.'; подробности в журнале сервера.');
+            }
+        }
+    });
+
+    return $failed ? 1 : 0;
+})->purpose('Применить предметные миграции к существующим tenant-БД');
 
 Artisan::command('tenant:create {slug} {name} {--owner=}', function () {
     $data = ['slug' => $this->argument('slug'), 'name' => $this->argument('name')];

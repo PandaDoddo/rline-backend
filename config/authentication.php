@@ -8,7 +8,7 @@ return [
     'providers' => [
         'assistent' => ['label' => 'Ассистент (Астерит)', 'enabled' => false, 'status' => 'protocol_not_confirmed'],
         'bearpass' => ['label' => 'BearPass', 'enabled' => false, 'status' => 'not_an_identity_provider'],
-        'local' => ['label' => 'Локальная учётная запись', 'enabled' => env('AUTH_LOCAL_ENABLED', true)],
+        'local' => ['label' => 'Локальная учётная запись', 'enabled' => env('AUTH_LOCAL_ENABLED', true), 'require_totp' => true],
         'ldap' => [
             'label' => 'LDAP', 'enabled' => env('AUTH_LDAP_ENABLED', false),
             'uri' => env('LDAP_URI'), 'base_dn' => env('LDAP_BASE_DN'),

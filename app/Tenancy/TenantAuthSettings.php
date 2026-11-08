@@ -4,18 +4,55 @@ namespace App\Tenancy;
 
 use App\Models\Tenant;
 use App\Models\TenantMembership;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class TenantAuthSettings
 {
+    public function canManage(?User $user, Tenant $tenant): bool
+    {
+        if (! $user) {
+            return false;
+        }
+        if ($user->is_platform_admin) {
+            return true;
+        }
+        $context = app(TenantContext::class);
+
+        return $context->id() === $tenant->id && in_array($context->membership($user->id)?->role, ['owner', 'admin'], true);
+    }
+
+    public static function inputRules(): array
+    {
+        $rules = ['providers' => 'required|array:'.implode(',', array_keys(self::FIELDS))];
+        foreach (self::FIELDS as $id => $fields) {
+            $rules['providers.'.$id] = 'sometimes|array:'.implode(',', $fields);
+            foreach ($fields as $field) {
+                $rules['providers.'.$id.'.'.$field] = 'sometimes|'.preg_replace('/^required\|/', '', self::providerRules($id)[$field]);
+            }
+        }
+
+        return $rules;
+    }
+
     private const FIELDS = [
-        'local' => ['enabled'],
+        'local' => ['enabled', 'require_totp'],
         'ldap' => ['enabled', 'uri', 'base_dn', 'bind_dn', 'bind_password', 'start_tls'],
         'ad' => ['enabled', 'uri', 'base_dn', 'bind_dn', 'bind_password', 'start_tls'],
         'multifactor' => ['enabled', 'issuer', 'discovery_url', 'client_id', 'client_secret'],
     ];
+
+    private static function providerRules(string $id): array
+    {
+        return ['enabled' => 'required|boolean'] + match ($id) {
+            'local' => ['require_totp' => 'required|boolean'],
+            'ldap', 'ad' => ['start_tls' => 'required|boolean', 'uri' => 'nullable|url:ldap,ldaps|max:1024', 'base_dn' => 'nullable|string|max:1024', 'bind_dn' => 'nullable|string|max:1024', 'bind_password' => 'nullable|string|max:4096'],
+            'multifactor' => ['issuer' => 'nullable|url:https|max:1024', 'discovery_url' => 'required|url:https|max:1024', 'client_id' => 'nullable|string|max:255', 'client_secret' => 'nullable|string|max:4096'],
+            default => [],
+        };
+    }
 
     public function present(Tenant $tenant): array
     {
@@ -47,9 +84,8 @@ class TenantAuthSettings
         foreach ($input as $id => $values) {
             Validator::make(['settings' => $values], ['settings' => 'required|array:'.implode(',', self::FIELDS[$id])])->validate();
             $merged = array_replace(app(TenantContext::class)->provider($id, $tenant), $values);
-            $rules = ['enabled' => 'required|boolean'];
+            $rules = self::providerRules($id);
             if ($id === 'ldap' || $id === 'ad') {
-                $rules += ['start_tls' => 'required|boolean', 'uri' => 'nullable|url:ldap,ldaps|max:1024', 'base_dn' => 'nullable|string|max:1024', 'bind_dn' => 'nullable|string|max:1024', 'bind_password' => 'nullable|string|max:4096'];
                 if ($merged['enabled']) {
                     foreach (['uri', 'base_dn', 'bind_dn', 'bind_password'] as $required) {
                         $rules[$required] = str_replace('nullable', 'required', $rules[$required]);
@@ -59,7 +95,6 @@ class TenantAuthSettings
                     }
                 }
             } elseif ($id === 'multifactor') {
-                $rules += ['issuer' => 'nullable|url:https|max:1024', 'discovery_url' => 'required|url:https|max:1024', 'client_id' => 'nullable|string|max:255', 'client_secret' => 'nullable|string|max:4096'];
                 if ($merged['enabled']) {
                     foreach (['issuer', 'client_id', 'client_secret'] as $required) {
                         $rules[$required] = str_replace('nullable', 'required', $rules[$required]);
