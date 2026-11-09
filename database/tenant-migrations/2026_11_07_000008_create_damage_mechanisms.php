@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\DamageMechanismBaseline;
+use App\Modules\Catalogs\Infrastructure\DamageMechanismBaseline;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;

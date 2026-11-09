@@ -1,0 +1,2368 @@
+{
+  "version": "old-diagnostics-v1",
+  "source": {
+    "oracle_version": "old-v1",
+    "snapshot_at": "2026-10-28T15:26:07.619Z",
+    "checksums": {
+      "cardreg.js": "2c380c5599d8e9ef05b2f4d95dee0572ba3801ac8944dbd16c9669f0c769bd00",
+      "chemcat.js": "a822eb92e215358598213049cc8ca0edac83a4220eb3ee8ce62e7aafab9ef368",
+      "corrdm.js": "173835832837bdbf62f1b17bdf2b8b72eb63ebdd03afc31b87bb291ed7705842",
+      "armtypes.js": "fdff235c24ce1133037487b930f3f54bab7fafbe0a847f5757ccdf96629fb1f6",
+      "ditbl.js": "3efbdec80bb0cd7368e2aae51b9a8fa46d4fb1948a3088e6e01033ec4875b9a7",
+      "fincost.js": "d57c09342de78fe9b6190a3b4d323295232cd4d029c309e6a62a4ee07d6e5ad6",
+      "cofdata.js": "07e8555d1cd15ee27e48cdbd7d3254e2e821fc8b5dab3cd00403b7db29153a9a",
+      "cofcalc.js": "fb2a8e93901f4dc929dfc9a889e2765d775318c1f4d320887e72b5ad5c0e0d0d",
+      "pofcalc.js": "3d809029a0968e1e48d9d9fbb73da08b3941e31725a335abf28261fa8c845986",
+      "riskcalc.js": "d32a03cf130e894597782cc8ba4681325bf45635f2b6d04d8894d513484a462c",
+      "mscheck.js": "fa8ebb1c5eab9ea3e2cc40b800e64889ef3e4dc896b555ac459cd9b02a4a30dd",
+      "dfthin.js": "3b1dd12451ed6677cc7b91c3b93ce98992735e84ee07b225400027c6fdcf2d79",
+      "dfext.js": "3d8f1cbb17dde863dd7480d2f216d4a0f7248fb8f73ec7e56c8289356e92db3f",
+      "dfcl.js": "b6ec80f2d144b1025a419293cbfab1141a75de84c882fdf1d4430d3cd2f545fe",
+      "dfscc.js": "7eaed46f92a86cae3ba41823f7e3b996eb46d5c4c6854a9e611fd29fac2b0873",
+      "dfscc2.js": "2732f62a2b8952699761ed4dbf0619dde3b328cfc9bf51fa102f159d55087843",
+      "dfemb.js": "02e65f7e1836a386eda3f2a6ab374de6fe11a7d5555a9786030327bda587da49",
+      "mdscr.js": "d2bed4d83ea0b020c4ef1ee5faa915d55909c63c6d88a45ee863dfede66bade3",
+      "rldata.js": "550b0b66d7745f91eb209d303c82547dc33134ec8859a40c639c2beebccbd4aa",
+      "dmcat_a.js": "cfa1b40f538f0af224a86a25d24576e6d824bac45f89cdc07ccd654cfb6fc67b",
+      "dmcat_b.js": "b64f9438651d2d4de532f6646f6e5159e27854bb36bce39fe2c02e0c07cb262e",
+      "dmcat_c.js": "9abff96121bec19d363a6afa2936c35137112969819d6f4f1a6ffd96474036a6",
+      "sanpin21.js": "759c7cdccf66147e2e1e6a6e57b82f5854f1f466723b8178b9e1446707c21cd3",
+      "ppktbl.js": "4a00bafff931d8a3ab8628edc6dcfc610d836cf86a18ec8378d935bde5d75f43",
+      "ppkcalc.js": "7d24c1d9d06db38fcd827dd9cd2758ce9b80e35698ca5abd79093f276b403ae7",
+      "index.dc.html": "4cdb4fd742c105e57ae1e6c2a9f63610773b5e9682d02d78c3499d6c48591873"
+    }
+  },
+  "records": [
+    {
+      "legacy_id": "EQ0007",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Сепаратор охлажденного газа после КНД",
+        "tag": "С-802/3",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 1,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-2",
+          "is_primary": false,
+          "performed_on": "2023-06-16",
+          "next_on": "2025-06-16",
+          "organization": "ООО \"Стратегия НК\"",
+          "inspection_type": "периодическое",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": false,
+          "performed_on": "2017-06-01",
+          "next_on": "2021-06-01",
+          "organization": "АО НДЦ НПФ \"Русская лаборатория\"",
+          "inspection_type": "периодическое",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": false,
+          "performed_on": "2013-06-16",
+          "next_on": "2017-06-16",
+          "organization": "ЗАО НПЦ \"Сибнефтегаздиагностика\"",
+          "inspection_type": "периодическое",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {
+            "ТО-1": null,
+            "ЭПБ": null,
+            "ГИ": null
+          },
+          "unknown_fields": [
+            "performed_on",
+            "next_on",
+            "organization",
+            "ТО-1",
+            "ЭПБ",
+            "ГИ"
+          ],
+          "verified": true
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": false,
+          "performed_on": "2011-03-23",
+          "next_on": "2013-11-01",
+          "organization": "ЗАО \"ДИНОН\"",
+          "inspection_type": "внеочередное",
+          "follow_up_dates": {
+            "ТО-1": null,
+            "ЭПБ": null,
+            "ГИ": "2027-11-01"
+          },
+          "unknown_fields": [
+            "ТО-1",
+            "ЭПБ"
+          ],
+          "verified": true
+        },
+        {
+          "kind": "ТО-1",
+          "is_primary": false,
+          "performed_on": "2021-06-16",
+          "next_on": "2025-06-16",
+          "organization": null,
+          "inspection_type": "периодическое",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ТО-1",
+          "is_primary": false,
+          "performed_on": "2019-05-26",
+          "next_on": "2021-05-26",
+          "organization": null,
+          "inspection_type": "периодическое",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ТО-1",
+          "is_primary": false,
+          "performed_on": "2015-06-12",
+          "next_on": "2017-06-12",
+          "organization": null,
+          "inspection_type": "периодическое",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": "2025-06-01",
+          "next_on": "2033-12-31",
+          "organization": null,
+          "inspection_type": "плановая",
+          "follow_up_dates": {
+            "ТО-1": "2027-12-31",
+            "ТО-2": "2029-12-31",
+            "ГИ": "2033-12-31"
+          },
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": "2019-06-01",
+          "next_on": "2025-12-31",
+          "organization": null,
+          "inspection_type": null,
+          "follow_up_dates": {
+            "ТО-1": "2021-12-31",
+            "ТО-2": "2023-12-31",
+            "ГИ": "2025-12-31"
+          },
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ГИ",
+          "is_primary": false,
+          "performed_on": "2025-06-01",
+          "next_on": "2033-12-31",
+          "organization": null,
+          "inspection_type": "плановое",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ГИ",
+          "is_primary": false,
+          "performed_on": "2019-06-01",
+          "next_on": "2025-12-31",
+          "organization": null,
+          "inspection_type": "плановое",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": true
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": "2025-06-01",
+          "planned_on": "2033-12-31"
+        },
+        "ГИ/ПИ": {
+          "performed_on": "2025-06-01",
+          "planned_on": "2033-12-31"
+        },
+        "ТО-2": {
+          "performed_on": "2025-06-01",
+          "planned_on": "2029-12-31"
+        },
+        "ТО-1": {
+          "performed_on": "2025-06-01",
+          "planned_on": "2027-12-31"
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0006",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Сепаратор охлажденного газа после КНД (сепаратор газожидкостной вертикальный вихревого типа)",
+        "tag": "С-802/2",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0009",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Сепаратор охлажденного газа после 1 ст. КВД (сепаратор нефтегазовый)",
+        "tag": "С-803/3",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0013",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Емкость конденсата разделительная (разгазирования УВК)",
+        "tag": "Е-802",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0012",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Емкость конденсата дренажная подземная",
+        "tag": "Е-803",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0016",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Ресивер воздуха КИПиА (воздухосборник)",
+        "tag": "В-1",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0015",
+      "profile_code": "ves_teplo",
+      "passport": {
+        "name": "Теплообменник кожухотрубчатый подогрева азота НД",
+        "tag": "Т-801",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 1,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": "2022-07-08",
+          "next_on": "2026-12-31",
+          "organization": "АО НДЦ НПФ \"Русская лаборатория\"",
+          "inspection_type": "плановая",
+          "follow_up_dates": {
+            "ТО-1": "2024-12-31",
+            "ТО-2": "2026-12-31",
+            "ГИ": "2026-12-31"
+          },
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": "2018-05-28",
+          "next_on": "2022-12-31",
+          "organization": "ЗАО НДЦ НПФ \"Русская лаборатория\"",
+          "inspection_type": "первичная",
+          "follow_up_dates": {
+            "ТО-1": "2020-12-31",
+            "ТО-2": "2022-12-21",
+            "ГИ": "2022-12-31"
+          },
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": false,
+          "performed_on": "2017-06-04",
+          "next_on": null,
+          "organization": "АО НДЦ НПФ \"Русская лаборатория\"",
+          "inspection_type": "периодическое",
+          "follow_up_dates": {
+            "ТО-1": "2019-06-04",
+            "ЭПБ": "2018-09-30",
+            "ГИ": "2025-06-24"
+          },
+          "unknown_fields": [
+            "next_on"
+          ],
+          "verified": true
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": false,
+          "performed_on": "2013-06-24",
+          "next_on": "2017-06-24",
+          "organization": "ЗАО НПЦ \"Сибнефтегаздиагностика\"",
+          "inspection_type": "периодическое",
+          "follow_up_dates": {
+            "ТО-1": "2015-06-24",
+            "ЭПБ": "2018-09-30",
+            "ГИ": null
+          },
+          "unknown_fields": [
+            "ГИ"
+          ],
+          "verified": true
+        },
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": "2009-09-29",
+          "next_on": "2013-09-29",
+          "organization": "ООО \"НТЦ \"Анклав\"",
+          "inspection_type": "первичное",
+          "follow_up_dates": {
+            "ТО-1": null,
+            "ЭПБ": null,
+            "ГИ": "2017-09-29"
+          },
+          "unknown_fields": [
+            "ТО-1",
+            "ЭПБ"
+          ],
+          "verified": true
+        },
+        {
+          "kind": "ТО-1",
+          "is_primary": false,
+          "performed_on": "2024-06-10",
+          "next_on": "2026-06-10",
+          "organization": null,
+          "inspection_type": "периодическое",
+          "follow_up_dates": {
+            "ТО-2": "2026-12-31",
+            "ЭПБ": "2026-12-31",
+            "ГИ": "2026-12-31"
+          },
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ТО-1",
+          "is_primary": false,
+          "performed_on": "2020-06-11",
+          "next_on": "2022-12-31",
+          "organization": null,
+          "inspection_type": "периодическое",
+          "follow_up_dates": {
+            "ТО-2": "2022-12-31",
+            "ЭПБ": "2022-12-31",
+            "ГИ": "2022-12-31"
+          },
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ТО-1",
+          "is_primary": false,
+          "performed_on": "2018-05-26",
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "периодическое",
+          "follow_up_dates": {
+            "ТО-2": null,
+            "ЭПБ": "2018-09-30",
+            "ГИ": null
+          },
+          "unknown_fields": [
+            "next_on",
+            "ТО-2",
+            "ГИ"
+          ],
+          "verified": true
+        },
+        {
+          "kind": "ТО-1",
+          "is_primary": false,
+          "performed_on": "2015-06-12",
+          "next_on": "2017-06-12",
+          "organization": null,
+          "inspection_type": "периодическое",
+          "follow_up_dates": {
+            "ТО-2": "2019-06-24"
+          },
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ТО-1",
+          "is_primary": false,
+          "performed_on": "2011-07-08",
+          "next_on": "2013-07-08",
+          "organization": null,
+          "inspection_type": "периодическое",
+          "follow_up_dates": {
+            "ТО-2": "2015-09-29"
+          },
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "ГИ",
+          "is_primary": false,
+          "performed_on": "2022-06-30",
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "плановое",
+          "follow_up_dates": {},
+          "unknown_fields": [
+            "next_on"
+          ],
+          "verified": false
+        },
+        {
+          "kind": "ГИ",
+          "is_primary": false,
+          "performed_on": "2017-06-04",
+          "next_on": "2025-06-04",
+          "organization": null,
+          "inspection_type": "плановое",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": true
+        },
+        {
+          "kind": "другое",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "контроль методом ECT",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": "2022-07-08",
+          "planned_on": "2026-12-31"
+        },
+        "ГИ/ПИ": {
+          "performed_on": "2022-06-30",
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": "2022-07-08",
+          "planned_on": "2026-12-31"
+        },
+        "ТО-1": {
+          "performed_on": "2024-06-10",
+          "planned_on": "2026-06-10"
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0014",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Емкость конденсата дренажная",
+        "tag": "Е-801",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0005",
+      "profile_code": "ves_avo",
+      "passport": {
+        "name": "Аппарат воздушного охлаждения после КНД",
+        "tag": "АТ-801/3",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0019",
+      "profile_code": "ves_itne",
+      "passport": {
+        "name": "Бак масла компрессорного (маслобак) ТК-801/3",
+        "tag": "Б-201",
+        "ntd": "ИТНЭ-93",
+        "registration_authority": "ОТН",
+        "active_otn_years": 6,
+        "active_hydro_years": 12
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0023",
+      "profile_code": "ves_avo",
+      "passport": {
+        "name": "Охладитель масла турбинного (маслоохладитель) ТК-801/3",
+        "tag": "25-АТ251",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0001",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Сепаратор-нефтеконденсатоотделитель",
+        "tag": "С-1/1",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0002",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Сепаратор-нефтеконденсатоотделитель",
+        "tag": "С-1/2",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0003",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Емкость конденсата дренажная",
+        "tag": "Е-1",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0004",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Сепаратор сырьевого газа низкого давления",
+        "tag": "С-801/3",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0008",
+      "profile_code": "ves_avo",
+      "passport": {
+        "name": "Аппарат воздушного охлаждения после 1 ст. КВД",
+        "tag": "АТ-802/3",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0010",
+      "profile_code": "ves_avo",
+      "passport": {
+        "name": "Аппарат воздушного охлаждения после 2 ст. КВД",
+        "tag": "АТ-803/3",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0011",
+      "profile_code": "ves_fnp_rtn",
+      "passport": {
+        "name": "Сепаратор охлажденного газа после 2 ст. КВД",
+        "tag": "С-804/3",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "РТН",
+        "active_otn_years": 2,
+        "active_rtn_years": 4,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-2",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_rtn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0017",
+      "profile_code": "ves_avo",
+      "passport": {
+        "name": "Охладитель масла компрессорного (маслоохладитель) ТК-801/3",
+        "tag": "АТ-201",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0018",
+      "profile_code": "ves_avo",
+      "passport": {
+        "name": "Охладитель масла компрессорного (маслоохладитель) ТК-801/3",
+        "tag": "АТ-202",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0020",
+      "profile_code": "ves_itne",
+      "passport": {
+        "name": "Емкость сбора масла турбинного ТК-801/3",
+        "tag": "Е-804/3",
+        "ntd": "ИТНЭ-93",
+        "registration_authority": "ОТН",
+        "active_otn_years": 6,
+        "active_hydro_years": 12
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0021",
+      "profile_code": "ves_itne",
+      "passport": {
+        "name": "Бак масла турбинного (маслобак) ТК-801/3",
+        "tag": "24-БЦ 251",
+        "ntd": "ИТНЭ-93",
+        "registration_authority": "ОТН",
+        "active_otn_years": 6,
+        "active_hydro_years": 12
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0022",
+      "profile_code": "ves_itne",
+      "passport": {
+        "name": "Емкость уравнительная масла турбинного ТК-801/3",
+        "tag": "24-БЦ 252",
+        "ntd": "ИТНЭ-93",
+        "registration_authority": "ОТН",
+        "active_otn_years": 6,
+        "active_hydro_years": 12
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0024",
+      "profile_code": "ves_fnp_otn",
+      "passport": {
+        "name": "Фильтр сетчатый на всасе насоса НЦ-801/1",
+        "tag": "FL-801/1",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0025",
+      "profile_code": "ves_fnp_otn",
+      "passport": {
+        "name": "Фильтр сетчатый на всасе насоса НЦ-801/2",
+        "tag": "FL-801/2",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0026",
+      "profile_code": "ves_fnp_otn",
+      "passport": {
+        "name": "Ресивер воздуха КИПиА",
+        "tag": "Р-805",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0027",
+      "profile_code": "ves_fnp_otn",
+      "passport": {
+        "name": "Ресивер воздуха КИПиА",
+        "tag": "Р-807",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0028",
+      "profile_code": "ves_fnp_otn",
+      "passport": {
+        "name": "Ресивер воздуха КИПиА",
+        "tag": "Р-810",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0029",
+      "profile_code": "ves_fnp_otn",
+      "passport": {
+        "name": "Ресивер воздуха КИПиА",
+        "tag": "Р-811",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0030",
+      "profile_code": "ves_fnp_otn",
+      "passport": {
+        "name": "Ресивер воздуха КИПиА",
+        "tag": "Р-814",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    },
+    {
+      "legacy_id": "EQ0031",
+      "profile_code": "ves_fnp_otn",
+      "passport": {
+        "name": "Ресивер воздуха КИПиА",
+        "tag": "Р-815",
+        "ntd": "ФНП ОРПД",
+        "registration_authority": "ОТН",
+        "active_otn_years": 2,
+        "active_hydro_years": 8
+      },
+      "inspections": [
+        {
+          "kind": "ТО-1",
+          "is_primary": true,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичное",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        },
+        {
+          "kind": "ЭПБ",
+          "is_primary": false,
+          "performed_on": null,
+          "next_on": null,
+          "organization": null,
+          "inspection_type": "первичная",
+          "follow_up_dates": {},
+          "unknown_fields": [],
+          "verified": false
+        }
+      ],
+      "expected": {
+        "ЭПБ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ГИ/ПИ": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-2": {
+          "performed_on": null,
+          "planned_on": null
+        },
+        "ТО-1": {
+          "performed_on": null,
+          "planned_on": null
+        }
+      },
+      "interval_origins": [
+        {
+          "field": "active_otn_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        },
+        {
+          "field": "active_hydro_years",
+          "origin": "old rendered fixture value; not a runtime default"
+        }
+      ]
+    }
+  ]
+}

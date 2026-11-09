@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Domain\EquipmentFlowContacts;
+use App\Modules\ProcessFlows\Application\EquipmentFlowContacts;
 use PHPUnit\Framework\TestCase;
 
 class EquipmentFlowProjectionTest extends TestCase

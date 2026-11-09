@@ -8,6 +8,7 @@ use Dedoc\Scramble\Support\Generator\Parameter;
 use Dedoc\Scramble\Support\Generator\RequestBodyObject;
 use Dedoc\Scramble\Support\Generator\Response;
 use Dedoc\Scramble\Support\Generator\Schema;
+use Dedoc\Scramble\Support\Generator\Types\ArrayType;
 use Dedoc\Scramble\Support\Generator\Types\ObjectType;
 use Dedoc\Scramble\Support\Generator\Types\StringType;
 use Dedoc\Scramble\Support\RouteInfo;
@@ -17,7 +18,15 @@ class ApiOperationTransformer implements OperationTransformer
     public function handle(Operation $operation, RouteInfo $routeInfo): void
     {
         $uri = $routeInfo->route->uri();
-        $hasTenant = $uri !== 'api/health' && $uri !== 'sanctum/csrf-cookie';
+        if ($uri === 'api/process-flows/schema') {
+            $labels = new ObjectType;
+            $labels->additionalProperties = new StringType;
+            $field = (new ObjectType)->addProperty('key', (new StringType)->enum(array_keys(config('process-flows.fields'))))->addProperty('label', new StringType)->addProperty('type', (new StringType)->enum(['number', 'text', 'choice']))->addProperty('unit', new StringType)->addProperty('options', (new ArrayType)->setItems(new StringType))->setRequired(['key', 'label', 'type']);
+            $schema = (new ObjectType)->addProperty('categories', $labels)->addProperty('media', $labels->clone())->addProperty('fields', (new ArrayType)->setItems($field))->addProperty('impurity_units', (new ArrayType)->setItems(new StringType))->addProperty('screening', FlowScreeningSchema::baseline())->setRequired(['categories', 'media', 'fields', 'impurity_units', 'screening']);
+            $operation->responses = array_values(array_filter($operation->responses, fn ($response) => ($response->code ?? null) != 200));
+            $operation->addResponse((new Response(200))->setDescription('Поля потока и версионированная база первичного скрининга.')->setContent('application/json', Schema::fromType($schema)));
+        }
+        $hasTenant = ! in_array($uri, ['api/health', 'api/public/tenants', 'sanctum/csrf-cookie'], true);
         $mutating = ! in_array(strtoupper($operation->method), ['GET', 'HEAD', 'OPTIONS'], true);
         $fortifyFields = match ($uri) {
             'auth/reset-password' => ['token', 'email', 'password', 'password_confirmation'],

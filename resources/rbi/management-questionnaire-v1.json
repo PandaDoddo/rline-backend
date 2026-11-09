@@ -1,0 +1,2060 @@
+{
+  "version": "management-api581-4-legacy-v1",
+  "source": {
+    "oracle_version": "old-v1",
+    "snapshot_at": "2026-10-28T15:26:07.619Z",
+    "checksums": {
+      "cardreg.js": "2c380c5599d8e9ef05b2f4d95dee0572ba3801ac8944dbd16c9669f0c769bd00",
+      "chemcat.js": "a822eb92e215358598213049cc8ca0edac83a4220eb3ee8ce62e7aafab9ef368",
+      "corrdm.js": "173835832837bdbf62f1b17bdf2b8b72eb63ebdd03afc31b87bb291ed7705842",
+      "armtypes.js": "fdff235c24ce1133037487b930f3f54bab7fafbe0a847f5757ccdf96629fb1f6",
+      "ditbl.js": "3efbdec80bb0cd7368e2aae51b9a8fa46d4fb1948a3088e6e01033ec4875b9a7",
+      "fincost.js": "d57c09342de78fe9b6190a3b4d323295232cd4d029c309e6a62a4ee07d6e5ad6",
+      "cofdata.js": "07e8555d1cd15ee27e48cdbd7d3254e2e821fc8b5dab3cd00403b7db29153a9a",
+      "cofcalc.js": "fb2a8e93901f4dc929dfc9a889e2765d775318c1f4d320887e72b5ad5c0e0d0d",
+      "pofcalc.js": "3d809029a0968e1e48d9d9fbb73da08b3941e31725a335abf28261fa8c845986",
+      "riskcalc.js": "d32a03cf130e894597782cc8ba4681325bf45635f2b6d04d8894d513484a462c",
+      "mscheck.js": "fa8ebb1c5eab9ea3e2cc40b800e64889ef3e4dc896b555ac459cd9b02a4a30dd",
+      "dfthin.js": "3b1dd12451ed6677cc7b91c3b93ce98992735e84ee07b225400027c6fdcf2d79",
+      "dfext.js": "3d8f1cbb17dde863dd7480d2f216d4a0f7248fb8f73ec7e56c8289356e92db3f",
+      "dfcl.js": "b6ec80f2d144b1025a419293cbfab1141a75de84c882fdf1d4430d3cd2f545fe",
+      "dfscc.js": "7eaed46f92a86cae3ba41823f7e3b996eb46d5c4c6854a9e611fd29fac2b0873",
+      "dfscc2.js": "2732f62a2b8952699761ed4dbf0619dde3b328cfc9bf51fa102f159d55087843",
+      "dfemb.js": "02e65f7e1836a386eda3f2a6ab374de6fe11a7d5555a9786030327bda587da49",
+      "mdscr.js": "d2bed4d83ea0b020c4ef1ee5faa915d55909c63c6d88a45ee863dfede66bade3",
+      "rldata.js": "550b0b66d7745f91eb209d303c82547dc33134ec8859a40c639c2beebccbd4aa",
+      "dmcat_a.js": "cfa1b40f538f0af224a86a25d24576e6d824bac45f89cdc07ccd654cfb6fc67b",
+      "dmcat_b.js": "b64f9438651d2d4de532f6646f6e5159e27854bb36bce39fe2c02e0c07cb262e",
+      "dmcat_c.js": "9abff96121bec19d363a6afa2936c35137112969819d6f4f1a6ffd96474036a6",
+      "sanpin21.js": "759c7cdccf66147e2e1e6a6e57b82f5854f1f466723b8178b9e1446707c21cd3",
+      "ppktbl.js": "4a00bafff931d8a3ab8628edc6dcfc610d836cf86a18ec8378d935bde5d75f43",
+      "ppkcalc.js": "7d24c1d9d06db38fcd827dd9cd2758ce9b80e35698ca5abd79093f276b403ae7",
+      "index.dc.html": "4cdb4fd742c105e57ae1e6c2a9f63610773b5e9682d02d78c3499d6c48591873"
+    }
+  },
+  "sections": [
+    {
+      "id": "2.A.1",
+      "title": "Менеджмент на производстве",
+      "weight": 0.17,
+      "position": 0,
+      "questions": [
+        {
+          "id": "1.1",
+          "number": "1",
+          "subnumber": "",
+          "text": "Получает ли периодически руководство объекта ключевые показатели эффективности, касающиеся просроченных инспекций / рекомендаций?",
+          "maximum": 15,
+          "kind": "boolean",
+          "position": 0,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "1.2",
+          "number": "2",
+          "subnumber": "",
+          "text": "Обязано ли руководство объекта заблаговременно рассматривать и утверждать отсрочки инспекций / рекомендаций с учетом получения достаточной технической информации для понимания риска отсрочки?",
+          "maximum": 10,
+          "kind": "multiple",
+          "position": 1,
+          "guidance": null,
+          "options": [
+            {
+              "index": 0,
+              "label": "не применяется",
+              "points": 0,
+              "exclusive": true
+            },
+            {
+              "index": 1,
+              "label": "наличие письменной процедуры",
+              "points": 5,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "выполнение требования (отсутствие неутверждённых отсрочек)",
+              "points": 2,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "полнота технической информации о риске отсрочки",
+              "points": 3,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "1.3",
+          "number": "3",
+          "subnumber": "",
+          "text": "Осведомлено ли руководство объекта о требованиях успешной программы RBI (обучение персонала, участие MOC и периодический пересмотр анализа RBI) и обеспечивает ли предоставление достаточных ресурсов?",
+          "maximum": 25,
+          "kind": "score",
+          "position": 2,
+          "guidance": "от 0 до 25 баллов на основе собеседования с руководством объекта",
+          "options": [
+            {
+              "index": 0,
+              "label": "не осведомлено, ресурсы не обеспечиваются",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "осведомлено частично, ресурсы не обеспечиваются",
+              "points": 5,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "осведомлено частично, ресурсы обеспечиваются частично",
+              "points": 10,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "осведомлено, ресурсы обеспечиваются частично",
+              "points": 15,
+              "exclusive": false
+            },
+            {
+              "index": 4,
+              "label": "осведомлено, ресурсы обеспечиваются в основном",
+              "points": 20,
+              "exclusive": false
+            },
+            {
+              "index": 5,
+              "label": "осведомлено полностью, ресурсы обеспечиваются в полном объёме",
+              "points": 25,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "1.4",
+          "number": "4",
+          "subnumber": "",
+          "text": "Утверждает ли руководство объекта и выделяет ли ресурсы для реализации ежегодного плана инспекций для поддержания оборудования на уровне приемлемого риска?",
+          "maximum": 15,
+          "kind": "multiple",
+          "position": 3,
+          "guidance": null,
+          "options": [
+            {
+              "index": 0,
+              "label": "не применяется",
+              "points": 0,
+              "exclusive": true
+            },
+            {
+              "index": 1,
+              "label": "наличие годового плана",
+              "points": 5,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "утверждение плана",
+              "points": 5,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "план соответствует требованиям инспекции",
+              "points": 5,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "1.5",
+          "number": "5",
+          "subnumber": "",
+          "text": "Осуществляется ли процесс взаимодействия группы RBI со смежными техническими отделами по вопросам снижения риска, например путем ремонта, замены, модернизации, изменения режима?",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 4,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "1.6",
+          "number": "6",
+          "subnumber": "",
+          "text": "Проводятся ли на объекте регулярные комплексные и целевые проверки состояния промышленной безопасности, включающие направление механической целостности статического оборудования?",
+          "maximum": 5,
+          "kind": "score",
+          "position": 5,
+          "guidance": "5 баллов — если каждые 3 года или чаще, 2 балла — если было выполнено хотя бы 1 раз",
+          "options": [
+            {
+              "index": 0,
+              "label": "не проводятся",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "выполнено хотя бы 1 раз",
+              "points": 2,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "каждые 3 года и чаще",
+              "points": 5,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "1.6b",
+          "number": "",
+          "subnumber": "",
+          "text": "Проводятся ли на объекте регулярные проверки выполнения процедур обеспечения механической целостности статического оборудования (собственными силами либо с привлечением сторонних организаций)?",
+          "maximum": 10,
+          "kind": "score",
+          "position": 6,
+          "guidance": "10 баллов — если ежегодно, 8 баллов — если каждые 3 года, 3 балла — если выполнена хотя бы 1 раз за последние 10 лет",
+          "options": [
+            {
+              "index": 0,
+              "label": "не проводятся",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "хотя бы 1 раз за последние 10 лет",
+              "points": 3,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "каждые 3 года",
+              "points": 8,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "ежегодно",
+              "points": 10,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "1.7",
+          "number": "7",
+          "subnumber": "",
+          "text": "Есть ли доказательства того, что предприятие постоянно совершенствует свою деятельность в соответствии с лучшими отраслевыми практиками?",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 7,
+          "guidance": null,
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "2.A.2",
+      "title": "Безопасность технологического процесса",
+      "weight": 0.05,
+      "position": 1,
+      "questions": [
+        {
+          "id": "2.1",
+          "number": "1",
+          "subnumber": "",
+          "text": "Имеется ли на объекте упрощенная единая схема технологического процесса, облегчающая понимание процесса?",
+          "maximum": 10,
+          "kind": "score",
+          "position": 0,
+          "guidance": "от 0 до 10 баллов в зависимости от процента покрытия оборудования RBI технологическими схемами",
+          "options": [
+            {
+              "index": 0,
+              "label": "покрытие 0 %",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "покрытие 25 %",
+              "points": 2.5,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "покрытие 50 %",
+              "points": 5,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "покрытие 75 %",
+              "points": 7.5,
+              "exclusive": false
+            },
+            {
+              "index": 4,
+              "label": "покрытие 100 %",
+              "points": 10,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "2.2",
+          "number": "2",
+          "subnumber": "",
+          "text": "Имеются ли актуальные P&ID схемы (трубопроводы и КИП) для оборудования периметра RBI?",
+          "maximum": 30,
+          "kind": "score",
+          "position": 1,
+          "guidance": "от 0 до 30 баллов в зависимости от процента покрытия оборудования RBI P&ID схемами",
+          "options": [
+            {
+              "index": 0,
+              "label": "покрытие 0 %",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "покрытие 25 %",
+              "points": 7.5,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "покрытие 50 %",
+              "points": 15,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "покрытие 75 %",
+              "points": 22.5,
+              "exclusive": false
+            },
+            {
+              "index": 4,
+              "label": "покрытие 100 %",
+              "points": 30,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "2.3",
+          "number": "3",
+          "subnumber": "",
+          "text": "Имеется ли документация, подтверждающая, что оборудование периметра RBI спроектировано и изготовлено в соответствии с требованиями НТД?",
+          "maximum": 20,
+          "kind": "score",
+          "position": 2,
+          "guidance": "0 баллов — если документация отсутствует или оборудование спроектировано / изготовлено с нарушениями НТД; 10 баллов — если документация отсутствует частично; 20 баллов — если документация в полном объеме, оборудование соответствует НТД",
+          "options": [
+            {
+              "index": 0,
+              "label": "документация отсутствует / изготовлено с нарушениями НТД",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "документация отсутствует частично",
+              "points": 10,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "документация в полном объеме, соответствует НТД",
+              "points": 20,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "2.4",
+          "number": "4",
+          "subnumber": "",
+          "text": "Пределы операционных окон целостности (IOW) устанавливаются в соответствии с API RP 584 (2nd edition) с четкими требованиями к корректирующим действиям, коммуникации и последующим проверкам",
+          "maximum": 40,
+          "kind": "multiple",
+          "position": 3,
+          "guidance": null,
+          "options": [
+            {
+              "index": 0,
+              "label": "не применяется",
+              "points": 0,
+              "exclusive": true
+            },
+            {
+              "index": 1,
+              "label": "порядок выполнения работ регламентирован",
+              "points": 15,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "корректирующие действия документируются",
+              "points": 13,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "информация о корректирующих действиях анализируется при планировании / проведении инспекции",
+              "points": 12,
+              "exclusive": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2.A.3",
+      "title": "Управление изменениями",
+      "weight": 0.13,
+      "position": 2,
+      "questions": [
+        {
+          "id": "3.1h",
+          "number": "1",
+          "subnumber": "",
+          "text": "Существует ли процедура управления изменениями (MOC — management of changes)",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 0,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.1a",
+          "number": "",
+          "subnumber": "1a",
+          "text": "Существует ли на предприятии регламентированная процедура управления изменениями, которую необходимо соблюдать при добавлении новых объектов или внесении изменений в процесс?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 1,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.1b",
+          "number": "",
+          "subnumber": "1b",
+          "text": "Включает ли процедура управления изменениями анализ целостности оборудования (MI — Mechanical Integrity) на различных этапах развития проекта (т. е. планирование, проектирование, изготовление и строительство)?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 2,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.1c",
+          "number": "",
+          "subnumber": "1c",
+          "text": "Четко ли изложены процедуры рассмотрения и одобрения изменений соответствующей дисциплиной и на соответствующем уровне?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 3,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.1d",
+          "number": "",
+          "subnumber": "1d",
+          "text": "Предусмотрено ли в процедуре управления изменениями требование по обновлению анализа RBI и планов инспекции с учетом изменений?",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 4,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.2h",
+          "number": "2",
+          "subnumber": "",
+          "text": "Включены ли следующие типы «изменений» в процедуру управления изменениями?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 5,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.2a",
+          "number": "",
+          "subnumber": "2a",
+          "text": "Физические изменения объекта за исключением замены оборудования на аналогичное (реконструкция, модернизация, ТП и т. д.)",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 6,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.2b",
+          "number": "",
+          "subnumber": "2b",
+          "text": "Изменения, связанные с технологическими потоками (химический состав, тип катализаторов, тип ингибиторов и т. д.)",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 7,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.2c",
+          "number": "",
+          "subnumber": "2c",
+          "text": "Изменения параметров технологического процесса (рабочих температур, давлений, производительности и т. д.)",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 8,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.2d",
+          "number": "",
+          "subnumber": "2d",
+          "text": "Значительные изменения в рабочих процедурах (последовательность пуска или останова, укомплектованность или распределение персонала на объекте и т. д.)",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 9,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.3h",
+          "number": "3",
+          "subnumber": "",
+          "text": "Предусмотрено ли разделение изменений на постоянные и временные",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 10,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.3a",
+          "number": "",
+          "subnumber": "3a",
+          "text": "Есть ли в процедуре управления изменениями четкое определение того, что представляет собой «временные изменения»?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 11,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.3b",
+          "number": "",
+          "subnumber": "3b",
+          "text": "Управляет ли процедура управления изменениями как временными, так и постоянными изменениями?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 12,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.3c",
+          "number": "",
+          "subnumber": "3c",
+          "text": "Отслеживаются ли «временные изменения», чтобы гарантировать, что они будут удалены по истечении определенного периода времени или переклассифицированы в «постоянные»?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 13,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.3d",
+          "number": "",
+          "subnumber": "3d",
+          "text": "Имеются ли для «временных элементов» план инспекции, реализуемый до выполнения постоянного ремонта, или документальное обоснование отсутствия необходимости в инспекции на весь «временный» срок?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 14,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.4h",
+          "number": "4",
+          "subnumber": "",
+          "text": "Требует ли процедура управления изменениями выполнения следующих действий при каждом изменении процесса?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 15,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.4a",
+          "number": "",
+          "subnumber": "4a",
+          "text": "Обновление всех затронутых планов ТОиР, графиков ТО/УЗТ/НО",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 16,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.4b",
+          "number": "",
+          "subnumber": "4b",
+          "text": "Изменение P&ID схем, положений об эксплуатационных ограничениях, паспортов безопасности и другой информации о безопасности процесса, которая может быть затронута",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 17,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.4c",
+          "number": "",
+          "subnumber": "4c",
+          "text": "Уведомление всех сотрудников, отвечающих за механическую целостность, и обслуживающего персонала, работающих в зоне изменения, и необходимое обучение",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 18,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.4d",
+          "number": "",
+          "subnumber": "4d",
+          "text": "Оценка влияния изменения на технологически связанные объекты (подающие сырье и принимающие продукт объекты)",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 19,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.5",
+          "number": "5",
+          "subnumber": "",
+          "text": "Имеются ли процедуры, которые при внесении технологических или эксплуатационных изменений регламентируют проведение анализа влияния этих изменений на оборудование (в т. ч. материал несущих элементов), вероятное увеличение частоты отказов или появление новых видов отказов?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 20,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.6",
+          "number": "6",
+          "subnumber": "",
+          "text": "Существует ли задокументированная процедура проверки пригодности выбираемого материального исполнения в случае его замены?",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 21,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.7",
+          "number": "7",
+          "subnumber": "",
+          "text": "Проводится ли периодический аудит процедуры управления изменениями для проверки выполнения требований и своевременного внесения обновлений (включая информацию RBI)?",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 22,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.8",
+          "number": "8",
+          "subnumber": "",
+          "text": "Применяется ли процесс, гарантирующий, что реализованное изменение не может быть в статусе «выполнено» без проверки завершения процесса обновления документации на оборудование, планов ТОиР, инспекций, анализа RBI?",
+          "maximum": 20,
+          "kind": "boolean",
+          "position": 23,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.9",
+          "number": "9",
+          "subnumber": "",
+          "text": "Учитывает ли процедура управления изменениями изменения в штатном расписании? (увеличение, сокращение или замена персонала)",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 24,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "3.10",
+          "number": "10",
+          "subnumber": "",
+          "text": "Доводятся ли до лиц, ответственных за механическую целостность (исправное состояние и безопасную эксплуатацию), сведения о замене оборудования на аналогичное или с изменениями",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 25,
+          "guidance": null,
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "2.A.4",
+      "title": "Эксплуатационные процедуры",
+      "weight": 0.05,
+      "position": 3,
+      "questions": [
+        {
+          "id": "4.1",
+          "number": "1",
+          "subnumber": "",
+          "text": "Имеются ли регламентированные рабочие процедуры для эксплуатационного и ремонтного персонала (инструкции, положения, стандарты предприятия)?",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 0,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.2",
+          "number": "2",
+          "subnumber": "",
+          "text": "Четко ли определены границы зон ответственности эксплуатационного персонала?",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 1,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3h",
+          "number": "3",
+          "subnumber": "",
+          "text": "Учитываются ли следующие эксплуатационные аспекты во всех стандартных рабочих процедурах?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 2,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3a",
+          "number": "",
+          "subnumber": "3a",
+          "text": "Пуск",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 3,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3b",
+          "number": "",
+          "subnumber": "3b",
+          "text": "Нормальный (а также аварийный) режим работы",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 4,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3c",
+          "number": "",
+          "subnumber": "3c",
+          "text": "Нормальный останов",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 5,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3d",
+          "number": "",
+          "subnumber": "3d",
+          "text": "Аварийный останов",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 6,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3e",
+          "number": "",
+          "subnumber": "3e",
+          "text": "Определены ли лица, которые могут инициировать пуск и останов?",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 7,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3f",
+          "number": "",
+          "subnumber": "3f",
+          "text": "Действия, корректирующие или предотвращающие отклонения от разрешенных параметров, и последствия такого отклонения",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 8,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3g",
+          "number": "",
+          "subnumber": "3g",
+          "text": "Пуск после капитального ремонта (остановочного ремонта)",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 9,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3h2",
+          "number": "",
+          "subnumber": "3h",
+          "text": "Системы безопасности и их функции",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 10,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.3i",
+          "number": "",
+          "subnumber": "3i",
+          "text": "Границы IOW и корректирующие действия / сообщения в случае их превышения",
+          "maximum": 15,
+          "kind": "boolean",
+          "position": 11,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.4",
+          "number": "4",
+          "subnumber": "",
+          "text": "Охватывает ли обучение эксплуатационного персонала концепции IOW и дает ли представление о важности IOW, связанной с программой RBI, и роли в этой программе",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 12,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.5h",
+          "number": "5",
+          "subnumber": "",
+          "text": "Контролируется ли выход параметров процесса за допустимые пределы IOW",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 13,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.5a",
+          "number": "",
+          "subnumber": "5a",
+          "text": "Определены ли и контролируются ли ключевые параметры процесса, которые могут повлиять на целостность оборудования (например, IOW)?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 14,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.5b",
+          "number": "",
+          "subnumber": "5b",
+          "text": "Применяются ли системы, предупреждающие выход за допустимые пределы IOW?",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 15,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.5c",
+          "number": "",
+          "subnumber": "5c",
+          "text": "Установлены ли и используются ли протоколы своевременного реагирования при превышении пределов IOW?",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 16,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "4.6",
+          "number": "6",
+          "subnumber": "",
+          "text": "Проводится ли периодическая объективная оценка уровня соблюдения регламентированных эксплуатационных процедур?",
+          "maximum": 10,
+          "kind": "score",
+          "position": 17,
+          "guidance": "10 баллов — при наличии программы периодической оценки, 3 балла — при проведении оценки один раз в два года или реже",
+          "options": [
+            {
+              "index": 0,
+              "label": "оценка не проводится",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "оценка раз в два года или реже",
+              "points": 3,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "есть программа периодической оценки",
+              "points": 10,
+              "exclusive": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2.A.5",
+      "title": "Механическая целостность",
+      "weight": 0.5,
+      "position": 4,
+      "questions": [
+        {
+          "id": "5.1h",
+          "number": "1",
+          "subnumber": "",
+          "text": "Разработана ли задокументированная программа инспекции оборудования объекта, которая включает следующие элементы:",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 0,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.1a",
+          "number": "",
+          "subnumber": "1a",
+          "text": "Определено ли всё оборудование, требующее инспекции, включая как минимум: резервуары, сосуды, трубопроводы и предохранительные устройства?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 1,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.1b",
+          "number": "",
+          "subnumber": "1b",
+          "text": "Распределены ли обязанности по проведению инспекции?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 2,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.1c",
+          "number": "",
+          "subnumber": "1c",
+          "text": "Определены ли методы и места инспекции для всего оборудования в программе?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 3,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.1d",
+          "number": "",
+          "subnumber": "1d",
+          "text": "Установлены ли сроки инспекции для всего оборудования в программе (по периодичности, по фактическому состоянию, по методологии RBI)?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 4,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.1e",
+          "number": "",
+          "subnumber": "1e",
+          "text": "Определены ли требования к отчетности по результатам инспекции?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 5,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.2",
+          "number": "2",
+          "subnumber": "",
+          "text": "Существует ли полное, актуальное, централизованное хранилище (база данных) для всей информации, необходимой для реализации программы инспекции, доступное всем участникам процесса?",
+          "maximum": 3,
+          "kind": "multiple",
+          "position": 6,
+          "guidance": null,
+          "options": [
+            {
+              "index": 0,
+              "label": "не применяется",
+              "points": 0,
+              "exclusive": true
+            },
+            {
+              "index": 1,
+              "label": "централизованное расположение",
+              "points": 2,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "контролируемый доступ участников процесса к базе данных",
+              "points": 1,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "5.3h",
+          "number": "3",
+          "subnumber": "",
+          "text": "Применяется ли подход накопительного попозиционного хранения следующей информации для всего оборудования программы инспекции?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 7,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.3a",
+          "number": "",
+          "subnumber": "3a",
+          "text": "Документация изготовителей, проектная документация",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 8,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.3b",
+          "number": "",
+          "subnumber": "3b",
+          "text": "Чертежи оборудования",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 9,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.3c",
+          "number": "",
+          "subnumber": "3c",
+          "text": "Результаты всех инспекций, ремонтов, изменений или переоценок, выполненных на текущий момент",
+          "maximum": 3,
+          "kind": "score",
+          "position": 10,
+          "guidance": "от 0 до 3 баллов в зависимости от полноты записей",
+          "options": [
+            {
+              "index": 0,
+              "label": "0",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "1",
+              "points": 1,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "2",
+              "points": 2,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "3",
+              "points": 3,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "5.4",
+          "number": "4",
+          "subnumber": "",
+          "text": "Регламентирована ли процедура внесения изменений в утвержденную программу инспекции (сроки, методы, места контроля) с соответствующим уровнем проверки и принятия?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 11,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.5",
+          "number": "5",
+          "subnumber": "",
+          "text": "Разработаны ли и используются ли чек-листы инспекции?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 12,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6h",
+          "number": "6",
+          "subnumber": "",
+          "text": "Выполняется ли документирование результатов инспекций, испытаний, ремонтов оборудования, включая своевременный контроль качества документации, в том числе на наличие следующей информации:",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 13,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6a",
+          "number": "",
+          "subnumber": "6a",
+          "text": "Дата воздействия (инспекции, испытания)",
+          "maximum": 0.3333333333333333,
+          "kind": "boolean",
+          "position": 14,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6b",
+          "number": "",
+          "subnumber": "6b",
+          "text": "Имя лица, ответственного за проведение инспекции, испытания",
+          "maximum": 0.3333333333333333,
+          "kind": "boolean",
+          "position": 15,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6c",
+          "number": "",
+          "subnumber": "6c",
+          "text": "Идентификация оборудования, подвергшегося воздействию",
+          "maximum": 0.3333333333333333,
+          "kind": "boolean",
+          "position": 16,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6d",
+          "number": "",
+          "subnumber": "6d",
+          "text": "Описание воздействия (инспекции, испытания)",
+          "maximum": 0.3333333333333333,
+          "kind": "boolean",
+          "position": 17,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6e",
+          "number": "",
+          "subnumber": "6e",
+          "text": "Измерение и оценка выявленных дефектов и несоответствий",
+          "maximum": 0.3333333333333333,
+          "kind": "boolean",
+          "position": 18,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6f",
+          "number": "",
+          "subnumber": "6f",
+          "text": "Результаты воздействия (инспекции, испытания)",
+          "maximum": 0.3333333333333333,
+          "kind": "boolean",
+          "position": 19,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6g",
+          "number": "",
+          "subnumber": "6g",
+          "text": "Рекомендации, сформированные по результатам инспекции, испытания",
+          "maximum": 0.3333333333333333,
+          "kind": "boolean",
+          "position": 20,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6h2",
+          "number": "",
+          "subnumber": "6h",
+          "text": "Дата и описание выполненных работ по ремонту",
+          "maximum": 0.3333333333333333,
+          "kind": "boolean",
+          "position": 21,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.6i",
+          "number": "",
+          "subnumber": "6i",
+          "text": "Эффективность инспекции RBI определяется правильно и назначается для каждого активного механизма деградации",
+          "maximum": 0.3333333333333333,
+          "kind": "boolean",
+          "position": 22,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.7",
+          "number": "7",
+          "subnumber": "",
+          "text": "Используется ли в программе инспекций объекта регламентированная таблица эффективности инспекций, основанная на API 581?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 23,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.8h",
+          "number": "8",
+          "subnumber": "",
+          "text": "Предусматривает ли программа инспекции оценку выявленных несоответствий на предмет возможности и условий безопасной эксплуатации оборудования?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 24,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.8o",
+          "number": "",
+          "subnumber": "8o",
+          "text": "Все выявленные несоответствия оцениваются на предмет возможности и условий безопасной эксплуатации оборудования?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 25,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.8a",
+          "number": "",
+          "subnumber": "8a",
+          "text": "Основаны ли решения о возможности и условиях безопасной эксплуатации оборудования на обоснованной инженерной оценке, напр. оценке FFS (пригодность к эксплуатации)?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 26,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.8b",
+          "number": "",
+          "subnumber": "8b",
+          "text": "Если требуются корректирующие действия, осуществляется ли их приоритизация и контроль своевременности выполнения?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 27,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.9",
+          "number": "9",
+          "subnumber": "",
+          "text": "Все ли статическое оборудование в пределах технологической установки включено в периметр RBI, и в случае исключения, четко ли задокументировано основание для исключения?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 28,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.10h",
+          "number": "10",
+          "subnumber": "",
+          "text": "Предусматривается ли системное выполнение наружных осмотров оборудования при реализации программы инспекции?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 29,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.10a",
+          "number": "",
+          "subnumber": "10a",
+          "text": "Включает ли программа инспекции объекта регламентированную процедуру наружных (визуальных) осмотров?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 30,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.10b",
+          "number": "",
+          "subnumber": "10b",
+          "text": "Предусмотрено ли в процедуре наружного осмотра выполнение следующих задач: проверка состояния внешней поверхности оборудования, изоляции, окраски / покрытия, опор и креплений, проверка отсутствия механических повреждений, коррозии, вибрации, утечек основных элементов, проверка наличия и состояния заземляющего провода, лестниц, платформ, настилов, болтовых соединений, состояния прокладок, сборки фланцев и т. д.?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 31,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.10c",
+          "number": "",
+          "subnumber": "10c",
+          "text": "Согласно программе инспекций объекта всё ли оборудование проходит наружный осмотр с установленной периодичностью?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 32,
+          "guidance": "0 баллов — если имеется значительное количество просроченных (без обоснованной отсрочки) осмотров",
+          "options": []
+        },
+        {
+          "id": "5.11",
+          "number": "11",
+          "subnumber": "",
+          "text": "На основании программы инспекций все ли сосуды технологической установки подвергаются своевременной интрузивной инспекции (внутреннему осмотру) или неинтрузивной инспекции (детальному наружному осмотру с применением соответствующих технологий неразрушающего контроля)?",
+          "maximum": 5,
+          "kind": "multiple",
+          "position": 33,
+          "guidance": null,
+          "options": [
+            {
+              "index": 0,
+              "label": "не применяется",
+              "points": 0,
+              "exclusive": true
+            },
+            {
+              "index": 1,
+              "label": "инспекции всех сосудов выполняются",
+              "points": 2,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "регламентированная процедура замены внутреннего осмотра методами НК",
+              "points": 1,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "отсутствие просроченных инспекций (с учётом обоснованной отсрочки)",
+              "points": 2,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "5.12h",
+          "number": "12",
+          "subnumber": "",
+          "text": "Применяется ли системный подход к планированию инспекции и ремонта с использованием механизмов деградации?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 34,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.12a",
+          "number": "",
+          "subnumber": "12a",
+          "text": "Определены ли для каждой единицы статического оборудования вероятные механизмы повреждения и их причины?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 35,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.12b",
+          "number": "",
+          "subnumber": "12b",
+          "text": "Используется ли эта информация для определения сроков, методов и мест инспекции или ремонта?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 36,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.12c",
+          "number": "",
+          "subnumber": "12c",
+          "text": "Установлены ли пределы допустимости повреждений для ожидаемых механизмов деградации на основе обоснованных инженерных оценок (напр. FFS)?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 37,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.13h",
+          "number": "13",
+          "subnumber": "",
+          "text": "Применяется ли программа коррозионного мониторинга на объекте?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 38,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.13a",
+          "number": "",
+          "subnumber": "13a",
+          "text": "Применяется ли на объекте официальная программа коррозионного мониторинга статического оборудования?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 39,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.13b1",
+          "number": "",
+          "subnumber": "13b.1",
+          "text": "При выборе мест коррозионного мониторинга: рассматриваются ли вероятность и последствия отказа?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 40,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.13b2",
+          "number": "",
+          "subnumber": "13b.2",
+          "text": "При выборе мест коррозионного мониторинга: учитываются ли места возможной активности локальной коррозии и эрозии?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 41,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.13c",
+          "number": "",
+          "subnumber": "13c",
+          "text": "Четко ли обозначены места контроля состояния на чертежах и оборудовании, чтобы можно было проводить повторные измерения в одних и тех же местах?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 42,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.13d",
+          "number": "",
+          "subnumber": "13d",
+          "text": "Выполняются ли инспекции своевременно?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 43,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.13e",
+          "number": "",
+          "subnumber": "13e",
+          "text": "Используются ли результаты измерений для расчета репрезентативной скорости коррозии для оценки RBI?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 44,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.14",
+          "number": "14",
+          "subnumber": "",
+          "text": "Существуют ли процедуры, обеспечивающие точность измерений толщины и глубины коррозионных поражений, используемых при анализе RBI?",
+          "maximum": 4,
+          "kind": "boolean",
+          "position": 45,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.15",
+          "number": "15",
+          "subnumber": "",
+          "text": "Установлено ли максимально допустимое рабочее давление (MAWP) для всего оборудования с использованием действующих норм и текущих условий эксплуатации?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 46,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.16",
+          "number": "16",
+          "subnumber": "",
+          "text": "Существует ли регламентированная процедура принятия отсрочек проведения инспекций и ремонтов, связанных с эксплуатационной необходимостью, с оценкой рисков и утверждением принимаемых изменений?",
+          "maximum": 3,
+          "kind": "multiple",
+          "position": 47,
+          "guidance": null,
+          "options": [
+            {
+              "index": 0,
+              "label": "не применяется",
+              "points": 0,
+              "exclusive": true
+            },
+            {
+              "index": 1,
+              "label": "регламентированная процедура",
+              "points": 1,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "подробное руководство по оценке рисков",
+              "points": 1,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "продемонстрированное полное выполнение требований",
+              "points": 1,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "5.17h",
+          "number": "17",
+          "subnumber": "",
+          "text": "Применяется ли профильное обучение сотрудников, участвующих в процессах инспекции и ремонта?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 48,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.17a",
+          "number": "",
+          "subnumber": "17a",
+          "text": "Все ли сотрудники, участвующие в инспекции и ремонте оборудования, прошли обучение всем процедурам инспекции и ремонта с целью их эффективного выполнения?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 49,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.17b",
+          "number": "",
+          "subnumber": "17b",
+          "text": "По завершении обучения используются ли формальные методы проверки усвоения информации?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 50,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.18",
+          "number": "18",
+          "subnumber": "",
+          "text": "Сертифицированы ли лица, осуществляющие инспекцию, на соответствие применяемым отраслевым нормам и стандартам (например, API 510, 570 и/или 653)?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 51,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.19h",
+          "number": "19",
+          "subnumber": "",
+          "text": "Применяются ли процедуры контроля качества при строительстве и ремонте, гарантирующие, что:",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 52,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.19a",
+          "number": "",
+          "subnumber": "19a",
+          "text": "Использованы ли металлопродукция и изделия надлежащего материального исполнения?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 53,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.19b",
+          "number": "",
+          "subnumber": "19b",
+          "text": "Процедуры изготовления, сварки и неразрушающего контроля соответствуют нормативным требованиям?",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 54,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.19c",
+          "number": "",
+          "subnumber": "19c",
+          "text": "Техническое обслуживание и ремонт оборудования выполняются в соответствии с нормативными требованиями?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 55,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.19d",
+          "number": "",
+          "subnumber": "19d",
+          "text": "Сборка и протяжка фланцевых соединений выполняются в соответствии с нормативными требованиями?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 56,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.19e",
+          "number": "",
+          "subnumber": "19e",
+          "text": "Входной контроль и хранение изделий и материалов осуществляются в соответствии с нормативными требованиями?",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 57,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "5.20",
+          "number": "20",
+          "subnumber": "",
+          "text": "Применяются ли регламентированные процедуры контроля соответствия планирования и осуществления ремонтов и изменений оборудования требованиям изготовителя и/или нормативным требованиям?",
+          "maximum": 3,
+          "kind": "score",
+          "position": 58,
+          "guidance": "2 балла — за частичное выполнение некоторых требований, 3 балла — за полное выполнение",
+          "options": [
+            {
+              "index": 0,
+              "label": "не выполняются",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "частичное выполнение некоторых требований",
+              "points": 2,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "полное выполнение",
+              "points": 3,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "5.21",
+          "number": "21",
+          "subnumber": "",
+          "text": "Имеются ли регламентированные процедуры, обеспечивающие соответствие нового оборудования действующим нормативным требованиям?",
+          "maximum": 3,
+          "kind": "score",
+          "position": 59,
+          "guidance": "2 балла — за частичное выполнение нормативных требований, 3 балла — за полное выполнение",
+          "options": [
+            {
+              "index": 0,
+              "label": "не обеспечивается",
+              "points": 0,
+              "exclusive": false
+            },
+            {
+              "index": 1,
+              "label": "частичное выполнение нормативных требований",
+              "points": 2,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "полное выполнение нормативных требований",
+              "points": 3,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "5.22",
+          "number": "22",
+          "subnumber": "",
+          "text": "Осуществляется ли своевременное обновление оценки RBI после событий, связанных с технологическим процессом, инспекциями и ремонтом, потенциально влияющих на оценку риска?",
+          "maximum": 5,
+          "kind": "multiple",
+          "position": 60,
+          "guidance": null,
+          "options": [
+            {
+              "index": 0,
+              "label": "не применяется",
+              "points": 0,
+              "exclusive": true
+            },
+            {
+              "index": 1,
+              "label": "периодические полные переоценки всей установки до конца планового периода",
+              "points": 3,
+              "exclusive": false
+            },
+            {
+              "index": 2,
+              "label": "постоянное обновление после каждой инспекции",
+              "points": 1,
+              "exclusive": false
+            },
+            {
+              "index": 3,
+              "label": "постоянное обновление после отклонений от технологического процесса и изменений в рамках MOC",
+              "points": 1,
+              "exclusive": false
+            }
+          ]
+        },
+        {
+          "id": "5.23",
+          "number": "23",
+          "subnumber": "",
+          "text": "Если в RBI используется понижающий коэффициент за наличие системы катодной защиты, проверяется ли данная система периодически и поддерживается ли в эффективном состоянии?",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 61,
+          "guidance": "если система катодной защиты не применима, может быть принят максимальный балл",
+          "options": []
+        }
+      ]
+    },
+    {
+      "id": "2.A.6",
+      "title": "Расследование отказов",
+      "weight": 0.1,
+      "position": 5,
+      "questions": [
+        {
+          "id": "6.1h",
+          "number": "1",
+          "subnumber": "",
+          "text": "Применяется ли процедура расследования отказов",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 0,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.1a",
+          "number": "",
+          "subnumber": "1a",
+          "text": "Существует ли регламентированная процедура расследования отказов, включающая как фактическую потерю герметичности, так и потенциальную (которая могла произойти)?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 1,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.1b",
+          "number": "",
+          "subnumber": "1b",
+          "text": "Требует ли процедура незамедлительного выполнения рекомендаций по результатам расследования с назначением ответственных лиц? Подтверждают ли записи своевременное завершение расследования?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 2,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.2h",
+          "number": "2",
+          "subnumber": "",
+          "text": "Требует ли процедура расследования отказов присутствия следующих специалистов в рабочей группе",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 3,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.2a",
+          "number": "",
+          "subnumber": "2a",
+          "text": "Компетентный специалист, владеющий (обученный) методом RCA?",
+          "maximum": 8,
+          "kind": "boolean",
+          "position": 4,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.2b",
+          "number": "",
+          "subnumber": "2b",
+          "text": "Компетентные технические специалисты межфункционального взаимодействия (коррозия, инспекция, эксплуатация, проектирование, ремонт и т. д.)?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 5,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.3h",
+          "number": "3",
+          "subnumber": "",
+          "text": "Укажите, требует ли процедура проведения расследования по следующим типам событий с занесением результатов в стандартную форму",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 6,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.3a",
+          "number": "",
+          "subnumber": "3a",
+          "text": "Потеря первичной защитной оболочки",
+          "maximum": 8,
+          "kind": "boolean",
+          "position": 7,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.3b",
+          "number": "",
+          "subnumber": "3b",
+          "text": "Непредвиденное повреждение оборудования",
+          "maximum": 6,
+          "kind": "boolean",
+          "position": 8,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.3c",
+          "number": "",
+          "subnumber": "3c",
+          "text": "Хронические отказы оборудования",
+          "maximum": 3,
+          "kind": "boolean",
+          "position": 9,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.4h",
+          "number": "4",
+          "subnumber": "",
+          "text": "Существует ли стандартная форма для расследования отказа, включающая следующую информацию?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 10,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.4a",
+          "number": "",
+          "subnumber": "4a",
+          "text": "Дата отказа",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 11,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.4b",
+          "number": "",
+          "subnumber": "4b",
+          "text": "Участники рабочей группы (по расследованию)",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 12,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.4c",
+          "number": "",
+          "subnumber": "4c",
+          "text": "Описание события (отказа)",
+          "maximum": 1,
+          "kind": "boolean",
+          "position": 13,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.4d",
+          "number": "",
+          "subnumber": "4d",
+          "text": "Основные причины события (отказа)",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 14,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.4e",
+          "number": "",
+          "subnumber": "4e",
+          "text": "Оценка потенциальной тяжести последствий и вероятной частоты повторного отказа",
+          "maximum": 2,
+          "kind": "boolean",
+          "position": 15,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.4f",
+          "number": "",
+          "subnumber": "4f",
+          "text": "Рекомендации для предотвращения повторного отказа конкретной позиции (сценария отказа) и аналогичных позиций (сценариев) на другом оборудовании или установках",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 16,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.5",
+          "number": "5",
+          "subnumber": "",
+          "text": "Можно ли сделать вывод на основании анализа эксплуатационных данных (история отказов, утечек, учет производственных потерь и т. д.) о том, что установленные процедуры расследования отказов оборудования соблюдаются?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 17,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.6",
+          "number": "6",
+          "subnumber": "",
+          "text": "Требуется ли участие инженеров по инспекции и других профильных инженеров (напр., металловедов, коррозионистов) в анализе причин отказов (связанных с разгерметизацией) для определения условий или действий, вызвавших отказ?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 18,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.7",
+          "number": "7",
+          "subnumber": "",
+          "text": "Регламентирована ли процедура ознакомления с результатами расследования отказа всех сотрудников, чьи должностные обязанности имеют отношение к результатам расследования инцидента?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 19,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.8",
+          "number": "8",
+          "subnumber": "",
+          "text": "Передаются ли отчеты об инцидентах или авариях, вкл. выводы, на другие аналогичные объекты в пределах компании?",
+          "maximum": 5,
+          "kind": "boolean",
+          "position": 20,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.9h",
+          "number": "9",
+          "subnumber": "",
+          "text": "Учитываются ли результаты расследования отказов в процессе RBI?",
+          "maximum": 0,
+          "kind": "heading",
+          "position": 21,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.9a",
+          "number": "",
+          "subnumber": "9a",
+          "text": "Требуется ли в случае отказов, связанных с потерей герметичности статического оборудования, предусматривать в отчетных документах необходимость проверки данных RBI, IOW и коррозионного мониторинга, в том числе на предмет корректности активных механизмов деградации, скорости деградации и последствий?",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 22,
+          "guidance": null,
+          "options": []
+        },
+        {
+          "id": "6.9b",
+          "number": "",
+          "subnumber": "9b",
+          "text": "Выполняется ли обновление данных RBI, если в результате расследований отказов определено, что данные RBI не точны",
+          "maximum": 10,
+          "kind": "boolean",
+          "position": 23,
+          "guidance": null,
+          "options": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+    on_demand_tls {
+        ask http://gateway:8080/internal/tls-allowed
+    }
+}
+pandadoddo.ru {
+    header X-Robots-Tag "noindex, nofollow, noarchive"
+    encode zstd gzip
+    reverse_proxy gateway:80 {
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-For {remote_host}
+    }
+}
+https:// {
+    tls {
+        on_demand
+    }
+    @tenant host *.pandadoddo.ru
+    handle @tenant {
+        header X-Robots-Tag "noindex, nofollow, noarchive"
+        encode zstd gzip
+        reverse_proxy gateway:80 {
+            header_up X-Forwarded-Proto {scheme}
+            header_up X-Forwarded-For {remote_host}
+        }
+    }
+    handle {
+        respond "Not found" 404
+    }
+}

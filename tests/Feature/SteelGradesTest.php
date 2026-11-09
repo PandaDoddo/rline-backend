@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Domain\SteelGradeBaseline;
+use App\Modules\Catalogs\Infrastructure\SteelGradeBaseline;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;

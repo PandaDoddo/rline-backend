@@ -76,6 +76,7 @@ class ProcessFlowSchemaTransformer implements DocumentTransformer
                     ->addProperty('medium_kind', (new StringType)->enum(array_keys(config('process-flows.media'))))->addProperty('status', (new StringType)->enum(['active', 'archived']));
             }
             if ($class === 'ProcessFlowResource') {
+                $type->addProperty('screening', FlowScreeningSchema::state()->nullable(true))->addProperty('screening_result', FlowScreeningSchema::result()->nullable(true));
                 foreach (['id', 'installation_id', 'name'] as $key) {
                     $type->addProperty($key, new StringType);
                 }
@@ -91,6 +92,7 @@ class ProcessFlowSchemaTransformer implements DocumentTransformer
                 $type->addProperty('inputs', (new ObjectType)->addProperty('basis', (new StringType)->enum(['mass', 'mole']))->addProperty('components', (new ArrayType)->setItems($component->clone()))->setRequired(['basis', 'components']))->addProperty('result', $result->clone());
             }
             if ($class === 'UpdateProcessFlowRequest') {
+                $type->addProperty('screening', FlowScreeningSchema::state(true));
                 $type->addProperty('attributes', $attributes->clone());
                 $inputSources = new ObjectType;
                 foreach (array_keys(config('process-flows.fields')) as $key) {

@@ -1,0 +1,131 @@
+{
+    "version": "installation-passport-v1",
+    "fields": {
+        "full": {
+            "column": "full_name",
+            "type": "text",
+            "max": 255,
+            "options": []
+        },
+        "purpose": {
+            "column": "purpose",
+            "type": "text",
+            "max": 5000,
+            "options": []
+        },
+        "year": {
+            "column": "commissioned_year",
+            "type": "text",
+            "max": 255,
+            "options": []
+        },
+        "capP": {
+            "column": "planned_capacity",
+            "type": "number",
+            "max": 999999999999,
+            "options": []
+        },
+        "capF": {
+            "column": "actual_capacity",
+            "type": "number",
+            "max": 999999999999,
+            "options": []
+        },
+        "capU": {
+            "column": "capacity_unit",
+            "type": "text",
+            "max": 80,
+            "options": []
+        },
+        "designer": {
+            "column": "designer",
+            "type": "text",
+            "max": 255,
+            "options": []
+        },
+        "licensor": {
+            "column": "licensor",
+            "type": "text",
+            "max": 255,
+            "options": []
+        },
+        "opoReg": {
+            "column": "hazardous_facility_registration",
+            "type": "text",
+            "max": 255,
+            "options": []
+        },
+        "opoCls": {
+            "column": "hazardous_facility_class",
+            "type": "text",
+            "max": 10,
+            "options": [
+                "I",
+                "II",
+                "III",
+                "IV"
+            ]
+        },
+        "cat": {
+            "column": "fire_category",
+            "type": "text",
+            "max": 10,
+            "options": [
+                "А",
+                "Б",
+                "В1",
+                "В2",
+                "В3",
+                "В4",
+                "Г",
+                "Д",
+                "Ан",
+                "Бн",
+                "Вн",
+                "Гн",
+                "Дн"
+            ]
+        },
+        "atm": {
+            "column": "atmospheric_conditions",
+            "type": "text",
+            "max": 40,
+            "options": [
+                "тяжелые",
+                "умеренные",
+                "мягкие",
+                "сухие"
+            ]
+        },
+        "area": {
+            "column": "area_m2",
+            "type": "number",
+            "max": 999999999999,
+            "options": []
+        },
+        "stShift": {
+            "column": "staff_per_shift",
+            "type": "integer",
+            "max": 10000000,
+            "options": []
+        },
+        "stAll": {
+            "column": "staff_total",
+            "type": "integer",
+            "max": 10000000,
+            "options": []
+        },
+        "head": {
+            "column": "head_name",
+            "type": "text",
+            "max": 255,
+            "options": []
+        },
+        "mech": {
+            "column": "mechanic_name",
+            "type": "text",
+            "max": 255,
+            "options": []
+        }
+    }
+}

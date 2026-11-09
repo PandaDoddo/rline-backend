@@ -6,6 +6,7 @@ use App\Auth\AuthAudit;
 use App\Auth\MultifactorOidc;
 use App\Models\User;
 use App\Tenancy\TenantContext;
+use App\Tenancy\TenantDomains;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
@@ -44,6 +45,8 @@ class MultifactorController extends Controller
         Auth::guard('web')->login($user);
         $request->session()->regenerate();
 
-        return redirect()->away(config('authentication.frontend_url'));
+        return redirect()->away(config('domains.base')
+            ? app(TenantDomains::class)->url(app(TenantContext::class)->tenant->slug)
+            : config('authentication.frontend_url'));
     }
 }

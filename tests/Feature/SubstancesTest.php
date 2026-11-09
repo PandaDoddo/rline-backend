@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Domain\SubstanceBaseline;
+use App\Modules\Catalogs\Infrastructure\SubstanceBaseline;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;

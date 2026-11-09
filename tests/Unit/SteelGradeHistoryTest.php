@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Domain\SteelGradeHistory;
+use App\Modules\Catalogs\Domain\SteelGradeHistory;
 use PHPUnit\Framework\TestCase;
 
 class SteelGradeHistoryTest extends TestCase

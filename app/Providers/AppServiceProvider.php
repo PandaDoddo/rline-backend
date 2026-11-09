@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Modules\ProcessFlows\Domain\FlowScreening;
 use App\Tenancy\TenantContext;
 use App\Tenancy\TenantPasswordBrokerManager;
 use App\Tenancy\TenantSessionHandler;
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(FlowScreening::class);
         $this->app->scoped(TenantContext::class);
         $this->app->extend('auth.password', fn ($manager, $app) => new TenantPasswordBrokerManager($app));
     }

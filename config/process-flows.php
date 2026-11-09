@@ -6,6 +6,8 @@ return [
     'fields' => [
         'temperature' => ['label' => 'Температура', 'type' => 'number', 'unit' => '°C', 'min' => -273.15, 'max' => 3000],
         'pressure' => ['label' => 'Избыточное давление', 'type' => 'number', 'unit' => 'МПа', 'min' => -0.101325, 'max' => 1000],
+        'flow_rate_t_h' => ['label' => 'Расход', 'type' => 'number', 'unit' => 'т/ч', 'min' => 0, 'max' => 1e12],
+        'velocity_m_s' => ['label' => 'Скорость потока', 'type' => 'number', 'unit' => 'м/с', 'min' => 0, 'max' => 100000],
         'ph' => ['label' => 'pH', 'type' => 'number', 'unit' => '—', 'min' => 0, 'max' => 14],
         'density' => ['label' => 'Принятая плотность', 'type' => 'number', 'unit' => 'кг/м³', 'min' => 0, 'max' => 100000],
         'molecular_weight' => ['label' => 'Принятая молекулярная масса', 'type' => 'number', 'unit' => 'г/моль', 'min' => 0, 'max' => 1000000],

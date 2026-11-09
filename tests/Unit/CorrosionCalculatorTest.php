@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Domain\CorrosionCalculator;
+use App\Modules\Equipment\Domain\CorrosionCalculator;
 use PHPUnit\Framework\TestCase;
 
 class CorrosionCalculatorTest extends TestCase
@@ -22,6 +22,24 @@ class CorrosionCalculatorTest extends TestCase
         $inspections = [['id' => 'i1', 'performed_on' => '2020-01-02'], ['id' => 'i2', 'performed_on' => '2021-12-31'], ['id' => 'plan', 'kind' => 'ТО-1', 'performed_on' => null, 'planned_on' => '2025-01-01']];
 
         return [['commissioned_on' => '2010-06-01'], $components, ['cmls' => $cmls, 'stages' => $stages], $inspections];
+    }
+
+    public function test_nested_coil_assembly_inherits_nearest_thickness_and_demount_hides_descendants(): void
+    {
+        [$passport, $components, $thickness, $inspections] = $this->fixture();
+        $components[] = ['id' => 'assembly', 'parent_id' => 'coil', 'code' => 'K-02.S1', 'name' => 'Сборка', 'is_coil' => false, 'status' => 'active', 'nominal_thickness_mm' => 4.8];
+        $components[] = ['id' => 'leaf', 'parent_id' => 'assembly', 'code' => 'K-02.S1.S1', 'name' => 'Труба', 'is_coil' => false, 'status' => 'active'];
+        $thickness['cmls'][2]['component_id'] = 'leaf';
+        $result = (new CorrosionCalculator)->calculate($passport, $components, $thickness, $inspections);
+        $leaf = array_values(array_filter($result['elements'], fn ($row) => $row['id'] === 'leaf'))[0];
+        $this->assertSame('coil', $leaf['scope_id']);
+        $this->assertSame(4.8, $leaf['nominal_mm']);
+        $this->assertEquals(4.0, $leaf['rejection_mm']);
+        $this->assertSame('rejected', $leaf['latest']['status']);
+        $components[2]['status'] = 'removed';
+        $result = (new CorrosionCalculator)->calculate($passport, $components, $thickness, $inspections);
+        $this->assertNotContains('leaf', array_column($result['elements'], 'id'));
+        $this->assertNotContains('c', array_column($result['cmls'], 'id'));
     }
 
     public function test_element_aggregation_gaps_bases_and_independent_coil(): void
@@ -49,6 +67,17 @@ class CorrosionCalculatorTest extends TestCase
         $this->assertSame('shell', $result['cmls'][0]['element_id']);
         $this->assertSame('coil', $result['cmls'][2]['scope_id']);
         $this->assertEqualsWithDelta(1 / 6, $result['cmls'][1]['latest']['rates']['min']['nominal'], 0.0000001);
+    }
+
+    public function test_unknown_planned_point_count_does_not_claim_a_complete_element_measurement(): void
+    {
+        [$passport, $components, $thickness, $inspections] = $this->fixture();
+        $thickness['cmls'][0]['point_count'] = null;
+        $result = (new CorrosionCalculator)->calculate($passport, $components, $thickness, $inspections);
+        $shell = collect($result['elements'])->firstWhere('id', 'shell');
+        $this->assertFalse($shell['latest']['complete']);
+        $this->assertEquals(9, $shell['latest']['values']['min']);
+        $this->assertEquals(10, $shell['latest']['values']['ave']);
     }
 
     public function test_missing_inputs_negative_rates_and_explicit_zero(): void

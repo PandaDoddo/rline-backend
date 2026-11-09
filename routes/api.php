@@ -1,32 +1,42 @@
 <?php
 
-use App\Http\Controllers\DamageMechanismController;
-use App\Http\Controllers\DiagnosticScheduleController;
-use App\Http\Controllers\EquipmentController;
-use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\HealthController;
-use App\Http\Controllers\InstallationCostController;
-use App\Http\Controllers\InstallationMaintenanceController;
-use App\Http\Controllers\MaterialCostController;
-use App\Http\Controllers\SteelCostController;
-use App\Http\Controllers\SteelGradeController;
-use App\Http\Controllers\SubstanceController;
+use App\Http\Controllers\PublicTenantController;
 use App\Http\Controllers\TenantController;
 use App\Http\Middleware\TenantDatabaseReady;
+use App\Modules\Catalogs\Http\Controllers\DamageMechanismController;
+use App\Modules\Catalogs\Http\Controllers\MaterialCostController;
+use App\Modules\Catalogs\Http\Controllers\SteelCostController;
+use App\Modules\Catalogs\Http\Controllers\SteelGradeController;
+use App\Modules\Catalogs\Http\Controllers\SubstanceController;
+use App\Modules\Diagnostics\Http\Controllers\DiagnosticScheduleController;
+use App\Modules\Equipment\Http\Controllers\ComponentHistoryController;
+use App\Modules\Equipment\Http\Controllers\EquipmentController;
+use App\Modules\Installations\Http\Controllers\FacilityController;
+use App\Modules\Installations\Http\Controllers\InstallationCostController;
+use App\Modules\Installations\Http\Controllers\InstallationMaintenanceController;
+use App\Modules\ProcessFlows\Http\Controllers\ProcessFlowController;
+use App\Modules\Rbi\Http\Controllers\ManagementController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/public/tenants', [PublicTenantController::class, 'index'])->middleware('throttle:60,1');
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(TenantDatabaseReady::class)->group(function () {
-        Route::get('/process-flows/schema', [\App\Http\Controllers\ProcessFlowController::class, 'schema']);
-        Route::get('/installations/{installation}/flow-nodes', [\App\Http\Controllers\ProcessFlowController::class, 'index'])->whereUuid('installation');
-        Route::post('/installations/{installation}/flow-nodes/initialize', [\App\Http\Controllers\ProcessFlowController::class, 'initialize'])->whereUuid('installation');
-        Route::post('/installations/{installation}/flow-nodes', [\App\Http\Controllers\ProcessFlowController::class, 'store'])->whereUuid('installation');
-        Route::patch('/flow-nodes/{node}', [\App\Http\Controllers\ProcessFlowController::class, 'updateNode'])->whereUuid('node');
-        Route::get('/process-flows/{node}', [\App\Http\Controllers\ProcessFlowController::class, 'show'])->whereUuid('node');
-        Route::patch('/process-flows/{node}', [\App\Http\Controllers\ProcessFlowController::class, 'update'])->whereUuid('node');
-        Route::get('/process-flows/{node}/calculations', [\App\Http\Controllers\ProcessFlowController::class, 'calculations'])->whereUuid('node');
-        Route::get('/process-flows/{node}/events', [\App\Http\Controllers\ProcessFlowController::class, 'events'])->whereUuid('node');
-        Route::get('/process-flows/{node}/calculations/{calculation}', [\App\Http\Controllers\ProcessFlowController::class, 'calculation'])->whereUuid(['node', 'calculation']);
+        Route::get('/rbi/management/schema', [ManagementController::class, 'schema']);
+        Route::get('/installations/{installation}/management', [ManagementController::class, 'show'])->whereUuid('installation');
+        Route::patch('/installations/{installation}/management', [ManagementController::class, 'update'])->whereUuid('installation');
+        Route::get('/installations/{installation}/management/events', [ManagementController::class, 'events'])->whereUuid('installation');
+        Route::get('/process-flows/schema', [ProcessFlowController::class, 'schema']);
+        Route::get('/installations/{installation}/flow-nodes', [ProcessFlowController::class, 'index'])->whereUuid('installation');
+        Route::post('/installations/{installation}/flow-nodes/initialize', [ProcessFlowController::class, 'initialize'])->whereUuid('installation');
+        Route::post('/installations/{installation}/flow-nodes', [ProcessFlowController::class, 'store'])->whereUuid('installation');
+        Route::patch('/flow-nodes/{node}', [ProcessFlowController::class, 'updateNode'])->whereUuid('node');
+        Route::get('/process-flows/{node}', [ProcessFlowController::class, 'show'])->whereUuid('node');
+        Route::patch('/process-flows/{node}', [ProcessFlowController::class, 'update'])->whereUuid('node');
+        Route::get('/process-flows/{node}/calculations', [ProcessFlowController::class, 'calculations'])->whereUuid('node');
+        Route::get('/process-flows/{node}/events', [ProcessFlowController::class, 'events'])->whereUuid('node');
+        Route::get('/process-flows/{node}/calculations/{calculation}', [ProcessFlowController::class, 'calculation'])->whereUuid(['node', 'calculation']);
         Route::get('/installations/{installation}/maintenance/summary', [InstallationMaintenanceController::class, 'summary'])->whereUuid('installation');
         Route::get('/installations/{installation}/maintenance/events', [InstallationMaintenanceController::class, 'events'])->whereUuid('installation');
         Route::get('/installations/{installation}/maintenance', [InstallationMaintenanceController::class, 'index'])->whereUuid('installation');
@@ -62,6 +72,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/equipment', [EquipmentController::class, 'index']);
         Route::post('/equipment', [EquipmentController::class, 'store']);
         Route::get('/equipment/{equipment}', [EquipmentController::class, 'show'])->whereUuid('equipment');
+        Route::get('/equipment/{equipment}/components/{component}/history', [ComponentHistoryController::class, 'index'])->whereUuid(['equipment', 'component']);
         Route::patch('/equipment/{equipment}', [EquipmentController::class, 'update'])->whereUuid('equipment');
         Route::get('/equipment/{equipment}/events', [EquipmentController::class, 'events'])->whereUuid('equipment');
         Route::get('/facility-nodes', [FacilityController::class, 'nodes']);
@@ -72,6 +83,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/installations/{installation}', [FacilityController::class, 'show'])->whereUuid('installation');
         Route::patch('/installations/{installation}', [FacilityController::class, 'update'])->whereUuid('installation');
         Route::get('/installations/{installation}/events', [FacilityController::class, 'events'])->whereUuid('installation');
+        Route::get('/installations/{installation}/dependencies', [FacilityController::class, 'dependencies'])->whereUuid('installation');
+        Route::post('/installations/{installation}/lifecycle', [FacilityController::class, 'lifecycle'])->whereUuid('installation');
+        Route::delete('/installations/{installation}', [FacilityController::class, 'destroy'])->whereUuid('installation');
+        Route::post('/facility-nodes/{node}/lifecycle', [FacilityController::class, 'nodeLifecycle'])->whereUuid('node');
+        Route::delete('/facility-nodes/{node}', [FacilityController::class, 'destroyNode'])->whereUuid('node');
     });
     Route::get('/tenants', [TenantController::class, 'index']);
     Route::post('/tenants', [TenantController::class, 'store']);

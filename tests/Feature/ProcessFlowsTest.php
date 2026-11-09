@@ -2,15 +2,18 @@
 
 namespace Tests\Feature;
 
-use App\Domain\MixtureCalculator;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;
+use App\Modules\ProcessFlows\Domain\MixtureCalculator;
 use App\Tenancy\TenantContext;
 use App\Tenancy\TenantDatabaseManager;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class ProcessFlowsTest extends TestCase
@@ -58,6 +61,65 @@ class ProcessFlowsTest extends TestCase
         return ['id' => (string) Str::uuid(), 'substance_id' => $id, 'role' => 'main', 'amount' => $amount];
     }
 
+    public function test_flow_rate_and_velocity_are_independent_typed_inputs_with_sources_and_zero(): void
+    {
+        $this->login('flow-rate-and-velocity');
+        $flow = $this->flow($this->installation());
+        $url = '/api/process-flows/'.$flow['id'];
+        $saved = $this->patchJson($url, ['version' => 1, 'attributes' => ['flow_rate_t_h' => '0', 'velocity_m_s' => '11,8'],
+            'sources' => ['flow_rate_t_h' => ['citation' => 'Технологический регламент', 'conditions' => 'т/ч']], 'verification' => ['flow_rate_t_h' => true]])
+            ->assertOk()->assertJsonPath('data.attributes.flow_rate_t_h', 0)->assertJsonPath('data.attributes.velocity_m_s', 11.8)->assertJsonMissingPath('data.attributes.pressure')->json('data');
+        $this->getJson($url)->assertOk()->assertJsonPath('data.sources.flow_rate_t_h.citation', 'Технологический регламент')->assertJsonPath('data.checks.flow_rate_t_h.by', auth()->id());
+        $this->patchJson($url, ['version' => $saved['version'], 'attributes' => ['velocity_m_s' => -1]])->assertUnprocessable();
+        $this->patchJson($url, ['version' => $saved['version'], 'attributes' => ['velocity_m_s' => null]])->assertOk()->assertJsonPath('data.attributes.velocity_m_s', null)->assertJsonPath('data.attributes.flow_rate_t_h', 0);
+        $schema = $this->getJson('/api/process-flows/schema')->assertOk()->json('fields');
+        $this->assertSame('т/ч', collect($schema)->firstWhere('key', 'flow_rate_t_h')['unit']);
+        $this->assertSame('м/с', collect($schema)->firstWhere('key', 'velocity_m_s')['unit']);
+    }
+
+    public function test_normalization_roundtrip_preserves_sparse_values_sources_checks_and_calculation_ownership(): void
+    {
+        $this->login('flow-normalization');
+        $installation = $this->installation();
+        $flow = $this->flow($installation);
+        $other = $this->flow($installation, 2);
+        $substance = $this->substance('Вещество миграции', 20, 30, 1000);
+        $url = '/api/process-flows/'.$flow['id'];
+        $saved = $this->patchJson($url, ['version' => 1, 'attributes' => ['temperature' => 0, 'ph' => null], 'sources' => ['temperature' => ['citation' => 'Протокол', 'conditions' => 'Без подстановки']], 'verification' => ['temperature' => true],
+            'composition' => [$this->compositionLine($substance, 100)], 'apply_calculation' => true])->assertOk()->json('data');
+        app(TenantContext::class)->set(Tenant::where('slug', 'flow-normalization')->firstOrFail());
+        try {
+            $db = DB::connection('tenant');
+            $path = 'database/tenant-migrations';
+            $steps = $db->table('migrations')->where('migration', '>=', '2026_11_09_000024')->count();
+            $this->assertSame(0, Artisan::call('migrate:rollback', ['--database' => 'tenant', '--path' => $path, '--step' => $steps, '--force' => true]));
+            $sources = json_decode($db->table('process_flow_nodes')->where('id', $flow['id'])->value('sources'), true);
+            $sources['temperature']['at'] = '2026-11-09T04:05:06.123456+05:00';
+            $db->table('process_flow_nodes')->where('id', $flow['id'])->update(['sources' => json_encode($sources, JSON_THROW_ON_ERROR)]);
+            $this->assertSame(0, Artisan::call('migrate', ['--database' => 'tenant', '--path' => $path, '--force' => true]));
+            $this->assertEquals(0, $db->table('process_flow_properties')->where('flow_id', $flow['id'])->value('temperature'));
+            $this->assertNull($db->table('process_flow_properties')->where('flow_id', $flow['id'])->value('ph'));
+            $this->assertTrue($db->table('process_flow_property_annotations')->where('flow_id', $flow['id'])->where('field_key', 'ph')->value('value_present'));
+            $this->assertSame($saved['accepted_calculation']['id'], $db->table('process_flow_nodes')->where('id', $flow['id'])->value('accepted_calculation_id'));
+            try {
+                $db->transaction(fn () => $db->table('process_flow_nodes')->where('id', $other['id'])->update(['accepted_calculation_id' => $saved['accepted_calculation']['id']]));
+                $this->fail('Foreign calculation must be rejected.');
+            } catch (QueryException $exception) {
+                $this->assertSame('23503', $exception->getCode());
+            }
+            try {
+                $db->transaction(fn () => $db->table('process_flow_calculations')->where('id', $saved['accepted_calculation']['id'])->update(['signature' => str_repeat('0', 64)]));
+                $this->fail('Calculation snapshot must be immutable.');
+            } catch (QueryException $exception) {
+                $this->assertSame('23514', $exception->getCode());
+            }
+        } finally {
+            app(TenantContext::class)->set(null);
+        }
+        $this->getJson($url)->assertOk()->assertJsonPath('data.attributes.temperature', 0)->assertJsonPath('data.attributes.ph', null)->assertJsonMissingPath('data.attributes.density')
+            ->assertJsonPath('data.sources.temperature.at', '2026-11-08T23:05:06.123456+00:00')->assertJsonPath('data.sources.temperature.conditions', 'Без подстановки')->assertJsonPath('data.accepted_calculation.id', $saved['accepted_calculation']['id']);
+    }
+
     public function test_wizard_comments_idempotency_tree_cycles_and_independent_versions(): void
     {
         $this->login('flow-tree');
@@ -82,6 +144,72 @@ class ProcessFlowsTest extends TestCase
         $this->patchJson('/api/flow-nodes/'.$child['id'], ['version' => 1, 'structure_version' => 3, 'parent_id' => null])->assertOk()->assertJsonPath('data.parent_id', null);
         $this->postJson($url, ['structure_version' => 3, 'kind' => 'flow', 'category' => 'main', 'name' => 'Старый черновик'])->assertConflict();
         $this->getJson('/api/installations/'.$id)->assertJsonPath('data.version', 1);
+    }
+
+    public function test_environment_and_ph_share_one_owner_without_turning_missing_into_zero(): void
+    {
+        $this->login('flow-ph-owner');
+        $installation = $this->installation();
+        $flow = $this->flow($installation);
+        $url = '/api/process-flows/'.$flow['id'];
+        $this->patchJson($url, ['version' => 1, 'attributes' => ['ph' => 0]])->assertOk()->assertJsonPath('data.attributes.ph', 0)->assertJsonPath('data.screening.values.ph', 0);
+        $this->patchJson($url, ['version' => 2, 'verification' => ['ph' => true]])->assertOk();
+        $this->patchJson($url, ['version' => 3, 'screening' => ['values' => ['ph' => 7, 'water' => true]]])->assertOk()->assertJsonPath('data.attributes.ph', 7)->assertJsonPath('data.screening.values.ph', 7)->assertJsonMissingPath('data.checks.ph');
+        $this->patchJson($url, ['version' => 4, 'attributes' => ['ph' => 0], 'screening' => ['values' => ['ph' => null]]])->assertUnprocessable();
+        $this->getJson($url)->assertJsonPath('data.version', 4)->assertJsonPath('data.attributes.ph', 7);
+        $this->patchJson($url, ['version' => 4, 'attributes' => ['ph' => 0]])->assertOk()->assertJsonPath('data.screening.values.ph', 0);
+        $this->patchJson($url, ['version' => 5, 'screening' => ['values' => ['ph' => null]]])->assertOk()->assertJsonPath('data.attributes.ph', null)->assertJsonMissingPath('data.screening.values.ph');
+        $other = $this->flow($installation, 2);
+        $this->patchJson('/api/process-flows/'.$other['id'], ['version' => 1, 'screening' => ['values' => ['water' => true, 'ph' => null]]])->assertOk()->assertJsonMissingPath('data.attributes.ph');
+    }
+
+    public function test_environment_migration_backfills_legacy_ph_and_rolls_back_conflicts_without_data_loss(): void
+    {
+        $this->login('environment-migration');
+        $installation = $this->installation();
+        $flow = $this->flow($installation);
+        $url = '/api/process-flows/'.$flow['id'];
+        $this->patchJson($url, ['version' => 1, 'screening' => ['values' => ['ph' => 0, 'water' => true, 'hcl' => false], 'comments' => ['hcl|3' => 'Протокол', 'water' => ''], 'thresholds' => ['hcl|3' => ['threshold' => [7], 'near' => []]]]])->assertOk();
+        app(TenantContext::class)->set(Tenant::where('slug', 'environment-migration')->firstOrFail());
+        try {
+            $db = DB::connection('tenant');
+            $path = 'database/tenant-migrations';
+            $steps = $db->table('migrations')->where('migration', '>=', '2026_11_09_000025')->count();
+            $this->assertSame(0, Artisan::call('migrate:rollback', ['--database' => 'tenant', '--path' => $path, '--step' => $steps, '--force' => true]));
+            $legacy = json_decode($db->table('process_flow_nodes')->where('id', $flow['id'])->value('screening'), true);
+            $legacy['updated_at'] = '2026-11-09T04:05:06.123456+05:00';
+            $legacy['comments']['water'] = '';
+            $db->table('process_flow_nodes')->where('id', $flow['id'])->update(['screening' => json_encode($legacy, JSON_THROW_ON_ERROR)]);
+            $db->table('process_flow_property_annotations')->where('flow_id', $flow['id'])->where('field_key', 'ph')->delete();
+            $db->table('process_flow_properties')->where('flow_id', $flow['id'])->update(['ph' => null]);
+            $this->assertSame(0, Artisan::call('migrate', ['--database' => 'tenant', '--path' => $path, '--force' => true]));
+            $this->assertEquals(0, $db->table('process_flow_properties')->where('flow_id', $flow['id'])->value('ph'));
+            $this->assertFalse($db->table('process_flow_environments')->where('flow_id', $flow['id'])->value('hydrogen_chloride_present'));
+            $this->assertSame('', $db->table('process_flow_screening_comments')->where('flow_id', $flow['id'])->where('item_id', 'water')->value('comment'));
+            try {
+                $db->transaction(fn () => $db->table('process_flow_screening_thresholds')->insert(['flow_id' => $flow['id'], 'question_id' => 'hcl|1', 'bound_count' => 1, 'bound_1' => 1, 'bound_2' => null, 'near_count' => 0, 'near_1' => null, 'near_2' => null]));
+                $this->fail('Boolean question must not acquire a numeric override.');
+            } catch (QueryException $exception) {
+                $this->assertSame('23503', $exception->getCode());
+            }
+            $this->assertSame(0, Artisan::call('migrate:rollback', ['--database' => 'tenant', '--path' => $path, '--step' => $steps, '--force' => true]));
+            $db->table('process_flow_properties')->where('flow_id', $flow['id'])->update(['ph' => null]);
+            try {
+                Artisan::call('migrate', ['--database' => 'tenant', '--path' => $path, '--force' => true]);
+                $this->fail('Explicit null and legacy zero must conflict.');
+            } catch (\RuntimeException $exception) {
+                $this->assertStringContainsString('Conflicting physical and environmental pH', $exception->getMessage());
+            }
+            $this->assertFalse(Schema::connection('tenant')->hasTable('process_flow_environments'));
+            $legacy = json_decode($db->table('process_flow_nodes')->where('id', $flow['id'])->value('screening'), true);
+            $this->assertEquals(0, $legacy['values']['ph']);
+            $this->assertNull($db->table('process_flow_properties')->where('flow_id', $flow['id'])->value('ph'));
+            $db->table('process_flow_properties')->where('flow_id', $flow['id'])->update(['ph' => 0]);
+            $this->assertSame(0, Artisan::call('migrate', ['--database' => 'tenant', '--path' => $path, '--force' => true]));
+        } finally {
+            app(TenantContext::class)->set(null);
+        }
+        $this->getJson($url)->assertOk()->assertJsonPath('data.attributes.ph', 0)->assertJsonPath('data.screening.values.ph', 0)->assertJsonPath('data.screening.thresholds.hcl|3.near', [])->assertJsonPath('data.screening.updated_at', '2026-11-08T23:05:06.123456+00:00');
     }
 
     public function test_mole_mass_properties_snapshots_staleness_and_zero_attributes(): void
@@ -147,5 +275,29 @@ class ProcessFlowsTest extends TestCase
             $central->unprepared('DROP ROLE IF EXISTS "'.$name.'"');
         }
         parent::tearDown();
+    }
+
+    public function test_screening_values_comments_thresholds_versions_roles_and_tenant_isolation(): void
+    {
+        $this->login('flow-screening');
+        $installation = $this->installation();
+        $flow = $this->flow($installation);
+        $url = '/api/process-flows/'.$flow['id'];
+        $this->getJson($url)->assertOk()->assertJsonPath('data.screening', null)->assertJsonCount(21, 'data.screening_result.mechanisms');
+        $patch = ['version' => 1, 'screening' => ['values' => ['hcl' => true, 'water' => true, 'ph' => '7,2'], 'comments' => ['hcl|3' => 'Измерено в водной фазе'], 'thresholds' => ['hcl|3' => ['threshold' => [7], 'near' => [0.3]]]]];
+        $result = $this->patchJson($url, $patch)->assertOk()->assertJsonPath('data.version', 2)->assertJsonPath('data.screening.values.ph', 7.2)->json('data');
+        $this->assertSame('potential', collect($result['screening_result']['mechanisms'])->firstWhere('id', 'hcl')['status']);
+        $this->getJson($url)->assertJsonPath('data.screening.comments.hcl|3', 'Измерено в водной фазе');
+        $this->patchJson($url, $patch)->assertConflict();
+        $this->patchJson($url, ['version' => 2, 'screening' => ['values' => ['ph' => 15]]])->assertUnprocessable();
+        $this->patchJson($url, ['version' => 2, 'screening' => ['values' => ['unknown' => true]]])->assertUnprocessable();
+        $this->patchJson($url, ['version' => 2, 'screening' => ['thresholds' => ['hcl|3' => ['threshold' => [7, 8]]]]])->assertUnprocessable();
+        $this->patchJson($url, ['version' => 2, 'screening' => ['values' => ['hcl' => false, 'ph' => 0], 'thresholds' => ['hcl|3' => null]]])->assertOk()->assertJsonPath('data.screening.values.ph', 0)->assertJsonPath('data.screening.values.hcl', false);
+        $history = $this->getJson($url.'/events')->assertOk()->json('data');
+        $this->assertTrue(collect($history)->flatMap(fn ($event) => $event['changes'])->contains(fn ($change) => str_starts_with($change['key'], 'screening.')));
+        $this->login('flow-screening', 'member');
+        $this->patchJson($url, ['version' => 3, 'screening' => ['values' => ['hcl' => true]]])->assertForbidden();
+        $this->login('flow-screening-other');
+        $this->getJson($url)->assertNotFound();
     }
 }

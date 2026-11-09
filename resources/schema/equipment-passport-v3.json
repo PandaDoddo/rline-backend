@@ -1,0 +1,925 @@
+{
+    "version": "equipment-passport-v3",
+    "fields": {
+        "name": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "min": 2,
+            "max": 255
+        },
+        "additional_name": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 255
+        },
+        "equipment_class": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 100
+        },
+        "tag": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 100
+        },
+        "serial_number": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 100
+        },
+        "registration_number": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 100
+        },
+        "manufacturer": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 255
+        },
+        "manufactured_on": {
+            "table": "equipment",
+            "type": "date",
+            "nullable": true,
+            "options": []
+        },
+        "mounted_on": {
+            "table": "equipment",
+            "type": "date",
+            "nullable": true,
+            "options": []
+        },
+        "commissioned_on": {
+            "table": "equipment",
+            "type": "date",
+            "nullable": true,
+            "options": []
+        },
+        "commissioned_precision": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "day",
+                "year"
+            ]
+        },
+        "design_life_years": {
+            "table": "equipment",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 200
+        },
+        "ntd": {
+            "table": "equipment_classifications",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 255
+        },
+        "registration_authority": {
+            "table": "equipment_classifications",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "РТН",
+                "ОТН"
+            ]
+        },
+        "vessel_group": {
+            "table": "equipment_classifications",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "1",
+                "2"
+            ]
+        },
+        "productivity_reduction_percent": {
+            "table": "equipment_classifications",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 100
+        },
+        "material": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 255
+        },
+        "medium": {
+            "table": "equipment_media",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 255
+        },
+        "pressure_test_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "pressure_design_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "pressure_allowed_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "pressure_operating_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "temperature_design_c": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": -273.15,
+            "max": 3000
+        },
+        "temperature_max_c": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": -273.15,
+            "max": 3000
+        },
+        "temperature_min_c": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": -273.15,
+            "max": 3000
+        },
+        "volume_m3": {
+            "table": "equipment_constructions",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1000000000
+        },
+        "diameter_m": {
+            "table": "equipment_constructions",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 100000
+        },
+        "height_m": {
+            "table": "equipment_constructions",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 100000
+        },
+        "length_m": {
+            "table": "equipment_constructions",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1000000000
+        },
+        "nominal_thickness_mm": {
+            "table": "equipment_constructions",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 100000
+        },
+        "cladding_thickness_mm": {
+            "table": "equipment_protections",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 100000
+        },
+        "coating_type": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 255
+        },
+        "insulation_type": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 255
+        },
+        "location_notes": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "design_corrosion_mm_year": {
+            "table": "equipment_corrosion_settings",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1000
+        },
+        "active_otn_years": {
+            "table": "equipment_diagnostic_settings",
+            "type": "integer",
+            "nullable": true,
+            "options": [],
+            "min": 1,
+            "max": 100
+        },
+        "active_rtn_years": {
+            "table": "equipment_diagnostic_settings",
+            "type": "integer",
+            "nullable": true,
+            "options": [],
+            "min": 1,
+            "max": 100
+        },
+        "active_hydro_years": {
+            "table": "equipment_diagnostic_settings",
+            "type": "integer",
+            "nullable": true,
+            "options": [],
+            "min": 1,
+            "max": 100
+        },
+        "vessel_gost_group": {
+            "table": "equipment_classifications",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "api_equipment_type": {
+            "table": "equipment_classifications",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "pressure_installation_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "temperature_allowed_c": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": -273.15,
+            "max": 3000
+        },
+        "temperature_mdmt_c": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": -273.15,
+            "max": 3000
+        },
+        "temperature_brittle_transition_c": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": -273.15,
+            "max": 3000
+        },
+        "temperature_shutdown_trip_c": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": -273.15,
+            "max": 3000
+        },
+        "temperature_shutdown_c": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": -273.15,
+            "max": 3000
+        },
+        "temperature_upset_c": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": -273.15,
+            "max": 3000
+        },
+        "heat_treatment": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "relief_valve_present": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "да",
+                "нет"
+            ],
+            "max": 2000
+        },
+        "relief_valve_dual": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "да",
+                "нет"
+            ],
+            "max": 2000
+        },
+        "level_column_present": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "да",
+                "нет"
+            ],
+            "max": 2000
+        },
+        "heating_present": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "да",
+                "нет"
+            ],
+            "max": 2000
+        },
+        "heating_type": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "греющий кабель",
+                "теплоспутник",
+                "змеевик наружный",
+                "змеевик внутренний",
+                "паровой спутник",
+                "рубашка",
+                "электрообогрев"
+            ],
+            "max": 2000
+        },
+        "ground_location": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "подземное",
+                "частично подземное",
+                "надземное"
+            ],
+            "max": 2000
+        },
+        "ground_air_transition": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "присутствует",
+                "отсутствует"
+            ],
+            "max": 2000
+        },
+        "cathodic_protection": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "да",
+                "нет"
+            ],
+            "max": 2000
+        },
+        "orientation": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "вертикальное",
+                "горизонтальное"
+            ],
+            "max": 2000
+        },
+        "moisture_accumulation": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "да",
+                "нет"
+            ],
+            "max": 2000
+        },
+        "construction_complexity": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "низкая",
+                "средняя",
+                "высокая"
+            ],
+            "max": 2000
+        },
+        "cladding_present": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "присутствует",
+                "отсутствует"
+            ],
+            "max": 2000
+        },
+        "external_coating_present": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "присутствует",
+                "отсутствует"
+            ],
+            "max": 2000
+        },
+        "external_coating_applied_on": {
+            "table": "equipment_protections",
+            "type": "date",
+            "nullable": true,
+            "options": []
+        },
+        "external_coating_life_years": {
+            "table": "equipment_protections",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 200
+        },
+        "external_coating_notes": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "external_coating_quality": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "низкое",
+                "среднее",
+                "высокое"
+            ],
+            "max": 2000
+        },
+        "external_coating_application_quality": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "низкое",
+                "высокое"
+            ],
+            "max": 2000
+        },
+        "internal_coating_present": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "присутствует",
+                "отсутствует"
+            ],
+            "max": 2000
+        },
+        "insulation_present": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "присутствует",
+                "отсутствует"
+            ],
+            "max": 2000
+        },
+        "insulation_chlorides": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "неизвестно",
+                "отсутствуют",
+                "присутствуют"
+            ],
+            "max": 2000
+        },
+        "insulation_notes": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "lining_present": {
+            "table": "equipment_protections",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "присутствует",
+                "отсутствует"
+            ],
+            "max": 2000
+        },
+        "alternative_medium_present": {
+            "table": "equipment_media",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "присутствует",
+                "отсутствует"
+            ],
+            "max": 2000
+        },
+        "flow_velocity_m_s": {
+            "table": "equipment_media",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 100000
+        },
+        "atmospheric_conditions": {
+            "table": "equipment_media",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "тяжелые",
+                "умеренные",
+                "мягкие",
+                "сухие"
+            ],
+            "max": 2000
+        },
+        "corrosion_monitoring": {
+            "table": "equipment_media",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "отсутствует",
+                "ключевые параметры процесса",
+                "зонды электрического сопротивления",
+                "образцы-свидетели (пробные образцы)",
+                "ключевые параметры процесса и зонды"
+            ],
+            "max": 2000
+        },
+        "hydrogen_probes": {
+            "table": "equipment_media",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "да",
+                "нет"
+            ],
+            "max": 2000
+        },
+        "injection_point": {
+            "table": "equipment_media",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "да",
+                "нет"
+            ],
+            "max": 2000
+        },
+        "dead_leg": {
+            "table": "equipment_media",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "да",
+                "нет"
+            ],
+            "max": 2000
+        },
+        "corrosion_allowance_mm": {
+            "table": "equipment_corrosion_settings",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "theoretical_corrosion_mm_year": {
+            "table": "equipment_corrosion_settings",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1000
+        },
+        "section_count": {
+            "table": "equipment",
+            "type": "integer",
+            "nullable": true,
+            "options": [],
+            "min": 1,
+            "max": 100000
+        },
+        "section_numbers": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "tube_collector": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "отсутствует",
+                "только входной",
+                "только выходной",
+                "входной и выходной"
+            ],
+            "max": 2000
+        },
+        "tube_design_corrosion_mm_year": {
+            "table": "equipment_corrosion_settings",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1000
+        },
+        "tube_theoretical_corrosion_mm_year": {
+            "table": "equipment_corrosion_settings",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1000
+        },
+        "heat_transfer_area_m2": {
+            "table": "equipment_constructions",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1000000000
+        },
+        "overall_dimensions": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "passport_number": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "line_count": {
+            "table": "equipment",
+            "type": "integer",
+            "nullable": true,
+            "options": [],
+            "min": 1,
+            "max": 100000
+        },
+        "line_numbers": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "pipeline_medium_group": {
+            "table": "equipment_classifications",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "А(а)",
+                "А(б)",
+                "Б(а)",
+                "Б(б)",
+                "Б(в)",
+                "В"
+            ],
+            "max": 2000
+        },
+        "pipeline_category": {
+            "table": "equipment_classifications",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "I",
+                "II",
+                "III",
+                "IV",
+                "V"
+            ],
+            "max": 2000
+        },
+        "valve_model": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "relief_valve_type": {
+            "table": "equipment",
+            "type": "text",
+            "nullable": true,
+            "options": [],
+            "max": 2000
+        },
+        "inlet_dn_mm": {
+            "table": "equipment",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 100000
+        },
+        "outlet_dn_mm": {
+            "table": "equipment",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 100000
+        },
+        "inlet_pn_mpa": {
+            "table": "equipment",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "outlet_pn_mpa": {
+            "table": "equipment",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "relief_setting_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "relief_open_start_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "relief_open_full_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "relief_closing_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "relief_backpressure_mpa": {
+            "table": "equipment_operating_parameters",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 10000
+        },
+        "relief_direction": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "под золотник",
+                "на золотник"
+            ],
+            "max": 2000
+        },
+        "relief_destination": {
+            "table": "equipment_constructions",
+            "type": "text",
+            "nullable": true,
+            "options": [
+                "атмосфера",
+                "закрытая система",
+                "факел"
+            ],
+            "max": 2000
+        },
+        "relief_coefficient_gas": {
+            "table": "equipment_constructions",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1
+        },
+        "relief_coefficient_liquid": {
+            "table": "equipment_constructions",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1
+        },
+        "valve_design_corrosion_mm_year": {
+            "table": "equipment_corrosion_settings",
+            "type": "double",
+            "nullable": true,
+            "options": [],
+            "min": 0,
+            "max": 1000
+        }
+    }
+}

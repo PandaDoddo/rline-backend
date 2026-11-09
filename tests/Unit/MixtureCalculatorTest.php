@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Domain\MixtureCalculator;
+use App\Modules\ProcessFlows\Domain\MixtureCalculator;
 use PHPUnit\Framework\TestCase;
 
 class MixtureCalculatorTest extends TestCase

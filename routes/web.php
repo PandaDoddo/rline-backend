@@ -3,9 +3,14 @@
 use App\Auth\AuthPluginManager;
 use App\Http\Controllers\AuthSessionController;
 use App\Http\Controllers\MultifactorController;
+use App\Http\Controllers\PublicTenantController;
 use App\Http\Controllers\TenantController;
 use App\Http\Middleware\AuthenticationBoundary;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/auth/csrf-token', [AuthSessionController::class, 'csrf']);
+// Accessible only through the gateway's internal listener, never the public vhost.
+Route::get('/internal/tls-allowed', [PublicTenantController::class, 'certificate']);
 
 Route::get('/auth/providers', fn () => app(AuthPluginManager::class)->listing())->name('auth.providers');
 Route::post('/auth/tenant', [TenantController::class, 'select'])->middleware('throttle:auth-actions');

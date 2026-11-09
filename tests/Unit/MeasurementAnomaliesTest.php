@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Domain\CorrosionCalculator;
+use App\Modules\Equipment\Domain\CorrosionCalculator;
 use PHPUnit\Framework\TestCase;
 
 class MeasurementAnomaliesTest extends TestCase

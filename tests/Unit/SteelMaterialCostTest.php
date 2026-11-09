@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Domain\SteelMaterialCost;
+use App\Modules\Catalogs\Domain\SteelMaterialCost;
 use PHPUnit\Framework\TestCase;
 
 class SteelMaterialCostTest extends TestCase

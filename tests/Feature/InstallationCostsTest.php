@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Domain\InstallationCostFactors;
+use App\Modules\Installations\Domain\InstallationCostFactors;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;

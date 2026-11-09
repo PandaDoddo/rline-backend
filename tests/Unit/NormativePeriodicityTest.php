@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Domain\NormativePeriodicity;
+use App\Modules\Diagnostics\Domain\NormativePeriodicity;
 use PHPUnit\Framework\TestCase;
 
 class NormativePeriodicityTest extends TestCase

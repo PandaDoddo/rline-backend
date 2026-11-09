@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Domain\DamageMechanismBaseline;
+use App\Modules\Catalogs\Infrastructure\DamageMechanismBaseline;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;

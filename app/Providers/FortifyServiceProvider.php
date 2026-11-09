@@ -11,6 +11,7 @@ use App\Auth\AuthPluginManager;
 use App\Auth\LoginChallenge;
 use App\Http\Responses\PasswordResetLinkResponse;
 use App\Tenancy\TenantContext;
+use App\Tenancy\TenantDomains;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -47,7 +48,9 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(LoginChallenge::class);
-        ResetPassword::createUrlUsing(fn ($user, $token) => config('authentication.frontend_url').'/?'.http_build_query(['reset_token' => $token, 'email' => $user->email, 'tenant' => app(TenantContext::class)->tenant?->slug]));
+        ResetPassword::createUrlUsing(fn ($user, $token) => (config('domains.base')
+            ? app(TenantDomains::class)->url(app(TenantContext::class)->tenant->slug)
+            : config('authentication.frontend_url')).'/?'.http_build_query(['reset_token' => $token, 'email' => $user->email, 'tenant' => app(TenantContext::class)->tenant?->slug]));
         Fortify::confirmPasswordsUsing(function ($user, $password) {
             if ($user->auth_provider === 'multifactor') {
                 return false;

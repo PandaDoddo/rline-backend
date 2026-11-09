@@ -8,6 +8,55 @@ use Tests\TestCase;
 
 class ApiDocumentationTest extends TestCase
 {
+    public function test_component_connections_and_history_keep_read_metadata_out_of_writes(): void
+    {
+        $spec = $this->spec();
+        $schemas = $spec['components']['schemas'];
+        $read = $schemas['EquipmentComponentResource']['properties'];
+        $input = $schemas['UpdateEquipmentRequest']['properties']['structure']['items']['properties'];
+        $this->assertSame('uuid', $read['connections']['items']['properties']['targets']['items']['format']);
+        $this->assertSame('boolean', $read['connections']['items']['properties']['complete']['type']);
+        $this->assertSame('string', $read['connections']['items']['properties']['unresolved_targets']['items']['type']);
+        $this->assertSame('string', $input['connections']['items']['properties']['unresolved_targets']['items']['type']);
+        $this->assertSame('uuid', $read['assemblies']['items']['properties']['members']['items']['format']);
+        $this->assertArrayNotHasKey('complete', $input['connections']['items']['properties']);
+        $this->assertSame('integer', $read['history_count']['type']);
+        $this->assertArrayNotHasKey('history', $read);
+        $this->assertArrayNotHasKey('recorded_by', $input['history']['items']['properties']);
+        $this->assertArrayNotHasKey('recorded_at', $input['history']['items']['properties']);
+        $history = $schemas['ComponentHistoryResource']['properties'];
+        $this->assertSame('date', $history['occurred_on']['format']);
+        $this->assertSame(['string', 'null'], $history['occurred_on']['type']);
+        $this->assertSame('date-time', $history['recorded_at']['format']);
+        $this->assertArrayHasKey('/api/equipment/{equipment}/components/{component}/history', $spec['paths']);
+    }
+
+    public function test_operating_scopes_describe_independent_parameters_and_server_owned_checks(): void
+    {
+        $schemas = $this->spec()['components']['schemas'];
+        $input = $schemas['UpdateEquipmentRequest']['properties']['operating_scopes']['items'];
+        $read = $schemas['EquipmentResource']['properties']['operating_scopes']['items'];
+        $this->assertSame(['tube', 'coil'], $input['properties']['kind']['enum']);
+        $this->assertSame(['number', 'null'], $input['properties']['values']['properties']['pressure_operating_mpa']['type']);
+        $this->assertSame('boolean', $input['properties']['verification']['properties']['pressure_operating_mpa']['type']);
+        $this->assertArrayNotHasKey('checks', $input['properties']);
+        $this->assertSame('integer', $read['properties']['checks']['properties']['pressure_operating_mpa']['properties']['by']['type']);
+        $this->assertSame('boolean', $read['properties']['persisted']['type']);
+    }
+
+    public function test_management_questionnaire_contract_keeps_answer_union_and_typed_schema(): void
+    {
+        $spec = $this->spec();
+        $schemas = $spec['components']['schemas'];
+        $this->assertSame('array', $schemas['ManagementSchemaResource']['properties']['sections']['type']);
+        $value = $schemas['UpdateManagementRequest']['properties']['answers']['items']['properties']['value'];
+        $this->assertSame(['boolean', 'number', 'array', 'null'], array_column($value['anyOf'], 'type'));
+        $this->assertSame('integer', $value['anyOf'][2]['items']['type']);
+        $this->assertSame('array', $schemas['AuditEventResource']['properties']['changes']['type']);
+        $this->assertSame('string', $schemas['AuditEventResource']['properties']['changes']['items']['properties']['label']['type']);
+        $this->assertArrayHasKey('/api/installations/{installation}/management/events', $spec['paths']);
+    }
+
     private function spec(): array
     {
         $this->app['env'] = 'local';

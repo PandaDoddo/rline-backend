@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 class AuthSessionController extends Controller
 {
+    /** CSRF bootstrap for the landing on the same parent domain. */
+    public function csrf()
+    {
+        return response()->json(['token' => csrf_token()])->header('Cache-Control', 'no-store');
+    }
+
     public function current(Request $request)
     {
         $user = $request->user();

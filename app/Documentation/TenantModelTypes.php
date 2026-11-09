@@ -2,9 +2,9 @@
 
 namespace App\Documentation;
 
-use App\Models\FacilityNode;
-use App\Models\Installation;
 use App\Models\TenantModel;
+use App\Modules\Installations\Models\FacilityNode;
+use App\Modules\Installations\Models\Installation;
 use Dedoc\Scramble\Infer\Extensions\Event\MethodCallEvent;
 use Dedoc\Scramble\Infer\Extensions\Event\PropertyFetchEvent;
 use Dedoc\Scramble\Infer\Extensions\MethodReturnTypeExtension;
@@ -33,12 +33,13 @@ class TenantModelTypes implements MethodReturnTypeExtension, PropertyTypeExtensi
     {
         return match ($event->name) {
             'version', 'created_by', 'updated_by', 'position' => new IntegerType,
-            'material', 'notes', 'report_number' => Union::wrap([new StringType, new NullType]),
-            'planned_on', 'performed_on' => Union::wrap([new ObjectType(Carbon::class), new NullType]),
+            'material', 'notes', 'report_number', 'organization', 'inspection_type' => Union::wrap([new StringType, new NullType]),
+            'planned_on', 'performed_on', 'next_on', 'verified_at' => Union::wrap([new ObjectType(Carbon::class), new NullType]),
             'diameter_mm', 'length_mm', 'nominal_thickness_mm', 'rejection_passport_mm', 'rejection_epb_mm' => Union::wrap([new FloatType, new NullType]),
             'id', 'name', 'kind', 'installation_id', 'profile_code', 'status' => new StringType,
             'code', 'parent_id' => Union::wrap([new StringType, new NullType]),
-            'passport', 'attributes', 'checks' => new ArrayType(new MixedType, new StringType),
+            'passport', 'attributes', 'checks', 'follow_up_dates', 'passport_qualifiers' => new ArrayType(new MixedType, new StringType),
+            'unknown_fields' => new ArrayType(new StringType, new IntegerType),
             'installation' => new ObjectType(Installation::class),
             'parent' => Union::wrap([new ObjectType(FacilityNode::class), new NullType]),
             'created_at', 'updated_at' => new ObjectType(Carbon::class),

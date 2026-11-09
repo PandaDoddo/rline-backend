@@ -1,9 +1,9 @@
 <?php
 
-return [
+$config = [
     'profiles' => json_decode(file_get_contents(resource_path('catalogs/equipment-profiles.json')), true, flags: JSON_THROW_ON_ERROR),
     'passport' => [
-        'name' => ['label' => 'Наименование', 'section' => 'Идентификатор', 'rules' => 'required|string|min:2|max:255'],
+        'name' => ['label' => 'Наименование', 'section' => 'Идентификатор', 'rules' => 'nullable|required_without:passport_qualifiers.name.state|string|min:2|max:255'],
         'additional_name' => ['label' => 'Дополнительное наименование', 'section' => 'Идентификатор', 'rules' => 'nullable|string|max:255'],
         'equipment_class' => ['label' => 'Класс оборудования', 'section' => 'Идентификатор', 'rules' => 'nullable|string|max:100'],
         'tag' => ['label' => 'Техн. позиция', 'section' => 'Идентификатор', 'rules' => 'nullable|string|max:100'],
@@ -39,6 +39,15 @@ return [
         'location_notes' => ['label' => 'Титул / примечание к размещению', 'section' => 'Местоположение', 'rules' => 'nullable|string|max:2000'],
         'design_corrosion_mm_year' => ['label' => 'Проектная скорость коррозии, мм/год', 'section' => 'Скорость коррозии', 'type' => 'number', 'rules' => 'nullable|numeric|min:0|max:1000'],
         'active_otn_years' => ['label' => 'Действующая периодичность ТО ОТН, лет', 'section' => 'Диагностика', 'type' => 'number', 'groups' => ['ves'], 'rules' => 'nullable|integer|min:1|max:100'],
+        'active_rtn_years' => ['label' => 'Действующая периодичность ТО РТН, лет', 'section' => 'Диагностика', 'type' => 'number', 'groups' => ['ves'], 'rules' => 'nullable|integer|min:1|max:100'],
         'active_hydro_years' => ['label' => 'Действующая периодичность ГИ, лет', 'section' => 'Диагностика', 'type' => 'number', 'groups' => ['ves'], 'rules' => 'nullable|integer|min:1|max:100'],
     ],
 ];
+
+$extension = require __DIR__.'/equipment-passport.php';
+$config['passport'] = array_merge($config['passport'], $extension['fields']);
+foreach ($extension['aliases'] as $key => $paths) {
+    $config['passport'][$key]['legacy_keys'] = array_values(array_unique([...($config['passport'][$key]['legacy_keys'] ?? []), ...$paths]));
+}
+
+return $config;
