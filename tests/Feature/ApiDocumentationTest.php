@@ -8,6 +8,33 @@ use Tests\TestCase;
 
 class ApiDocumentationTest extends TestCase
 {
+    public function test_registry_navigation_and_facility_filter_are_documented_as_typed_read_contracts(): void
+    {
+        $spec = $this->spec();
+        $navigation = $spec['paths']['/api/equipment/navigation']['get'];
+        $data = $navigation['responses'][200]['content']['application/json']['schema']['properties']['data'];
+        $this->assertSame('integer', $data['properties']['total']['type']);
+        $this->assertSame('integer', $data['properties']['locations']['items']['properties']['count']['type']);
+        $this->assertContains('null', $data['properties']['locations']['items']['properties']['parent_id']['type']);
+        $this->assertArrayNotHasKey('requestBody', $navigation);
+        $this->assertContains('facility_node_id', array_column($spec['paths']['/api/equipment']['get']['parameters'], 'name'));
+    }
+
+    public function test_component_rbi_settings_are_typed_sparse_and_do_not_accept_server_results(): void
+    {
+        $spec = $this->spec();
+        $schemas = $spec['components']['schemas'];
+        $write = $schemas['UpdateEquipmentRequest']['properties']['component_rbi']['items'];
+        $read = $schemas['EquipmentResource']['properties']['component_rbi']['items'];
+        $this->assertSame(['component_id'], $write['required']);
+        $this->assertSame(['low', 'med', 'high', null], $write['properties']['confidence']['enum']);
+        $this->assertContains('null', $write['properties']['dead_leg']['type']);
+        $this->assertArrayNotHasKey('updated_by', $write['properties']);
+        $this->assertArrayNotHasKey('DF', $write['properties']);
+        $this->assertArrayHasKey('updated_at', $read['properties']);
+        $this->assertNotContains('component_rbi', $schemas['EquipmentResource']['required']);
+    }
+
     public function test_component_mechanisms_keep_typed_traces_and_server_confirmation_metadata_out_of_writes(): void
     {
         $spec = $this->spec();

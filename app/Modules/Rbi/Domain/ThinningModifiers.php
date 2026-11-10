@@ -69,11 +69,12 @@ final class ThinningModifiers
         $cylinder = ['shell', 'shell_course', 'pipe', 'nozzle', 'branch_pipe', 'elbow', 'return_bend', 'reducer', 'tee', 'boss', 'internal_coil', 'external_coil', 'coil_body', 'tube_bundle', 'tube_sheet', 'heat_exchange_tube', 'heat_exchange_section', 'tube_header', 'lens', 'lens_expansion_joint', 'bellows_expansion_joint', 'valve', 'valve_body'];
         $kind = $sphericalVessel && in_array($typeCode, ['shell', 'shell_course', 'head'], true) ? 'sph' : (in_array($typeCode, $head, true) ? 'head' : (in_array($typeCode, $cylinder, true) ? 'cyl' : null));
         $alpha = $kind === null ? null : (array_column($tables['thinAlpha'], 'a', 'k')[$kind] ?? null);
-        $efficiency = $weldEfficiency ?? ($seamType === 'seamless' ? 1 : null);
+        $fixed = $seamType === 'seamless' ? 'seamless' : (in_array($typeCode, ['flange', 'boss'], true) ? 'solid_component' : null);
+        $efficiency = $fixed !== null ? 1 : $weldEfficiency;
         $values = ['alpha' => $alpha, 'E' => $efficiency];
 
         return ['values' => $values, 'missing' => array_keys(array_filter($values, fn ($value) => $value === null)),
-            'source' => ['alpha_kind' => $kind, 'weld_efficiency' => $weldEfficiency !== null ? 'explicit_component_value' : ($seamType === 'seamless' ? 'seamless' : null)]];
+            'source' => ['alpha_kind' => $kind, 'weld_efficiency' => $fixed ?? ($weldEfficiency !== null ? 'explicit_component_value' : null)]];
     }
 
     public function pipeFactors(bool $pipeline, mixed $injection, mixed $deadLeg, mixed $componentInjection, mixed $componentDeadLeg): array

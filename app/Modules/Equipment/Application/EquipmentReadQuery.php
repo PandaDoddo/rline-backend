@@ -13,8 +13,15 @@ class EquipmentReadQuery
         if (isset($data['installation_id'])) {
             $query->where('installation_id', $data['installation_id']);
         }
+        if (isset($data['facility_node_id'])) {
+            $id = $data['facility_node_id'];
+            $query->whereHas('installation', fn ($installation) => $installation->where(fn ($ancestors) => $ancestors
+                ->where('parent_id', $id)->orWhereHas('parent', fn ($parent) => $parent->where('parent_id', $id))
+                ->orWhereHas('parent.parent', fn ($parent) => $parent->where('parent_id', $id))));
+        }
         if (isset($data['group'])) {
-            $profiles = array_keys(array_filter(config('equipment.profiles'), fn ($profile) => $profile['g'] === $data['group']));
+            $groups = explode(',', $data['group']);
+            $profiles = array_keys(array_filter(config('equipment.profiles'), fn ($profile) => in_array($profile['g'], $groups, true)));
             $query->whereIn('profile_code', $profiles);
         }
         if (($q = trim($data['q'] ?? '')) !== '') {

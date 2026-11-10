@@ -1,0 +1,39 @@
+# Isolated comparison: same PHP image/vendor/storage/DB, source files on Linux.
+# No worker, migrations, config cache or database writes are started here.
+services:
+  io-sync:
+    image: rline-backend-app:latest
+    profiles: [io-benchmark]
+    entrypoint: [sh, -ec]
+    command:
+      - |
+        tar -C /source -cf - app bootstrap config database public resources routes artisan composer.json composer.lock | tar -C /var/www/html -xf -
+        chown -R www-data:www-data /var/www/html/bootstrap/cache
+    volumes:
+      - .:/source:ro
+      - io_source:/var/www/html
+  io-app:
+    image: rline-backend-app:latest
+    profiles: [io-benchmark]
+    env_file: [.env]
+    volumes:
+      - io_source:/var/www/html
+      - vendor:/var/www/html/vendor:ro
+      - storage:/var/www/html/storage
+      - .:/windows:ro
+      - ./tools/performance:/benchmark:ro
+    depends_on:
+      io-sync:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+  io-nginx:
+    image: nginx:stable-alpine
+    profiles: [io-benchmark]
+    ports: ["127.0.0.1:18081:80"]
+    volumes:
+      - io_source:/var/www/html:ro
+      - ./tools/performance/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on: [io-app]
+volumes:
+  io_source:

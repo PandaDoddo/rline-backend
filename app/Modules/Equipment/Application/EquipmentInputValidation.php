@@ -9,6 +9,7 @@ use App\Modules\Equipment\Domain\ComponentDetailSchema;
 use App\Modules\Equipment\Domain\OperatingScopeSchema;
 use App\Modules\ProcessFlows\Application\EquipmentFlowContacts;
 use App\Modules\ProcessFlows\Application\EquipmentFlowSelection;
+use App\Modules\Rbi\Application\ComponentRbiInputValidation;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -22,6 +23,9 @@ final class EquipmentInputValidation
 
     public function normalize(array $input): array
     {
+        if (is_array($input['component_rbi'] ?? null)) {
+            $input['component_rbi'] = app(ComponentRbiInputValidation::class)->normalize($input['component_rbi']);
+        }
         if (is_array($input['mechanisms'] ?? null)) {
             $input['mechanisms'] = app(MechanismInputValidation::class)->normalize($input['mechanisms']);
         }
@@ -182,6 +186,6 @@ final class EquipmentInputValidation
             $rules['verification.'.$key] = 'sometimes|boolean';
         }
 
-        return $rules + EquipmentStructure::rules() + EquipmentDiagnostics::rules() + EquipmentThickness::rules() + EquipmentFlowContacts::rules() + EquipmentFlowSelection::rules() + EquipmentOperatingScopes::rules() + VisualInspectionInputValidation::rules() + InspectionCategoryInputValidation::rules() + MechanismInputValidation::rules();
+        return $rules + EquipmentStructure::rules() + EquipmentDiagnostics::rules() + EquipmentThickness::rules() + EquipmentFlowContacts::rules() + EquipmentFlowSelection::rules() + EquipmentOperatingScopes::rules() + VisualInspectionInputValidation::rules() + InspectionCategoryInputValidation::rules() + MechanismInputValidation::rules() + ComponentRbiInputValidation::rules();
     }
 }

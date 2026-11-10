@@ -65,10 +65,11 @@ class EquipmentSchemaTransformer implements DocumentTransformer
             $type = $schema->type;
             $class = class_basename($name);
             if ($class === 'EquipmentResource') {
+                $type->addProperty('component_rbi', ComponentRbiApiSchema::make());
                 $type->addProperty('mechanisms', MechanismApiSchema::make());
                 $type->addProperty('inspection_categories', InspectionCategoryApiSchema::make());
                 $type->addProperty('visual_inspections', VisualInspectionApiSchema::make());
-                $type->setRequired(array_values(array_diff($type->required, ['visual_inspections', 'inspection_categories', 'mechanisms'])));
+                $type->setRequired(array_values(array_diff($type->required, ['visual_inspections', 'inspection_categories', 'mechanisms', 'component_rbi'])));
                 $origin = (new ObjectType)->addProperty('batch_id', (new StringType)->format('uuid'))->addProperty('kind', (new StringType)->enum(['stored_snapshot', 'demo_expanded']))
                     ->addProperty('label', new StringType)->addProperty('source_id', new StringType)->addProperty('source_snapshot_at', (new StringType)->format('date-time'))
                     ->addProperty('applied_at', (new StringType)->format('date-time'))->addProperty('imported_version', new IntegerType)->addProperty('changed_since_import', new BooleanType)->addProperty('source_issue_count', new IntegerType)
@@ -159,6 +160,7 @@ class EquipmentSchemaTransformer implements DocumentTransformer
                 }
             }
             if ($class === 'UpdateEquipmentRequest') {
+                $type->addProperty('component_rbi', ComponentRbiApiSchema::make(true));
                 $type->addProperty('mechanisms', MechanismApiSchema::make(true));
                 $type->addProperty('inspection_categories', InspectionCategoryApiSchema::make(true));
                 $type->addProperty('visual_inspections', VisualInspectionApiSchema::make(true));

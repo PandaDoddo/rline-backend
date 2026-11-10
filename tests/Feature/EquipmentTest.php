@@ -23,6 +23,23 @@ class EquipmentTest extends TestCase
 
     private array $tenants = [];
 
+    public function test_registry_type_tree_accepts_static_dynamic_multi_and_explicit_empty_selections(): void
+    {
+        $tenant = $this->setupTenant('registry-type-families');
+        $this->login($tenant);
+        $installation = $this->installation();
+        foreach (['ves_fnp_rtn', 'pipe_tech', 'pump', 'compr'] as $index => $profile) {
+            $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => $profile, 'passport' => ['name' => 'Оборудование '.$index]])->assertCreated();
+        }
+        $this->getJson('/api/equipment?group=ves,pipe,tank,boiler,ppk,furnace')->assertOk()->assertJsonPath('meta.total', 2);
+        $this->getJson('/api/equipment?group=pump,compr,blower,turb,det,fan')->assertOk()->assertJsonPath('meta.total', 2);
+        $this->getJson('/api/equipment?group=ves,pump')->assertOk()->assertJsonPath('meta.total', 2);
+        $this->getJson('/api/equipment?group=none')->assertOk()->assertJsonPath('meta.total', 0);
+        $this->getJson('/api/equipment?group=lift')->assertOk()->assertJsonPath('meta.total', 0);
+        $this->getJson('/api/equipment?group=bad')->assertUnprocessable();
+        $this->getJson('/api/equipment?group=ves,,pipe')->assertUnprocessable();
+    }
+
     private function setupTenant(string $slug): Tenant
     {
         $tenant = Tenant::create(['slug' => $slug, 'name' => $slug, 'auth_config' => ['local' => ['enabled' => true]]]);
@@ -55,6 +72,42 @@ class EquipmentTest extends TestCase
     {
         $actual = $this->getJson('/api/equipment/'.$equipment)->assertOk()->json('data.components');
         $this->assertEquals($expected, $actual, 'The SQL read projection must preserve the typed write DTO.');
+    }
+
+    public function test_registry_navigation_counts_all_pages_and_filters_each_facility_level_without_cross_tenant_data(): void
+    {
+        $tenant = $this->setupTenant('registry-navigation');
+        $this->login($tenant);
+        $first = $this->installation();
+        $second = $this->installation();
+        $ids = [];
+        foreach ([[$first, 'ves_fnp_rtn', 'Сосуд первый'], [$first, 'pipe_tech', 'Трубопровод'], [$second, 'ves_fnp_rtn', 'Сосуд второй']] as [$installation, $profile, $name]) {
+            $ids[] = $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => $profile, 'passport' => ['name' => $name]])->assertCreated()->json('data.id');
+        }
+        $this->getJson('/api/equipment?per_page=1')->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('meta.total', 3);
+        $navigation = $this->getJson('/api/equipment/navigation')->assertOk()->assertJsonPath('data.total', 3)->json('data');
+        $this->assertSame(['pipe' => 1, 'ves' => 2], collect($navigation['groups'])->pluck('count', 'code')->sortKeys()->all());
+        $locations = array_column($navigation['locations'], null, 'id');
+        $this->assertSame(2, $locations[$first]['count']);
+        $this->assertSame(1, $locations[$second]['count']);
+        $this->getJson('/api/equipment?installation_id='.$first)->assertOk()->assertJsonPath('meta.total', 2);
+        $parent = $locations[$first]['parent_id'];
+        while ($parent !== null) {
+            $this->assertSame(2, $locations[$parent]['count']);
+            $this->getJson('/api/equipment?facility_node_id='.$parent)->assertOk()->assertJsonPath('meta.total', 2);
+            $parent = $locations[$parent]['parent_id'];
+        }
+        $this->getJson('/api/equipment?facility_node_id='.Str::uuid())->assertOk()->assertJsonPath('meta.total', 0);
+        $this->getJson('/api/equipment?facility_node_id=bad')->assertUnprocessable();
+        $this->getJson('/api/equipment/navigation?q=Сосуд')->assertOk()->assertJsonPath('data.total', 2);
+        $this->patchJson('/api/equipment/'.$ids[0], ['installation_id' => $first, 'passport' => ['name' => 'Сосуд первый'], 'version' => 1, 'status' => 'archived'])->assertOk();
+        $this->getJson('/api/equipment/navigation?status=active')->assertOk()->assertJsonPath('data.total', 2);
+        $this->getJson('/api/equipment/navigation?status=archived')->assertOk()->assertJsonPath('data.total', 1);
+        $this->login($tenant, 'member');
+        $this->getJson('/api/equipment/navigation')->assertOk()->assertJsonPath('data.total', 2);
+        $other = $this->setupTenant('registry-navigation-other');
+        $this->login($other, 'member');
+        $this->getJson('/api/equipment/navigation')->assertOk()->assertJsonPath('data.total', 0)->assertJsonPath('data.locations', []);
     }
 
     public function test_dual_safety_valve_is_a_real_passport_input_and_requires_presence(): void

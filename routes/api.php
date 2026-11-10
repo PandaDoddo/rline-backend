@@ -13,6 +13,7 @@ use App\Modules\Diagnostics\Http\Controllers\DiagnosticScheduleController;
 use App\Modules\Equipment\Http\Controllers\ComponentHistoryController;
 use App\Modules\Equipment\Http\Controllers\EquipmentController;
 use App\Modules\Equipment\Http\Controllers\EquipmentMechanismController;
+use App\Modules\Equipment\Http\Controllers\EquipmentRegistryNavigationController;
 use App\Modules\Installations\Http\Controllers\FacilityController;
 use App\Modules\Installations\Http\Controllers\InstallationCostController;
 use App\Modules\Installations\Http\Controllers\InstallationMaintenanceController;
@@ -75,6 +76,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/substances/{substance}/events', [SubstanceController::class, 'events'])->whereUuid('substance');
         Route::get('/diagnostic-schedule', DiagnosticScheduleController::class);
         Route::get('/equipment/catalog', [EquipmentController::class, 'catalog']);
+        Route::get('/equipment/navigation', EquipmentRegistryNavigationController::class);
         Route::get('/equipment', [EquipmentController::class, 'index']);
         Route::post('/equipment', [EquipmentController::class, 'store']);
         Route::get('/equipment/{equipment}', [EquipmentController::class, 'show'])->whereUuid('equipment');

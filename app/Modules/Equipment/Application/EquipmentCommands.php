@@ -12,6 +12,7 @@ use App\Modules\Equipment\Models\Equipment;
 use App\Modules\Installations\Models\Installation;
 use App\Modules\ProcessFlows\Application\EquipmentFlowContacts;
 use App\Modules\ProcessFlows\Application\EquipmentFlowSelection;
+use App\Modules\Rbi\Application\EquipmentRbiSettings;
 use App\Modules\Shared\Domain\ValueEquality;
 use App\Modules\Shared\Infrastructure\TenantWrites;
 use Illuminate\Support\Str;
@@ -69,6 +70,9 @@ final class EquipmentCommands
             $qualifiers = $data['passport_qualifiers'] ?? $model->passport_qualifiers;
             $this->applicability($model->profile_code, $data['passport'], $qualifiers);
             $before = $model->load([...ComponentSpecifications::eagerLoads(true), 'inspections'])->toArray();
+            if (array_key_exists('component_rbi', $data)) {
+                $before['component_rbi'] = app(EquipmentRbiSettings::class)->read($model);
+            }
             if (array_key_exists('operating_scopes', $data)) {
                 $before['operating_scopes'] = $this->scopes->read($model);
             }
@@ -120,6 +124,9 @@ final class EquipmentCommands
                 $this->thickness->apply($model, $data['thickness'], $actor);
             }
             $model->load([...ComponentSpecifications::eagerLoads(true), 'inspections']);
+            if (array_key_exists('component_rbi', $data)) {
+                app(EquipmentRbiSettings::class)->apply($model, $data['component_rbi'], $actor);
+            }
             if (array_key_exists('operating_scopes', $data)) {
                 $this->scopes->apply($model, $data['operating_scopes'], $actor);
             }
@@ -140,6 +147,9 @@ final class EquipmentCommands
                 $this->mechanisms->guardInstallation($model);
             }
             $after = $model->toArray();
+            if (array_key_exists('component_rbi', $data)) {
+                $after['component_rbi'] = app(EquipmentRbiSettings::class)->read($model);
+            }
             if (array_key_exists('mechanisms', $data)) {
                 $after['mechanisms'] = app(MechanismFacts::class)->read($model->id);
             }

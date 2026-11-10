@@ -33,6 +33,8 @@ class ThinningModifiersTest extends TestCase
         $this->assertSame(['alpha' => 2, 'E' => null], $builder->geometry('pipe', false, null, null, $tables)['values']);
         $this->assertSame(['alpha' => 1.13, 'E' => 0.85], $builder->geometry('flanged_cap', false, 'welded', 0.85, $tables)['values']);
         $this->assertSame(['alpha' => 4, 'E' => 1], $builder->geometry('head', true, 'seamless', null, $tables)['values']);
+        $this->assertSame(1, $builder->geometry('pipe', false, 'seamless', 0.85, $tables)['values']['E']);
+        $this->assertSame(1, $builder->geometry('boss', false, null, null, $tables)['values']['E']);
         $this->assertSame(['alpha', 'E'], $builder->geometry(null, false, null, null, $tables)['missing']);
     }
 

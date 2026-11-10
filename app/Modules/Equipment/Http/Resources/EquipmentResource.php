@@ -15,6 +15,7 @@ use App\Modules\Equipment\Domain\CorrosionCalculator;
 use App\Modules\Equipment\Models\Equipment;
 use App\Modules\Installations\Http\Resources\InstallationResource;
 use App\Modules\ProcessFlows\Application\EquipmentFlowContacts;
+use App\Modules\Rbi\Application\EquipmentRbiSettings;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -49,6 +50,7 @@ class EquipmentResource extends JsonResource
             'thickness' => $this->when($detail, $thickness),
             'condition' => $this->when($detail, $condition),
             'mechanisms' => $this->when($detail, $mechanisms === null ? null : array_diff_key($mechanisms, ['activity' => true])),
+            'component_rbi' => $this->when($detail, fn () => app(EquipmentRbiSettings::class)->read($this->resource)),
             'inspection_categories' => $this->when($detail, $categories),
             'visual_inspections' => $this->when($detail, $visual),
             'operating_scopes' => $this->when($detail, $scopes),
