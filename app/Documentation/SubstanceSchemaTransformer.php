@@ -81,6 +81,7 @@ class SubstanceSchemaTransformer implements DocumentTransformer
                 $type->addProperty('status', (new StringType)->enum(['active', 'archived']));
             }
             if ($class === 'SubstanceResource') {
+                $type->addProperty('data_origin', ImportOriginSchema::make()->nullable(true));
                 $type->addProperty('legacy_code', (new StringType)->nullable(true));
                 $type->addProperty('base_version', (new StringType)->nullable(true));
                 $effective = $values->clone()->setRequired(['name']);

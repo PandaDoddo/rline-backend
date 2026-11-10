@@ -30,7 +30,7 @@ class EquipmentDiagnostics
         }
     }
 
-    public function apply(Equipment $equipment, array $items, int $actor): void
+    public function apply(Equipment $equipment, array $items, int $actor, array $visualResets = []): void
     {
         $rows = EquipmentInspection::where('equipment_id', $equipment->id)->lockForUpdate()->get()->keyBy('id');
         foreach ($items as $input) {
@@ -55,6 +55,23 @@ class EquipmentDiagnostics
             }
             if ($candidate->isDirty('performed_on') && DB::connection('tenant')->table('equipment_thickness_stages')->where('inspection_id', $row->id)->whereNotNull('verified_at')->exists()) {
                 throw ValidationException::withMessages(['inspections' => 'Дата диагностики связана с проверенным этапом УЗТ. Сначала снимите проверку этапа.']);
+            }
+            if ($row->exists && $candidate->isDirty('performed_on')) {
+                $visual = DB::connection('tenant')->table('equipment_visual_stages')->where('inspection_id', $row->id)->first();
+                if ($visual && $visual->verified_at !== null) {
+                    throw ValidationException::withMessages(['inspections' => 'Сначала снимите проверку связанного этапа ВИК отдельным сохранением.']);
+                }
+                if ($visual && ! in_array($visual->id, $visualResets, true)) {
+                    if ($candidate->performed_on === null) {
+                        throw ValidationException::withMessages(['inspections' => 'Сначала очистите связанный этап ВИК перед удалением даты выполненной диагностики.']);
+                    }
+                    $collision = DB::connection('tenant')->table('equipment_visual_stages as s')->leftJoin('equipment_inspections as i', 'i.id', '=', 's.inspection_id')
+                        ->where('s.equipment_id', $equipment->id)->where('s.id', '<>', $visual->id)->whereNotIn('s.id', $visualResets)
+                        ->whereRaw('coalesce(i.performed_on,s.reference_date) = ?::date', [$candidate->performed_on->format('Y-m-d')])->exists();
+                    if ($collision) {
+                        throw ValidationException::withMessages(['inspections' => 'На новую дату уже есть сохранённый этап ВИК. Его данные нельзя молча объединить.']);
+                    }
+                }
             }
             foreach ($candidate->unknown_fields as $key) {
                 $value = in_array($key, self::KINDS, true) ? ($candidate->follow_up_dates[$key] ?? null) : $candidate->$key;

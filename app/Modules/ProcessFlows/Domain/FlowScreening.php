@@ -10,7 +10,7 @@ class FlowScreening
 
     public function schema(): array
     {
-        return $this->baseline ??= json_decode(file_get_contents(resource_path('catalogs/flow-screening.json')), true, flags: JSON_THROW_ON_ERROR);
+        return $this->baseline ??= json_decode(file_get_contents(resource_path('catalogs/flow-screening-v2.json')), true, flags: JSON_THROW_ON_ERROR);
     }
 
     public static function eligible(string $category, string $medium, string $kind = 'flow'): bool

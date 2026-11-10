@@ -75,14 +75,17 @@ final class EquipmentOperatingScopes
                 if ($qualifier === null) {
                     unset($qualifiers[$field]);
                 } else {
-                    if (! isset($qualifier['state'])) {
-                        $this->invalid($path.'.qualifiers.'.$field, 'Укажите состояние поля.');
+                    if (! isset($qualifier['state']) && ! isset($qualifier['precision'])) {
+                        $this->invalid($path.'.qualifiers.'.$field, 'Укажите состояние или точность даты.');
                     }$qualifiers[$field] = $qualifier;
                 }
             }
             foreach ($qualifiers as $field => $qualifier) {
-                if (($values[$field] ?? null) !== null) {
+                if (($values[$field] ?? null) !== null && isset($qualifier['state'])) {
                     $this->invalid($path.'.qualifiers.'.$field, 'Состояние поля требует пустого значения.');
+                }
+                if (($qualifier['precision'] ?? null) === 'year' && isset($values[$field]) && ! str_ends_with($values[$field], '-01-01')) {
+                    $this->invalid($path.'.qualifiers.'.$field, 'При известном только годе дата хранится как 01.01 указанного года.');
                 }
             }
             foreach (array_unique([...array_keys($before[0]), ...array_keys($values), ...array_keys($before[1]), ...array_keys($qualifiers)]) as $field) {
@@ -111,7 +114,7 @@ final class EquipmentOperatingScopes
             $scope->forceFill(array_replace(array_fill_keys(array_keys(OperatingScopeSchema::FIELDS), null), $values, ['updated_by' => $actor]))->save();
             $annotations = [];
             foreach (array_unique([...array_keys($values), ...array_keys($qualifiers), ...array_keys($checks)]) as $field) {
-                $annotations[] = ['scope_id' => $scope->id, 'field_key' => $field, 'value_present' => array_key_exists($field, $values), 'state' => $qualifiers[$field]['state'] ?? null, 'verified_by' => $checks[$field]['by'] ?? null, 'verified_at' => $checks[$field]['at'] ?? null];
+                $annotations[] = ['scope_id' => $scope->id, 'field_key' => $field, 'value_present' => array_key_exists($field, $values), 'state' => $qualifiers[$field]['state'] ?? null, 'precision' => $qualifiers[$field]['precision'] ?? null, 'verified_by' => $checks[$field]['by'] ?? null, 'verified_at' => $checks[$field]['at'] ?? null];
             }
             $db = DB::connection('tenant');
             $db->table('equipment_operating_scope_annotations')->where('scope_id', $scope->id)->delete();
@@ -133,6 +136,8 @@ final class EquipmentOperatingScopes
                 $values[$key] = $scope->getAttribute($key);
             }if ($annotation->state !== null) {
                 $qualifiers[$key] = ['state' => $annotation->state];
+            }if ($annotation->precision !== null) {
+                $qualifiers[$key]['precision'] = $annotation->precision;
             }if ($annotation->verified_at !== null) {
                 $checks[$key] = ['by' => (int) $annotation->verified_by, 'at' => $annotation->verified_at->toIso8601String()];
             }
@@ -170,8 +175,10 @@ final class EquipmentOperatingScopes
             'operating_scopes.*.values' => 'sometimes|array:'.$keys, 'operating_scopes.*.qualifiers' => 'sometimes|array:'.$keys, 'operating_scopes.*.verification' => 'sometimes|array:'.$keys];
         foreach (OperatingScopeSchema::fields() as $key => $field) {
             $rules['operating_scopes.*.values.'.$key] = 'sometimes|'.$field['rules'];
-            $rules['operating_scopes.*.qualifiers.'.$key] = 'sometimes|nullable|array:state';
-            $rules['operating_scopes.*.qualifiers.'.$key.'.state'] = 'required_with:operating_scopes.*.qualifiers.'.$key.'|in:unknown,not_applicable,not_present';
+            $rules['operating_scopes.*.qualifiers.'.$key] = 'sometimes|nullable|array:state,precision';
+            $date = ($field['type'] ?? null) === 'date';
+            $rules['operating_scopes.*.qualifiers.'.$key.'.state'] = ($date ? 'sometimes' : 'required_with:operating_scopes.*.qualifiers.'.$key).'|in:unknown,not_applicable,not_present';
+            $rules['operating_scopes.*.qualifiers.'.$key.'.precision'] = $date ? 'sometimes|in:day,year' : 'prohibited';
             $rules['operating_scopes.*.verification.'.$key] = 'sometimes|boolean';
         }
 

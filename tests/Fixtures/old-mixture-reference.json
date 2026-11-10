@@ -1,0 +1,516 @@
+{
+  "source": {
+    "oracle_version": "old-v1",
+    "snapshot_at": "2026-10-28T15:26:07.619Z",
+    "checksums": {
+      "cardreg.js": "2c380c5599d8e9ef05b2f4d95dee0572ba3801ac8944dbd16c9669f0c769bd00",
+      "chemcat.js": "a822eb92e215358598213049cc8ca0edac83a4220eb3ee8ce62e7aafab9ef368",
+      "corrdm.js": "173835832837bdbf62f1b17bdf2b8b72eb63ebdd03afc31b87bb291ed7705842",
+      "armtypes.js": "fdff235c24ce1133037487b930f3f54bab7fafbe0a847f5757ccdf96629fb1f6",
+      "ditbl.js": "3efbdec80bb0cd7368e2aae51b9a8fa46d4fb1948a3088e6e01033ec4875b9a7",
+      "fincost.js": "d57c09342de78fe9b6190a3b4d323295232cd4d029c309e6a62a4ee07d6e5ad6",
+      "cofdata.js": "07e8555d1cd15ee27e48cdbd7d3254e2e821fc8b5dab3cd00403b7db29153a9a",
+      "cofcalc.js": "fb2a8e93901f4dc929dfc9a889e2765d775318c1f4d320887e72b5ad5c0e0d0d",
+      "pofcalc.js": "3d809029a0968e1e48d9d9fbb73da08b3941e31725a335abf28261fa8c845986",
+      "riskcalc.js": "d32a03cf130e894597782cc8ba4681325bf45635f2b6d04d8894d513484a462c",
+      "mscheck.js": "fa8ebb1c5eab9ea3e2cc40b800e64889ef3e4dc896b555ac459cd9b02a4a30dd",
+      "dfthin.js": "3b1dd12451ed6677cc7b91c3b93ce98992735e84ee07b225400027c6fdcf2d79",
+      "dfext.js": "3d8f1cbb17dde863dd7480d2f216d4a0f7248fb8f73ec7e56c8289356e92db3f",
+      "dfcl.js": "b6ec80f2d144b1025a419293cbfab1141a75de84c882fdf1d4430d3cd2f545fe",
+      "dfscc.js": "7eaed46f92a86cae3ba41823f7e3b996eb46d5c4c6854a9e611fd29fac2b0873",
+      "dfscc2.js": "2732f62a2b8952699761ed4dbf0619dde3b328cfc9bf51fa102f159d55087843",
+      "dfemb.js": "02e65f7e1836a386eda3f2a6ab374de6fe11a7d5555a9786030327bda587da49",
+      "mdscr.js": "d2bed4d83ea0b020c4ef1ee5faa915d55909c63c6d88a45ee863dfede66bade3",
+      "rldata.js": "550b0b66d7745f91eb209d303c82547dc33134ec8859a40c639c2beebccbd4aa",
+      "dmcat_a.js": "cfa1b40f538f0af224a86a25d24576e6d824bac45f89cdc07ccd654cfb6fc67b",
+      "dmcat_b.js": "b64f9438651d2d4de532f6646f6e5159e27854bb36bce39fe2c02e0c07cb262e",
+      "dmcat_c.js": "9abff96121bec19d363a6afa2936c35137112969819d6f4f1a6ffd96474036a6",
+      "sanpin21.js": "759c7cdccf66147e2e1e6a6e57b82f5854f1f466723b8178b9e1446707c21cd3",
+      "ppktbl.js": "4a00bafff931d8a3ab8628edc6dcfc610d836cf86a18ec8378d935bde5d75f43",
+      "ppkcalc.js": "7d24c1d9d06db38fcd827dd9cd2758ce9b80e35698ca5abd79093f276b403ae7",
+      "index.dc.html": "4cdb4fd742c105e57ae1e6c2a9f63610773b5e9682d02d78c3499d6c48591873"
+    }
+  },
+  "cases": [
+    {
+      "name": "gas-zero-gauge-and-temperature",
+      "basis": "mole",
+      "conditions": {
+        "phase": "gas",
+        "pressure": 0,
+        "temperature": 0
+      },
+      "components": [
+        {
+          "id": "0",
+          "role": "main",
+          "amount": 100,
+          "substance_id": "chem45",
+          "substance_version": 1,
+          "substance_values": {
+            "id": "chem45",
+            "idx": 45,
+            "name": "Азот",
+            "note": "",
+            "formula": "N2",
+            "mw": 28.01,
+            "mwNote": "",
+            "nbp": -195.8,
+            "nbpNote": "",
+            "ait": null,
+            "aitNote": "Источник: негорючее — не применимо",
+            "dens": 808,
+            "densNote": "жидкость при Tкип (−195.8 °C), 0.101 МПа",
+            "idlh": "простой асфиксиант",
+            "flammable": false,
+            "toxic": false,
+            "nfnt": false,
+            "inert": true,
+            "nfpaH": "3",
+            "nfpaF": "0",
+            "nfpaI": "0",
+            "nfpaS": "-",
+            "ref": "",
+            "repEnv": "—",
+            "repMethod": "экспертно",
+            "comment": "по NBP и NFPA",
+            "icsc": "1198",
+            "grpRF": "В(а)",
+            "grpRFNote": "",
+            "hazClass": "—",
+            "pdk": "—",
+            "intlName": "NITROGEN",
+            "intlNameNote": "по ICSC 1198",
+            "intlSyn": "Nitrogen gas",
+            "phaseNu": "газ",
+            "phaseNuNote": "",
+            "refCameo": "https://cameochemicals.noaa.gov/chemical/4069",
+            "hazSanpin": "—",
+            "hazSanpinNote": "нет в табл. 2.1",
+            "api581cls": "—"
+          }
+        }
+      ],
+      "expected": {
+        "hasCalc": true,
+        "basisLabel": "мольные / объёмные доли",
+        "mw": "28.01",
+        "mwOk": true,
+        "mwFormula": "M_см = Σ(xᵢ·Mᵢ)",
+        "mwSteps": [
+          {
+            "n": "Азот",
+            "a": "100 % мол. (xᵢ = 1)",
+            "b": "M = 28.01",
+            "c": "xᵢ·Mᵢ = 28.01"
+          }
+        ],
+        "nbp": "-195.8",
+        "nbpOk": true,
+        "nbpFormula": "Tкип_см ≈ Σ(xᵢ·Tкип,ᵢ)",
+        "nbpSteps": [
+          {
+            "n": "Азот",
+            "a": "100 % мол. (xᵢ = 1)",
+            "b": "Tкип = -195.8 °C",
+            "c": "xᵢ·T = -195.8"
+          }
+        ],
+        "rho": "1",
+        "rhoOk": true,
+        "rhoFormula": "ρ = P_абс·M / (R·T)  (идеальный газ); P_абс = P_изб + 0.101325 МПа",
+        "rhoSteps": [
+          {
+            "n": "P изб. (карточка)",
+            "a": "0 МПа",
+            "b": "+ 0.101325 МПа",
+            "c": ""
+          },
+          {
+            "n": "P абс.",
+            "a": "0.1013 МПа",
+            "b": "= 101325 Па",
+            "c": ""
+          },
+          {
+            "n": "M смеси",
+            "a": "28.01 г/моль",
+            "b": "= 0.02801 кг/моль",
+            "c": ""
+          },
+          {
+            "n": "T",
+            "a": "0 °C",
+            "b": "= 273.15 К",
+            "c": ""
+          },
+          {
+            "n": "R",
+            "a": "8,314 Дж/(моль·К)",
+            "b": "",
+            "c": ""
+          }
+        ],
+        "rhoNote": "Уравнение состояния идеального газа при заданных P и T потока. Давление в карточке принято избыточным: к нему прибавлено атмосферное 0.101325 МПа."
+      }
+    },
+    {
+      "name": "gas-operating-conditions",
+      "basis": "mole",
+      "conditions": {
+        "phase": "gas",
+        "pressure": 0.6,
+        "temperature": 35
+      },
+      "components": [
+        {
+          "id": "0",
+          "role": "main",
+          "amount": 75,
+          "substance_id": "chem45",
+          "substance_version": 1,
+          "substance_values": {
+            "id": "chem45",
+            "idx": 45,
+            "name": "Азот",
+            "note": "",
+            "formula": "N2",
+            "mw": 28.01,
+            "mwNote": "",
+            "nbp": -195.8,
+            "nbpNote": "",
+            "ait": null,
+            "aitNote": "Источник: негорючее — не применимо",
+            "dens": 808,
+            "densNote": "жидкость при Tкип (−195.8 °C), 0.101 МПа",
+            "idlh": "простой асфиксиант",
+            "flammable": false,
+            "toxic": false,
+            "nfnt": false,
+            "inert": true,
+            "nfpaH": "3",
+            "nfpaF": "0",
+            "nfpaI": "0",
+            "nfpaS": "-",
+            "ref": "",
+            "repEnv": "—",
+            "repMethod": "экспертно",
+            "comment": "по NBP и NFPA",
+            "icsc": "1198",
+            "grpRF": "В(а)",
+            "grpRFNote": "",
+            "hazClass": "—",
+            "pdk": "—",
+            "intlName": "NITROGEN",
+            "intlNameNote": "по ICSC 1198",
+            "intlSyn": "Nitrogen gas",
+            "phaseNu": "газ",
+            "phaseNuNote": "",
+            "refCameo": "https://cameochemicals.noaa.gov/chemical/4069",
+            "hazSanpin": "—",
+            "hazSanpinNote": "нет в табл. 2.1",
+            "api581cls": "—"
+          }
+        },
+        {
+          "id": "1",
+          "role": "main",
+          "amount": 25,
+          "substance_id": "chem46",
+          "substance_version": 1,
+          "substance_values": {
+            "id": "chem46",
+            "idx": 46,
+            "name": "Кислород",
+            "note": "",
+            "formula": "O2",
+            "mw": 32,
+            "mwNote": "15.99977",
+            "nbp": -182.96,
+            "nbpNote": "",
+            "ait": null,
+            "aitNote": "Источник: негорючее — не применимо (окислитель)",
+            "dens": 1141,
+            "densNote": "",
+            "idlh": "",
+            "flammable": false,
+            "toxic": false,
+            "nfnt": false,
+            "inert": true,
+            "nfpaH": "3",
+            "nfpaF": "0",
+            "nfpaI": "0",
+            "nfpaS": "OX",
+            "ref": "",
+            "repEnv": "—",
+            "repMethod": "экспертно",
+            "comment": "по NBP и NFPA",
+            "icsc": "0138",
+            "grpRF": "В(а)",
+            "grpRFNote": "",
+            "hazClass": "—",
+            "pdk": "—",
+            "intlName": "OXYGEN",
+            "intlNameNote": "по ICSC 0138",
+            "intlSyn": "Oxygen gas",
+            "phaseNu": "газ",
+            "phaseNuNote": "",
+            "refCameo": "https://cameochemicals.noaa.gov/chemical/8967",
+            "hazSanpin": "—",
+            "hazSanpinNote": "нет в табл. 2.1",
+            "api581cls": "—"
+          }
+        }
+      ],
+      "expected": {
+        "hasCalc": true,
+        "basisLabel": "мольные / объёмные доли",
+        "mw": "29.01",
+        "mwOk": true,
+        "mwFormula": "M_см = Σ(xᵢ·Mᵢ)",
+        "mwSteps": [
+          {
+            "n": "Азот",
+            "a": "75 % мол. (xᵢ = 0.75)",
+            "b": "M = 28.01",
+            "c": "xᵢ·Mᵢ = 21.0075"
+          },
+          {
+            "n": "Кислород",
+            "a": "25 % мол. (xᵢ = 0.25)",
+            "b": "M = 32",
+            "c": "xᵢ·Mᵢ = 8"
+          }
+        ],
+        "nbp": "-192.6",
+        "nbpOk": true,
+        "nbpFormula": "Tкип_см ≈ Σ(xᵢ·Tкип,ᵢ)",
+        "nbpSteps": [
+          {
+            "n": "Азот",
+            "a": "75 % мол. (xᵢ = 0.75)",
+            "b": "Tкип = -195.8 °C",
+            "c": "xᵢ·T = -146.85"
+          },
+          {
+            "n": "Кислород",
+            "a": "25 % мол. (xᵢ = 0.25)",
+            "b": "Tкип = -183 °C",
+            "c": "xᵢ·T = -45.74"
+          }
+        ],
+        "rho": "8",
+        "rhoOk": true,
+        "rhoFormula": "ρ = P_абс·M / (R·T)  (идеальный газ); P_абс = P_изб + 0.101325 МПа",
+        "rhoSteps": [
+          {
+            "n": "P изб. (карточка)",
+            "a": "0.6 МПа",
+            "b": "+ 0.101325 МПа",
+            "c": ""
+          },
+          {
+            "n": "P абс.",
+            "a": "0.7013 МПа",
+            "b": "= 701325 Па",
+            "c": ""
+          },
+          {
+            "n": "M смеси",
+            "a": "29.01 г/моль",
+            "b": "= 0.02901 кг/моль",
+            "c": ""
+          },
+          {
+            "n": "T",
+            "a": "35 °C",
+            "b": "= 308.15 К",
+            "c": ""
+          },
+          {
+            "n": "R",
+            "a": "8,314 Дж/(моль·К)",
+            "b": "",
+            "c": ""
+          }
+        ],
+        "rhoNote": "Уравнение состояния идеального газа при заданных P и T потока. Давление в карточке принято избыточным: к нему прибавлено атмосферное 0.101325 МПа."
+      }
+    },
+    {
+      "name": "liquid-mass-mixture",
+      "basis": "mass",
+      "conditions": {
+        "phase": "liquid",
+        "pressure": null,
+        "temperature": null
+      },
+      "components": [
+        {
+          "id": "0",
+          "role": "main",
+          "amount": 60,
+          "substance_id": "chem43",
+          "substance_version": 1,
+          "substance_values": {
+            "id": "chem43",
+            "idx": 43,
+            "name": "Вода",
+            "note": "Оксид водорода, гидроксид водорода",
+            "formula": "H2O",
+            "mw": 18.01528,
+            "mwNote": "",
+            "nbp": 99.974,
+            "nbpNote": "",
+            "ait": null,
+            "aitNote": "Источник: негорючее — не применимо",
+            "dens": 1000,
+            "densNote": "",
+            "idlh": "",
+            "flammable": false,
+            "toxic": false,
+            "nfnt": false,
+            "inert": true,
+            "nfpaH": "0",
+            "nfpaF": "0",
+            "nfpaI": "0",
+            "nfpaS": "-",
+            "ref": "",
+            "repEnv": "H2O (water)",
+            "repMethod": "API 581",
+            "comment": "---",
+            "icsc": "",
+            "grpRF": "В(а)",
+            "grpRFNote": "",
+            "hazClass": "—",
+            "pdk": "—",
+            "phaseNu": "жидкость",
+            "phaseNuNote": "при 0 °C — точка замерзания",
+            "refCameo": "https://cameochemicals.noaa.gov/chemical/30024",
+            "hazSanpin": "—",
+            "hazSanpinNote": "не опасно",
+            "api581cls": "—",
+            "refIcsc": "not exist",
+            "phaseNu_cameo": "жидкость",
+            "nbp_cameo": "100",
+            "intlName": "Water",
+            "formulaAlt": "HOH",
+            "intlSyn": "Hydrogen oxide, Hydrogen hydroxide, Aqua",
+            "cas": "7732-18-5",
+            "dens_cameo": "1000",
+            "refNiosh": "not found",
+            "hazClassNote": "не опасно"
+          }
+        },
+        {
+          "id": "1",
+          "role": "main",
+          "amount": 40,
+          "substance_id": "chem33",
+          "substance_version": 1,
+          "substance_values": {
+            "id": "chem33",
+            "idx": 33,
+            "name": "Метанол",
+            "note": "",
+            "formula": "CH3OH",
+            "mw": 32,
+            "mwNote": "",
+            "nbp": 65,
+            "nbpNote": "",
+            "ait": 440,
+            "aitNote": "Источник: Корольченко А.Я., 2004; NFPA 325 — 464; ICSC — сверка не выполнена",
+            "dens": 800.92,
+            "densNote": "",
+            "idlh": "6000",
+            "flammable": true,
+            "toxic": false,
+            "nfnt": false,
+            "inert": null,
+            "nfpaH": "1",
+            "nfpaF": "3",
+            "nfpaI": "0",
+            "nfpaS": "-",
+            "ref": "",
+            "repEnv": "CH3OH",
+            "repMethod": "API 581",
+            "comment": "---",
+            "icsc": "0057",
+            "grpRF": "А(б)",
+            "grpRFNote": "",
+            "hazClass": "3",
+            "pdk": "5",
+            "ait_nfpa": "464",
+            "ait_kor": "440",
+            "intlName": "METHANOL",
+            "intlNameNote": "по ICSC 0057",
+            "intlSyn": "Methyl alcohol; Carbinol; Wood alcohol",
+            "phaseNu": "жидкость",
+            "phaseNuNote": "",
+            "refCameo": "https://cameochemicals.noaa.gov/chemical/3874",
+            "hazSanpin": "3",
+            "hazSanpinNote": "№ 1250 — Метанол+ (метиловый спирт)",
+            "hazClassNote": "умеренно опасное (ПДК 1.1–10.0 мг/м³)",
+            "api581cls": "—"
+          }
+        }
+      ],
+      "expected": {
+        "hasCalc": true,
+        "basisLabel": "массовые доли (% масс.)",
+        "mw": "21.83",
+        "mwOk": true,
+        "mwFormula": "M_см = 1 / Σ(wᵢ/Mᵢ)",
+        "mwSteps": [
+          {
+            "n": "Вода",
+            "a": "60 % масс. (wᵢ = 0.6)",
+            "b": "M = 18.015",
+            "c": "wᵢ/Mᵢ = 0.033305"
+          },
+          {
+            "n": "Метанол",
+            "a": "40 % масс. (wᵢ = 0.4)",
+            "b": "M = 32",
+            "c": "wᵢ/Mᵢ = 0.0125"
+          }
+        ],
+        "nbp": "90.4",
+        "nbpOk": true,
+        "nbpFormula": "Tкип_см ≈ Σ(xᵢ·Tкип,ᵢ); xᵢ = (wᵢ/Mᵢ) / Σ(wⱼ/Mⱼ)",
+        "nbpSteps": [
+          {
+            "n": "Вода",
+            "a": "60 % масс. → xᵢ = 0.7271",
+            "b": "Tкип = 100 °C",
+            "c": "xᵢ·T = 72.692"
+          },
+          {
+            "n": "Метанол",
+            "a": "40 % масс. → xᵢ = 0.2729",
+            "b": "Tкип = 65 °C",
+            "c": "xᵢ·T = 17.738"
+          }
+        ],
+        "rho": "910",
+        "rhoOk": true,
+        "rhoFormula": "ρ_см = 1 / Σ(wᵢ/ρᵢ)  (аддитивность объёмов)",
+        "rhoSteps": [
+          {
+            "n": "Вода",
+            "a": "60 % масс. (wᵢ = 0.6)",
+            "b": "ρₗ = 1000 кг/м³",
+            "c": "wᵢ/ρᵢ = 0.0006"
+          },
+          {
+            "n": "Метанол",
+            "a": "40 % масс. (wᵢ = 0.4)",
+            "b": "ρₗ = 800.9 кг/м³",
+            "c": "wᵢ/ρᵢ = 0.0004994"
+          }
+        ],
+        "rhoNote": "По плотностям компонентов из каталога веществ (жидкая смесь)."
+      }
+    }
+  ]
+}

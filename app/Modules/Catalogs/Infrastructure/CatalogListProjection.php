@@ -24,8 +24,11 @@ class CatalogListProjection
 
     public static function substances(Builder $query): Builder
     {
-        return $query->select(['id', 'label', 'origin', 'status', 'version', 'base_flags', 'checks'])
-            ->selectRaw("(base_values || overrides)->>'formula' AS summary_formula, (base_values || overrides)->>'grpRF' AS summary_group");
+        $effective = SubstanceCardProjection::effectiveSql();
+
+        return $query->without('cardProjection')->select(['id', 'label', 'origin', 'status', 'version', 'base_flags'])
+            ->selectRaw('(SELECT c.checks FROM substance_cards c WHERE c.substance_id=substances.id) AS checks')
+            ->selectRaw($effective."->>'formula' AS summary_formula, ".$effective."->>'grpRF' AS summary_group");
     }
 
     public static function steelGrades(Builder $query): Builder

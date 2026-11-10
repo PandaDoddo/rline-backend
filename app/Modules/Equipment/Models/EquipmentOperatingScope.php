@@ -19,7 +19,7 @@ class EquipmentOperatingScope extends TenantModel
     {
         $casts = ['created_at' => 'immutable_datetime', 'updated_at' => 'immutable_datetime'];
         foreach (OperatingScopeSchema::FIELDS as $key => $kinds) {
-            if (! in_array($key, ['relief_valve_present', 'medium', 'alternative_medium'], true)) {
+            if (config('equipment.passport.'.$key.'.type') === 'number') {
                 $casts[$key] = 'float';
             }
         }

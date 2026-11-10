@@ -16,7 +16,7 @@ class SubstanceValues
                 return null;
             }
             if (in_array($field['type'], ['number', 'integer'], true)) {
-                $number = str_replace([' ', ','], ['', '.'], $value);
+                $number = str_replace([' ', "\u{00A0}", "\u{202F}", ',', '−'], ['', '', '', '.', '-'], $value);
                 if (is_numeric($number)) {
                     return $number + 0;
                 }

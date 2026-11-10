@@ -7,12 +7,49 @@ use PHPUnit\Framework\TestCase;
 
 class MixtureCalculatorTest extends TestCase
 {
+    public function test_matches_trusted_old_calculator_at_its_display_precision(): void
+    {
+        $reference = json_decode(file_get_contents(__DIR__.'/../Fixtures/old-mixture-reference.json'), true, 512, JSON_THROW_ON_ERROR);
+        $engine = new MixtureCalculator;
+        foreach ($reference['cases'] as $case) {
+            $result = $engine->calculate($case['basis'], $case['components'], $case['conditions']);
+            foreach (['molecular_weight' => ['mw', 2], 'boiling_point' => ['nbp', 1], 'density' => ['rho', 0]] as $key => [$oldKey, $precision]) {
+                $this->assertNotNull($result['properties'][$key], $case['name'].' '.$key);
+                $this->assertEquals((float) $case['expected'][$oldKey], round($result['properties'][$key], $precision), $case['name'].' '.$key);
+            }
+        }
+    }
+
     private function rows(): array
     {
         return [
             ['id' => 'a', 'role' => 'main', 'amount' => 20, 'substance_id' => 'A', 'substance_version' => 1, 'substance_values' => ['name' => 'A', 'mw' => 10, 'nbp' => 0, 'dens' => 1000, 'flammable' => true, 'toxic' => true, 'nfnt' => false, 'inert' => false]],
             ['id' => 'b', 'role' => 'main', 'amount' => 80, 'substance_id' => 'B', 'substance_version' => 1, 'substance_values' => ['name' => 'B', 'mw' => 20, 'nbp' => 100, 'dens' => 2000, 'flammable' => false, 'toxic' => null, 'nfnt' => true, 'inert' => false]],
         ];
+    }
+
+    public function test_density_uses_explicit_phase_and_gas_conditions_without_ambient_defaults(): void
+    {
+        $engine = new MixtureCalculator;
+        $rows = $this->rows();
+        $gas = ['phase' => 'gas', 'pressure' => 0, 'temperature' => 0];
+        $result = $engine->calculate('mass', $rows, $gas);
+        $this->assertSame('ideal_gas', $result['density_method']);
+        $this->assertEqualsWithDelta(0.7436252655309137, $result['properties']['density'], 1e-10);
+        $this->assertSame($result['properties']['density'], $result['properties']['gas_density']);
+        foreach ([['phase' => 'gas'], ['phase' => 'gas', 'pressure' => 0], ['phase' => 'gas', 'temperature' => 0],
+            ['phase' => 'gas', 'pressure' => -0.101325, 'temperature' => 0], ['phase' => 'gas', 'pressure' => 0, 'temperature' => -273.15],
+            ['phase' => 'two_phase'], ['phase' => 'solid'], []] as $conditions) {
+            $unknown = $engine->calculate('mass', $rows, $conditions);
+            $this->assertNull($unknown['properties']['density']);
+            $this->assertNull($unknown['density_method']);
+        }
+        $liquid = $engine->calculate('mass', $rows, ['phase' => 'liquid']);
+        $this->assertSame('catalog_liquid', $liquid['density_method']);
+        $this->assertSame($liquid['properties']['liquid_density'], $liquid['properties']['density']);
+        $this->assertSame($result['signature'], $engine->calculate('mass', $rows, $gas + ['flow_rate_t_h' => 5, 'notes' => 'ignored'])['signature']);
+        $this->assertNotSame($result['signature'], $engine->calculate('mass', $rows, array_replace($gas, ['temperature' => 1]))['signature']);
+        $this->assertSame($liquid['signature'], $engine->calculate('mass', $rows, ['phase' => 'liquid', 'pressure' => 1, 'temperature' => 100])['signature']);
     }
 
     public function test_mass_mole_conversion_multi_criteria_and_input_order_signature(): void

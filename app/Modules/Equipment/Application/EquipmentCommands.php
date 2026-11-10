@@ -3,11 +3,15 @@
 namespace App\Modules\Equipment\Application;
 
 use App\Modules\Diagnostics\Application\EquipmentDiagnostics;
+use App\Modules\Diagnostics\Application\EquipmentInspectionCategories;
+use App\Modules\Diagnostics\Application\EquipmentVisualInspections;
 use App\Modules\Equipment\Domain\PassportSchema;
 use App\Modules\Equipment\Infrastructure\EquipmentPassportRepository;
+use App\Modules\Equipment\Infrastructure\MechanismFacts;
 use App\Modules\Equipment\Models\Equipment;
 use App\Modules\Installations\Models\Installation;
 use App\Modules\ProcessFlows\Application\EquipmentFlowContacts;
+use App\Modules\ProcessFlows\Application\EquipmentFlowSelection;
 use App\Modules\Shared\Domain\ValueEquality;
 use App\Modules\Shared\Infrastructure\TenantWrites;
 use Illuminate\Support\Str;
@@ -24,6 +28,8 @@ final class EquipmentCommands
         private readonly EquipmentStructure $structure,
         private readonly EquipmentOperatingScopes $scopes,
         private readonly EquipmentFlowContacts $flows,
+        private readonly EquipmentMechanisms $mechanisms,
+        private readonly EquipmentInspectionCategories $categories, private readonly EquipmentVisualInspections $visual,
     ) {}
 
     public function create(array $data, int $actor, ?string $identity = null): Equipment
@@ -66,18 +72,28 @@ final class EquipmentCommands
             if (array_key_exists('operating_scopes', $data)) {
                 $before['operating_scopes'] = $this->scopes->read($model);
             }
-            $flowChange = array_key_exists('flow_contacts', $data) || $model->installation_id !== $data['installation_id'];
+            $flowChange = array_key_exists('flow_contacts', $data) || array_key_exists('flow_selection', $data) || $model->installation_id !== $data['installation_id'];
             if ($flowChange) {
                 $before['flows'] = $this->flows->read($model);
             }
             if (array_key_exists('thickness', $data)) {
                 $before['thickness'] = $this->thickness->read($model);
             }
+            if (array_key_exists('visual_inspections', $data)) {
+                $before['visual_inspections'] = $this->visual->read($model);
+            }
+            if (array_key_exists('inspection_categories', $data)) {
+                $before['inspection_categories'] = $this->categories->read($model);
+            }
+            if (array_key_exists('mechanisms', $data)) {
+                $before['mechanisms'] = app(MechanismFacts::class)->read($model->id);
+            }
             if (array_key_exists('structure', $data)) {
                 $this->structure->apply($model, $data['structure'], $actor);
             }
             if (array_key_exists('inspections', $data)) {
-                $this->diagnostics->apply($model, $data['inspections'], $actor);
+                $this->categories->guardDiagnostics($model, $data['inspections'], $data['inspection_categories']['delete_stage_ids'] ?? []);
+                $this->diagnostics->apply($model, $data['inspections'], $actor, $data['visual_inspections']['delete_stage_ids'] ?? []);
             }
             $checks = $model->checks ?? [];
             foreach (array_unique([...array_keys($model->passport), ...array_keys($data['passport']), ...array_keys($model->passport_qualifiers), ...array_keys($qualifiers)]) as $key) {
@@ -109,8 +125,30 @@ final class EquipmentCommands
             }
             if ($flowChange) {
                 $this->flows->apply($model, $data['flow_contacts'] ?? [], $actor);
+                app(EquipmentFlowSelection::class)->apply($model, $data['flow_selection'] ?? null, $actor);
+            }
+            if (array_key_exists('visual_inspections', $data)) {
+                $this->visual->apply($model, $data['visual_inspections'], $actor);
+            }
+            if (array_key_exists('inspection_categories', $data)) {
+                $this->categories->apply($model, $data['inspection_categories'], $actor);
+            }
+            if (array_key_exists('mechanisms', $data)) {
+                $this->mechanisms->apply($model, $data['mechanisms'], $actor);
+            }
+            if ($model->installation_id !== $sourceInstallation) {
+                $this->mechanisms->guardInstallation($model);
             }
             $after = $model->toArray();
+            if (array_key_exists('mechanisms', $data)) {
+                $after['mechanisms'] = app(MechanismFacts::class)->read($model->id);
+            }
+            if (array_key_exists('inspection_categories', $data)) {
+                $after['inspection_categories'] = $this->categories->read($model);
+            }
+            if (array_key_exists('visual_inspections', $data)) {
+                $after['visual_inspections'] = $this->visual->read($model);
+            }
             if (array_key_exists('operating_scopes', $data)) {
                 $after['operating_scopes'] = $this->scopes->read($model);
             }

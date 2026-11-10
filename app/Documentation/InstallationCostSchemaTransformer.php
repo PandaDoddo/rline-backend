@@ -30,6 +30,7 @@ class InstallationCostSchemaTransformer implements DocumentTransformer
                 continue;
             }
             if (class_basename($name) === 'InstallationCostResource') {
+                $type->addProperty('data_origin', ImportOriginSchema::make()->nullable(true));
                 $type->addProperty('values', $values->clone());
                 $checks = new ObjectType;
                 $checks->additionalProperties = $check;

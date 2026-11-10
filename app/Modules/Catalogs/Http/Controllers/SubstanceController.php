@@ -12,9 +12,12 @@ use App\Modules\Catalogs\Http\Resources\SubstanceEventResource;
 use App\Modules\Catalogs\Http\Resources\SubstanceResource;
 use App\Modules\Catalogs\Http\Resources\SubstanceSummaryResource;
 use App\Modules\Catalogs\Infrastructure\CatalogListProjection;
+use App\Modules\Catalogs\Infrastructure\SubstanceCardProjection;
 use App\Modules\Catalogs\Models\Substance;
+use App\Modules\DataExchange\Application\ImportedRecordOrigins;
 use Dedoc\Scramble\Attributes\IgnoreResponse;
 use Dedoc\Scramble\Attributes\Response;
+use Illuminate\Support\Facades\DB;
 
 class SubstanceController extends Controller
 {
@@ -31,7 +34,7 @@ class SubstanceController extends Controller
         if (isset($data['origin'])) {
             $query->where('origin', $data['origin']);
         }
-        $effective = '(base_values || overrides)';
+        $effective = SubstanceCardProjection::effectiveSql();
         if (($q = trim($data['q'] ?? '')) !== '') {
             $pattern = '%'.addcslashes($q, '\\%_').'%';
             $query->where(function ($query) use ($pattern, $effective) {
@@ -57,26 +60,34 @@ class SubstanceController extends Controller
         return SubstanceSummaryResource::collection(CatalogListProjection::substances($query)->orderBy('label')->orderBy('id')->paginate($data['per_page'] ?? 50));
     }
 
+    #[Response(status: 200, type: SubstanceResource::class)]
     public function show(string $substance)
     {
-        return new SubstanceResource(Substance::findOrFail($substance));
+        return DB::connection('tenant')->transaction(function () use ($substance) {
+            DB::connection('tenant')->statement('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
+
+            return $this->resourceResponse(Substance::findOrFail($substance));
+        });
     }
 
     #[Response(status: 201, type: SubstanceResource::class)]
     #[IgnoreResponse(200)]
     public function store(SubstanceRequest $request, CatalogRecords $records)
     {
-        $model = $records->create(Substance::class, $request->validated(), $request->user()->id, 'substance');
-
-        return (new SubstanceResource($model))->response()->setStatusCode(201);
+        return DB::connection('tenant')->transaction(fn () => $this->resourceResponse($records->create(Substance::class, $request->validated(), $request->user()->id, 'substance'), 201));
     }
 
     #[Response(status: 200, type: SubstanceResource::class)]
     public function update(UpdateSubstanceRequest $request, string $substance, CatalogRecords $records)
     {
-        $model = $records->update(Substance::class, $substance, $request->validated(), $request->user()->id, 'substance');
+        return DB::connection('tenant')->transaction(fn () => $this->resourceResponse($records->update(Substance::class, $substance, $request->validated(), $request->user()->id, 'substance')));
+    }
 
-        return (new SubstanceResource($model))->response();
+    private function resourceResponse(Substance $model, int $status = 200)
+    {
+        app(ImportedRecordOrigins::class)->attach(collect([$model]), 'substance');
+
+        return (new SubstanceResource($model))->response()->setStatusCode($status);
     }
 
     public function events(string $substance, CatalogHistory $history)

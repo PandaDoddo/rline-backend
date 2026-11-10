@@ -66,12 +66,43 @@ class ManagementAssessmentTest extends TestCase
         $this->patchJson($url, $body)->assertUnprocessable();
         $body['answers'] = [['question_id' => '1.1', 'state' => 'unanswered', 'value' => null, 'comment' => 'Уточняем документ']];
         $this->patchJson($url, $body)->assertOk()->assertJsonPath('data.assessment.ready', false)->assertJsonPath('data.assessment.score', null);
-        $this->getJson($url.'/events')->assertOk()->assertJsonPath('meta.total',3)->assertJsonPath('data.0.changes.0.to','нет ответа');
+        $this->getJson($url.'/events')->assertOk()->assertJsonPath('meta.total', 3)->assertJsonPath('data.0.changes.0.to', 'нет ответа');
         $this->login('management-alpha', 'member');
         $this->getJson($url)->assertOk();
         $this->patchJson($url, $body)->assertForbidden();
         $this->login('management-other');
         $this->getJson($url)->assertNotFound();
+    }
+
+    public function test_assessment_details_are_sparse_typed_audited_and_independent_from_answer_readiness(): void
+    {
+        $this->login('management-details');
+        $parent = null;
+        foreach (['enterprise', 'site', 'production'] as $kind) {
+            $parent = $this->postJson('/api/facility-nodes', ['name' => $kind, 'kind' => $kind, 'parent_id' => $parent])->assertCreated()->json('data.id');
+        }
+        $installation = $this->postJson('/api/installations', ['name' => 'Установка', 'parent_id' => $parent])->assertCreated()->json('data.id');
+        $url = '/api/installations/'.$installation.'/management';
+        $data = $this->getJson($url)->assertOk()->assertJsonPath('data.details', ['assessed_on' => null, 'auditor_name' => null, 'notes' => null])->json('data');
+        $input = ['version' => 1, 'schema_version' => $data['schema_version'], 'answers' => [], 'details' => ['assessed_on' => '2026-10-20', 'auditor_name' => '  Bernard Austin  ', 'notes' => '  Исходные сведения  ']];
+        $this->patchJson($url, $input)->assertOk()->assertJsonPath('data.version', 2)->assertJsonPath('data.details.assessed_on', '2026-10-20')
+            ->assertJsonPath('data.details.auditor_name', 'Bernard Austin')->assertJsonPath('data.details.notes', 'Исходные сведения')
+            ->assertJsonPath('data.assessment.ready', false)->assertJsonPath('data.assessment.answered', 0);
+        $this->getJson($url.'/events')->assertOk()->assertJsonPath('data.0.changes.0.label', 'Дата оценки')->assertJsonPath('data.0.changes.0.to', '2026-10-20');
+        $input['version'] = 2;
+        foreach ([['assessed_on' => '2026-02-31'], ['auditor_name' => str_repeat('a', 256)], ['verified' => true]] as $invalid) {
+            $input['details'] = $invalid;
+            $this->patchJson($url, $input)->assertUnprocessable();
+        }
+        unset($input['details']);
+        $input['answers'] = [['question_id' => '1.1', 'state' => 'answered', 'value' => false, 'comment' => null]];
+        $this->patchJson($url, $input)->assertOk()->assertJsonPath('data.version', 3)->assertJsonPath('data.details.auditor_name', 'Bernard Austin')->assertJsonPath('data.answers.0.value', false);
+        $input['details'] = ['assessed_on' => null, 'auditor_name' => '', 'notes' => ''];
+        $this->patchJson($url, $input)->assertConflict();
+        $input['version'] = 3;
+        $this->patchJson($url, $input)->assertOk()->assertJsonPath('data.details', ['assessed_on' => null, 'auditor_name' => null, 'notes' => null])->assertJsonPath('data.answers.0.value', false);
+        $this->login('management-details', 'member');
+        $this->patchJson($url, $input)->assertForbidden();
     }
 
     protected function tearDown(): void

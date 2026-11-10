@@ -24,6 +24,12 @@ class SubstanceBaseline
                 'base_flags' => json_encode($baseline['flags'][$entry['code']] ?? new \stdClass, JSON_THROW_ON_ERROR), 'overrides' => '{}', 'sources' => '{}', 'checks' => '{}', 'status' => 'active', 'version' => 1, 'created_at' => now(), 'updated_at' => now()];
         }
         // Reapplying this initial baseline must never replace a tenant's edits or archive decisions.
+        if (! DB::connection('tenant')->getSchemaBuilder()->hasColumn('substances', 'overrides')) {
+            foreach ($rows as &$row) {
+                unset($row['overrides'], $row['sources'], $row['checks']);
+            }
+            unset($row);
+        }
         DB::connection('tenant')->table('substances')->insertOrIgnore($rows);
     }
 }

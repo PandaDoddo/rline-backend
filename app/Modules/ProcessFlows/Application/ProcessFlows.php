@@ -51,9 +51,9 @@ class ProcessFlows
         });
     }
 
-    public function createNode(string $installationId, array $data, int $actor): ProcessFlowNode
+    public function createNode(string $installationId, array $data, int $actor, ?string $identity = null): ProcessFlowNode
     {
-        return $this->writes->transaction(function () use ($installationId, $data, $actor) {
+        return $this->writes->transaction(function () use ($installationId, $data, $actor, $identity) {
             $installation = Installation::whereKey($installationId)->lockForUpdate()->firstOrFail();
             abort_unless($installation->status === 'active', 422, 'Сначала восстановите установку из архива.');
             $this->structureVersion($installation, $data['structure_version']);
@@ -62,6 +62,13 @@ class ProcessFlows
                 $this->invalid('medium_kind', 'Грунт, атмосфера и изоляция относятся к наружным средам.');
             }
             $node = (new ProcessFlowNode)->forceFill(['installation_id' => $installationId, 'name' => $data['name'], 'kind' => $data['kind'], 'category' => $data['category'], 'parent_id' => $data['parent_id'] ?? null, 'medium_kind' => $data['medium_kind'] ?? 'fluid', 'created_by' => $actor, 'updated_by' => $actor]);
+            if ($identity !== null) {
+                if (! Str::isUuid($identity)) {
+                    throw ValidationException::withMessages(['id' => 'Идентификатор потока должен быть UUID.']);
+                }
+                $node->id = $identity;
+            }
+            $node->code = $data['code'] ?? null;
             $node->save();
             $installation->forceFill(['flow_structure_version' => $installation->flow_structure_version + 1])->save();
             $this->writes->event('process_flow', $node, 'created', $actor, null, $this->snapshot($node->toArray()));
@@ -85,7 +92,7 @@ class ProcessFlows
                 $this->invalid('status', 'Сначала архивируйте дочерние записи.');
             }
             $before = $node->toArray();
-            foreach (['name', 'parent_id', 'status'] as $key) {
+            foreach (['name', 'code', 'parent_id', 'status'] as $key) {
                 if (array_key_exists($key, $data)) {
                     $node->setAttribute($key, $data[$key]);
                 }
@@ -173,14 +180,14 @@ class ProcessFlows
             $flow->forceFill(['basis' => $data['basis'] ?? $flow->basis, 'version' => $flow->version + 1, 'updated_by' => $actor]);
             if (($data['apply_calculation'] ?? false) || isset($data['expected_calculation_signature'])) {
                 $inputs = $this->resolver->resolve($flow);
-                $result = $this->mixtures->calculate($flow->basis, $inputs);
+                $result = $this->mixtures->calculate($flow->basis, $inputs, $attributes);
                 abort_if(isset($data['expected_calculation_signature']) && $data['expected_calculation_signature'] !== $result['signature'], 409, 'Исходные свойства или состав изменились. Обновите поток и повторно примените расчётные свойства.');
             }
             if ($data['apply_calculation'] ?? false) {
                 if (! $result['complete']) {
                     $this->invalid('apply_calculation', 'Для принятия расчёта нужен полный состав, сумма 100 % и MW всех компонентов.');
                 }
-                $calculation = (new ProcessFlowCalculation)->forceFill(['id' => (string) Str::uuid(), 'flow_id' => $id, 'signature' => $result['signature'], 'engine_version' => MixtureCalculator::VERSION, 'inputs' => ['basis' => $flow->basis, 'components' => $inputs], 'result' => $result, 'created_by' => $actor, 'created_at' => now()]);
+                $calculation = (new ProcessFlowCalculation)->forceFill(['id' => (string) Str::uuid(), 'flow_id' => $id, 'signature' => $result['signature'], 'engine_version' => MixtureCalculator::VERSION, 'inputs' => ['basis' => $flow->basis, 'components' => $inputs, 'conditions' => $result['conditions']], 'result' => $result, 'created_by' => $actor, 'created_at' => now()]);
                 $calculation->save();
                 $flow->accepted_calculation_id = $calculation->id;
             }
@@ -223,8 +230,8 @@ class ProcessFlows
             if ($values['role'] === 'main' && (! empty($values['name']) || ! empty($values['unit']))) {
                 $this->invalid('composition.'.$index, 'Наименование берётся из каталога, единица состава задаётся общей массовой/мольной базой.');
             }
-            if ($flow->medium_kind !== 'fluid' && $values['role'] === 'main') {
-                $this->invalid('composition', 'Для грунта/атмосферы/изоляции основной химический состав не задаётся.');
+            if (in_array($flow->medium_kind, ['soil', 'insulation'], true) && $values['role'] === 'main') {
+                $this->invalid('composition', 'Для грунта/изоляции материал задаётся справочными строками или примесями.');
             }
             if ($values['role'] === 'main' && isset($values['amount']) && $values['amount'] > 100) {
                 $this->invalid('composition.'.$index.'.amount', 'Доля основного компонента не может превышать 100 %.');
@@ -258,7 +265,7 @@ class ProcessFlows
 
     private function snapshot(array $record): array
     {
-        return ['overrides' => ($record['attributes'] ?? []) + ['name' => $record['name'], 'parent_id' => $record['parent_id'] ?? null, 'basis' => $record['basis'], 'accepted_calculation' => $record['accepted_calculation']['id'] ?? null, 'composition' => $record['composition'] ?? [], 'screening' => $record['screening'] ?? null],
+        return ['overrides' => ($record['attributes'] ?? []) + ['name' => $record['name'], 'code' => $record['code'] ?? null, 'parent_id' => $record['parent_id'] ?? null, 'basis' => $record['basis'], 'accepted_calculation' => $record['accepted_calculation']['id'] ?? null, 'composition' => $record['composition'] ?? [], 'screening' => $record['screening'] ?? null],
             'status' => $record['status'], 'sources' => $record['sources'] ?? [], 'checks' => $record['checks'] ?? []];
     }
 

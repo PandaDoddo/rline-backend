@@ -43,4 +43,4 @@ foreach (['ref' => 'Общий источник', 'refIcsc' => 'Источник
 $fields['mix'] = ['label' => 'Справочный состав смеси', 'section' => 'Состав', 'type' => 'mix', 'readonly' => true];
 $fields['idlh']['qualifiers'] = ['простой асфиксиант'];
 
-return ['fields' => $fields, 'missing_values' => ['не установлено', 'не применимо']];
+return ['fields' => $fields, 'missing_values' => ['не установлено', 'не определено', 'не применимо']];

@@ -8,6 +8,41 @@ use Tests\TestCase;
 
 class ApiDocumentationTest extends TestCase
 {
+    public function test_component_mechanisms_keep_typed_traces_and_server_confirmation_metadata_out_of_writes(): void
+    {
+        $spec = $this->spec();
+        $schemas = $spec['components']['schemas'];
+        $read = $schemas['EquipmentResource']['properties']['mechanisms']['properties'];
+        $write = $schemas['UpdateEquipmentRequest']['properties']['mechanisms']['properties'];
+        $trace = $schemas['MechanismElementResource'];
+        $this->assertSame('object', $trace['type']);
+        $this->assertContains('input_signature', $trace['required']);
+        $method = $trace['properties']['mechanisms']['items']['properties'];
+        $this->assertCount(32, $method['id']['enum']);
+        $this->assertSame(['internal', 'external', 'through'], $method['sides']['items']['properties']['side']['enum']);
+        $this->assertSame('boolean', $read['inputs']['properties']['vibration_present']['type'][0]);
+        $this->assertContains('null', $write['question_notes']['items']['properties']['flow_id']['type']);
+        $this->assertArrayNotHasKey('updated_by', $write['overrides']['items']['properties']);
+        $this->assertArrayNotHasKey('verified_at', $write['reviews']['items']['properties']);
+        $this->assertArrayNotHasKey('elements', $write);
+        $this->assertArrayHasKey('/api/equipment/{equipment}/components/{component}/mechanisms', $spec['paths']);
+    }
+
+    public function test_risk_criteria_contract_has_versioned_schema_explicit_nullable_thresholds_and_typed_origins(): void
+    {
+        $schemas = $this->spec()['components']['schemas'];
+        $read = $schemas['RiskCriteriaResource']['properties'];
+        $write = $schemas['UpdateRiskCriteriaRequest'];
+        $this->assertSame('number', $read['effective']['properties']['pof']['type'][0]);
+        $this->assertContains('null', $read['overrides']['properties']['area']['type']);
+        $this->assertSame('number', $read['overrides']['properties']['planScc']['type']);
+        $this->assertContains('schema_version', $write['required']);
+        $this->assertContains('version', $write['required']);
+        $this->assertSame(['installation', 'mri', 'policy'], $read['origins']['properties']['planScc']['enum']);
+        $this->assertCount(12, $read['effective']['required']);
+        $this->assertArrayNotHasKey('data_origin', $write['properties']);
+    }
+
     public function test_component_connections_and_history_keep_read_metadata_out_of_writes(): void
     {
         $spec = $this->spec();
@@ -107,6 +142,13 @@ class ApiDocumentationTest extends TestCase
         $this->assertSame('array', $resource['condition']['properties']['anomalies']['type']);
         $this->assertArrayHasKey('periodicity', $resource['condition']['properties']);
         $request = $spec['components']['schemas']['UpdateEquipmentRequest']['properties'];
+        $required = $spec['components']['schemas']['UpdateEquipmentRequest']['required'];
+        $this->assertEqualsCanonicalizing(['installation_id', 'passport', 'version'], $required);
+        $this->assertArrayHasKey('visual_inspections', $request);
+        $visualInput = $request['visual_inspections']['properties']['stages']['items']['properties'];
+        $this->assertArrayNotHasKey('verified_by', $visualInput);
+        $this->assertArrayNotHasKey('category', $visualInput['observations']['items']['properties']);
+        $this->assertSame('boolean', $visualInput['verified']['type']);
         $this->assertArrayHasKey('structure', $request);
         $this->assertArrayHasKey('inspections', $request);
         $this->assertArrayHasKey('thickness', $request);

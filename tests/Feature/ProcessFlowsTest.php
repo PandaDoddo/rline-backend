@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;
+use App\Modules\ProcessFlows\Application\FlowInputValidation;
 use App\Modules\ProcessFlows\Domain\MixtureCalculator;
 use App\Tenancy\TenantContext;
 use App\Tenancy\TenantDatabaseManager;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class ProcessFlowsTest extends TestCase
 {
@@ -59,6 +61,63 @@ class ProcessFlowsTest extends TestCase
     private function compositionLine(string $id, float $amount): array
     {
         return ['id' => (string) Str::uuid(), 'substance_id' => $id, 'role' => 'main', 'amount' => $amount];
+    }
+
+    public function test_atmosphere_uses_catalog_mixture_but_soil_keeps_material_reference_rows(): void
+    {
+        $this->login('external-composition');
+        $installation = $this->installation();
+        $substance = $this->substance('Газ атмосферы', 28, -196, 800);
+        $air = $this->postJson('/api/installations/'.$installation.'/flow-nodes', ['structure_version' => 1, 'kind' => 'flow', 'category' => 'external', 'name' => 'Атмосфера', 'medium_kind' => 'air'])->assertCreated()->json('data');
+        $this->patchJson('/api/process-flows/'.$air['id'], ['version' => 1, 'composition' => [$this->compositionLine($substance, 100)], 'apply_calculation' => true])->assertOk()->assertJsonPath('data.proposed_calculation.complete', true)->assertJsonPath('data.accepted_calculation.properties.molecular_weight', 28);
+        $soil = $this->postJson('/api/installations/'.$installation.'/flow-nodes', ['structure_version' => 2, 'kind' => 'flow', 'category' => 'external', 'name' => 'Грунт', 'medium_kind' => 'soil'])->assertCreated()->json('data');
+        $this->patchJson('/api/process-flows/'.$soil['id'], ['version' => 1, 'composition' => [$this->compositionLine($substance, 100)]])->assertUnprocessable()->assertJsonValidationErrors('composition');
+        $this->patchJson('/api/process-flows/'.$soil['id'], ['version' => 1, 'composition' => [['id' => (string) Str::uuid(), 'role' => 'reference', 'name' => 'Вода в грунте', 'amount' => 20, 'unit' => 'mass_percent']]])->assertOk()->assertJsonPath('data.proposed_calculation', null)->assertJsonPath('data.composition.0.amount', 20);
+    }
+
+    public function test_flow_codes_are_searchable_unique_per_installation_and_keep_identity_when_changed(): void
+    {
+        $this->login('flow-codes');
+        $installation = $this->installation();
+        $forged = (string) Str::uuid();
+        $flow = $this->postJson('/api/installations/'.$installation.'/flow-nodes', ['id' => $forged, 'structure_version' => 1, 'kind' => 'flow', 'category' => 'main', 'name' => 'Газ', 'code' => ' ОП1.1-1 '])->assertCreated()->assertJsonPath('data.code', 'ОП1.1-1')->json('data');
+        $this->assertNotSame($forged, $flow['id']);
+        $this->getJson('/api/installations/'.$installation.'/flow-nodes?q='.urlencode('ОП1.1-1'))->assertOk()->assertJsonPath('meta.total', 1)->assertJsonPath('data.0.code', 'ОП1.1-1');
+        $this->postJson('/api/installations/'.$installation.'/flow-nodes', ['structure_version' => 2, 'kind' => 'flow', 'category' => 'main', 'name' => 'Другой газ', 'code' => 'ОП1.1-1'])->assertUnprocessable()->assertJsonValidationErrors('code');
+        $updated = $this->patchJson('/api/flow-nodes/'.$flow['id'], ['version' => 1, 'structure_version' => 2, 'code' => 'ОП1.1-2'])->assertOk()->assertJsonPath('data.id', $flow['id'])->assertJsonPath('data.code', 'ОП1.1-2')->json('data');
+        $other = $this->installation();
+        $this->postJson('/api/installations/'.$other.'/flow-nodes', ['structure_version' => 1, 'kind' => 'flow', 'category' => 'main', 'name' => 'Газ', 'code' => 'ОП1.1-2'])->assertCreated();
+        $this->getJson('/api/process-flows/'.$updated['id'])->assertOk()->assertJsonPath('data.code', 'ОП1.1-2');
+    }
+
+    public function test_http_and_maintenance_share_locale_numbers_unknowns_and_nested_validation(): void
+    {
+        $this->login('shared-flow-inputs');
+        $flow = $this->flow($this->installation());
+        $input = ['version' => 1, 'attributes' => ['flow_rate_t_h' => "1\u{202F}234,5", 'velocity_m_s' => '0', 'density' => ''],
+            'composition' => [['id' => (string) Str::uuid(), 'role' => 'impurity', 'name' => ' Соли ', 'amount' => '50,5', 'unit' => 'mass_percent']],
+            'screening' => ['values' => ['h2' => false, 'cl' => '1,25']],
+            'sources' => ['flow_rate_t_h' => ['citation' => ' Протокол ', 'conditions' => '']]];
+        $canonical = app(FlowInputValidation::class)->card($input);
+        $this->assertSame(1234.5, $canonical['attributes']['flow_rate_t_h']);
+        $this->assertSame(0.0, $canonical['attributes']['velocity_m_s']);
+        $this->assertNull($canonical['attributes']['density']);
+        $this->assertSame(false, $canonical['screening']['values']['h2']);
+        $result = $this->patchJson('/api/process-flows/'.$flow['id'], $input)->assertOk()->json('data');
+        $this->assertEquals($canonical['attributes'], $result['attributes']);
+        $this->assertEquals(50.5, $result['composition'][0]['amount']);
+        $this->assertSame('Соли', $result['composition'][0]['name']);
+        $this->assertSame('Протокол', $result['sources']['flow_rate_t_h']['citation']);
+        $this->assertFalse($result['screening']['values']['h2']);
+        foreach ([['composition' => ['broken']], ['attributes' => ['flow_rate_t_h' => '1e999']], ['attributes' => ['flow_rate_t_h' => '0x10']], ['screening' => 'broken']] as $invalid) {
+            $this->patchJson('/api/process-flows/'.$flow['id'], ['version' => $result['version']] + $invalid)->assertUnprocessable();
+            try {
+                app(FlowInputValidation::class)->card(['version' => $result['version']] + $invalid);
+                $this->fail('Maintenance input must reject the same invalid data.');
+            } catch (ValidationException) {
+                $this->assertTrue(true);
+            }
+        }
     }
 
     public function test_flow_rate_and_velocity_are_independent_typed_inputs_with_sources_and_zero(): void
@@ -210,6 +269,30 @@ class ProcessFlowsTest extends TestCase
             app(TenantContext::class)->set(null);
         }
         $this->getJson($url)->assertOk()->assertJsonPath('data.attributes.ph', 0)->assertJsonPath('data.screening.values.ph', 0)->assertJsonPath('data.screening.thresholds.hcl|3.near', [])->assertJsonPath('data.screening.updated_at', '2026-11-08T23:05:06.123456+00:00');
+    }
+
+    public function test_gas_snapshot_preserves_conditions_and_rejects_applying_stale_density(): void
+    {
+        $this->login('flow-gas-density');
+        $installation = $this->installation();
+        $flow = $this->flow($installation);
+        $url = '/api/process-flows/'.$flow['id'];
+        $substance = $this->substance('Газ', 29, -192, 800);
+        $data = $this->patchJson($url, ['version' => 1, 'attributes' => ['phase' => 'gas', 'pressure' => 0, 'temperature' => 0],
+            'composition' => [$this->compositionLine($substance, 100)], 'apply_calculation' => true])->assertOk()
+            ->assertJsonPath('data.proposed_calculation.density_method', 'ideal_gas')->assertJsonPath('data.calculation_stale', false)->json('data');
+        $signature = $data['proposed_calculation']['signature'];
+        $snapshot = $data['accepted_calculation']['id'];
+        $saved = $this->getJson($url.'/calculations/'.$snapshot)->assertOk()->assertJsonPath('data.inputs.conditions.pressure', 0)->assertJsonPath('data.inputs.conditions.temperature', 0)->json('data');
+        $replayed = app(MixtureCalculator::class)->calculate($saved['inputs']['basis'], $saved['inputs']['components'], $saved['inputs']['conditions']);
+        $this->assertSame($signature, $replayed['signature']);
+        $density = $data['proposed_calculation']['properties']['density'];
+        $this->patchJson($url, ['version' => 2, 'attributes' => ['temperature' => 100, 'density' => $density], 'expected_calculation_signature' => $signature])->assertConflict();
+        $this->getJson($url)->assertJsonPath('data.attributes.temperature', 0)->assertJsonPath('data.attributes.density', null)->assertJsonPath('data.calculation_stale', false);
+        $this->patchJson($url, ['version' => 2, 'attributes' => ['temperature' => 100]])->assertOk()->assertJsonPath('data.calculation_stale', true)
+            ->assertJsonPath('data.accepted_calculation.properties.density', $density);
+        $this->getJson($url.'/calculations/'.$snapshot)->assertOk()->assertJsonPath('data.inputs.conditions.temperature', 0)->assertJsonPath('data.result.properties.density', $density);
+        $this->patchJson($url, ['version' => 3, 'attributes' => ['pressure' => null]])->assertOk()->assertJsonPath('data.proposed_calculation.properties.density', null);
     }
 
     public function test_mole_mass_properties_snapshots_staleness_and_zero_attributes(): void

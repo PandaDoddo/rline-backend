@@ -1,0 +1,5940 @@
+{
+  "source": {
+    "oracle_version": "old-v1",
+    "snapshot_at": "2026-10-28T15:26:07.619Z",
+    "checksums": {
+      "cardreg.js": "2c380c5599d8e9ef05b2f4d95dee0572ba3801ac8944dbd16c9669f0c769bd00",
+      "chemcat.js": "a822eb92e215358598213049cc8ca0edac83a4220eb3ee8ce62e7aafab9ef368",
+      "corrdm.js": "173835832837bdbf62f1b17bdf2b8b72eb63ebdd03afc31b87bb291ed7705842",
+      "armtypes.js": "fdff235c24ce1133037487b930f3f54bab7fafbe0a847f5757ccdf96629fb1f6",
+      "ditbl.js": "3efbdec80bb0cd7368e2aae51b9a8fa46d4fb1948a3088e6e01033ec4875b9a7",
+      "fincost.js": "d57c09342de78fe9b6190a3b4d323295232cd4d029c309e6a62a4ee07d6e5ad6",
+      "cofdata.js": "07e8555d1cd15ee27e48cdbd7d3254e2e821fc8b5dab3cd00403b7db29153a9a",
+      "cofcalc.js": "fb2a8e93901f4dc929dfc9a889e2765d775318c1f4d320887e72b5ad5c0e0d0d",
+      "pofcalc.js": "3d809029a0968e1e48d9d9fbb73da08b3941e31725a335abf28261fa8c845986",
+      "riskcalc.js": "d32a03cf130e894597782cc8ba4681325bf45635f2b6d04d8894d513484a462c",
+      "mscheck.js": "fa8ebb1c5eab9ea3e2cc40b800e64889ef3e4dc896b555ac459cd9b02a4a30dd",
+      "dfthin.js": "3b1dd12451ed6677cc7b91c3b93ce98992735e84ee07b225400027c6fdcf2d79",
+      "dfext.js": "3d8f1cbb17dde863dd7480d2f216d4a0f7248fb8f73ec7e56c8289356e92db3f",
+      "dfcl.js": "b6ec80f2d144b1025a419293cbfab1141a75de84c882fdf1d4430d3cd2f545fe",
+      "dfscc.js": "7eaed46f92a86cae3ba41823f7e3b996eb46d5c4c6854a9e611fd29fac2b0873",
+      "dfscc2.js": "2732f62a2b8952699761ed4dbf0619dde3b328cfc9bf51fa102f159d55087843",
+      "dfemb.js": "02e65f7e1836a386eda3f2a6ab374de6fe11a7d5555a9786030327bda587da49",
+      "mdscr.js": "d2bed4d83ea0b020c4ef1ee5faa915d55909c63c6d88a45ee863dfede66bade3",
+      "rldata.js": "550b0b66d7745f91eb209d303c82547dc33134ec8859a40c639c2beebccbd4aa",
+      "dmcat_a.js": "cfa1b40f538f0af224a86a25d24576e6d824bac45f89cdc07ccd654cfb6fc67b",
+      "dmcat_b.js": "b64f9438651d2d4de532f6646f6e5159e27854bb36bce39fe2c02e0c07cb262e",
+      "dmcat_c.js": "9abff96121bec19d363a6afa2936c35137112969819d6f4f1a6ffd96474036a6",
+      "sanpin21.js": "759c7cdccf66147e2e1e6a6e57b82f5854f1f466723b8178b9e1446707c21cd3",
+      "ppktbl.js": "4a00bafff931d8a3ab8628edc6dcfc610d836cf86a18ec8378d935bde5d75f43",
+      "ppkcalc.js": "7d24c1d9d06db38fcd827dd9cd2758ce9b80e35698ca5abd79093f276b403ae7",
+      "index.dc.html": "4cdb4fd742c105e57ae1e6c2a9f63610773b5e9682d02d78c3499d6c48591873"
+    }
+  },
+  "cases": [
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "углеродистая",
+          "rbi_group": "углеродистая",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": -20,
+          "pressure_operating_mpa": null,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": null
+        },
+        "insulated": null,
+        "external_process": false,
+        "soil_contact": true,
+        "tank_floor": true,
+        "pipeline": true,
+        "vibration_present": null
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": true,
+              "water": false,
+              "ph": 0,
+              "h2s": true,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": false,
+              "cl": 0,
+              "amine": true,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "potential",
+          "sides": {
+            "through": "potential"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "potential",
+          "sides": {
+            "through": "potential"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "низколегированная",
+          "rbi_group": "1Cr-0.5Mo",
+          "rbi_crCO2": "< 13% Cr",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": -12,
+          "pressure_operating_mpa": 0,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": false,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": false
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 1,
+              "h2s": false,
+              "h2": true,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": true,
+              "cl": 5,
+              "amine": false,
+              "caustic": true,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "аустенитная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 0,
+          "pressure_operating_mpa": 0.3,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": true,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": true
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 2,
+              "h2s": true,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": true,
+              "clOn": false,
+              "cl": 10,
+              "amine": false,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "ферритная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "> 12% Cr"
+        },
+        "parameters": {
+          "temperature_max_c": 52,
+          "pressure_operating_mpa": 1.5,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": null
+        },
+        "insulated": null,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": null
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": true,
+              "water": true,
+              "ph": 3,
+              "h2s": false,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": true,
+              "cl": 15,
+              "amine": true,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "углеродистая",
+          "rbi_group": "углеродистая",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 100,
+          "pressure_operating_mpa": null,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": false,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": false
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": false,
+              "ph": 4,
+              "h2s": true,
+              "h2": true,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": false,
+              "cl": 20,
+              "amine": false,
+              "caustic": true,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "низколегированная",
+          "rbi_group": "1Cr-0.5Mo",
+          "rbi_crCO2": "< 13% Cr",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 205,
+          "pressure_operating_mpa": 0,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": true,
+        "external_process": false,
+        "soil_contact": true,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": true
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 5,
+              "h2s": false,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": true,
+              "clOn": true,
+              "cl": 25,
+              "amine": false,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "аустенитная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 400,
+          "pressure_operating_mpa": 0.3,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": null
+        },
+        "insulated": null,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": null
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": true,
+              "water": true,
+              "ph": 6,
+              "h2s": true,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": false,
+              "cl": 30,
+              "amine": true,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "amine": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "potential",
+          "sides": {
+            "through": "potential"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "ферритная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "> 12% Cr"
+        },
+        "parameters": {
+          "temperature_max_c": 600,
+          "pressure_operating_mpa": 1.5,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": false,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": true,
+        "pipeline": false,
+        "vibration_present": false
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 7,
+              "h2s": false,
+              "h2": true,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": true,
+              "cl": 35,
+              "amine": false,
+              "caustic": true,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "углеродистая",
+          "rbi_group": "углеродистая",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": -20,
+          "pressure_operating_mpa": null,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": true,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": true
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": false,
+              "ph": 8,
+              "h2s": true,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": true,
+              "clOn": false,
+              "cl": 40,
+              "amine": false,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "низколегированная",
+          "rbi_group": "1Cr-0.5Mo",
+          "rbi_crCO2": "< 13% Cr",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": -12,
+          "pressure_operating_mpa": 0,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": null
+        },
+        "insulated": null,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": null
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": true,
+              "water": true,
+              "ph": 9,
+              "h2s": false,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": true,
+              "cl": 45,
+              "amine": true,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "potential",
+          "sides": {
+            "external": "potential"
+          }
+        },
+        "cuif": {
+          "state": "potential",
+          "sides": {
+            "external": "potential"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "potential",
+          "sides": {
+            "through": "potential"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "аустенитная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 0,
+          "pressure_operating_mpa": 0.3,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": false,
+        "external_process": false,
+        "soil_contact": true,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": false
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 10,
+              "h2s": true,
+              "h2": true,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": false,
+              "cl": 50,
+              "amine": false,
+              "caustic": true,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "ферритная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "> 12% Cr"
+        },
+        "parameters": {
+          "temperature_max_c": 52,
+          "pressure_operating_mpa": 1.5,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": true,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": true
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 11,
+              "h2s": false,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": true,
+              "clOn": true,
+              "cl": 55,
+              "amine": false,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "углеродистая",
+          "rbi_group": "углеродистая",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 100,
+          "pressure_operating_mpa": null,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": null
+        },
+        "insulated": null,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": null
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": true,
+              "water": false,
+              "ph": 12,
+              "h2s": true,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": false,
+              "cl": 60,
+              "amine": true,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "potential",
+          "sides": {
+            "external": "potential"
+          }
+        },
+        "cuif": {
+          "state": "potential",
+          "sides": {
+            "external": "potential"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "potential",
+          "sides": {
+            "through": "potential"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "potential",
+          "sides": {
+            "through": "potential"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "низколегированная",
+          "rbi_group": "1Cr-0.5Mo",
+          "rbi_crCO2": "< 13% Cr",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 205,
+          "pressure_operating_mpa": 0,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": false,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": false
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 13,
+              "h2s": false,
+              "h2": true,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": true,
+              "cl": 65,
+              "amine": false,
+              "caustic": true,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "bf": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "аустенитная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 400,
+          "pressure_operating_mpa": 0.3,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": true,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": true,
+        "pipeline": true,
+        "vibration_present": true
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 0,
+              "h2s": true,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": true,
+              "clOn": false,
+              "cl": 70,
+              "amine": false,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "ферритная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "> 12% Cr"
+        },
+        "parameters": {
+          "temperature_max_c": 600,
+          "pressure_operating_mpa": 1.5,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": null
+        },
+        "insulated": null,
+        "external_process": false,
+        "soil_contact": true,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": null
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": true,
+              "water": true,
+              "ph": 1,
+              "h2s": false,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": true,
+              "cl": 75,
+              "amine": true,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "углеродистая",
+          "rbi_group": "углеродистая",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": -20,
+          "pressure_operating_mpa": null,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": false,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": false
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": false,
+              "ph": 2,
+              "h2s": true,
+              "h2": true,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": false,
+              "cl": 80,
+              "amine": false,
+              "caustic": true,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "низколегированная",
+          "rbi_group": "1Cr-0.5Mo",
+          "rbi_crCO2": "< 13% Cr",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": -12,
+          "pressure_operating_mpa": 0,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": true,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": true
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 3,
+              "h2s": false,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": true,
+              "clOn": true,
+              "cl": 85,
+              "amine": false,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "аустенитная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 0,
+          "pressure_operating_mpa": 0.3,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": null
+        },
+        "insulated": null,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": null
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": true,
+              "water": true,
+              "ph": 4,
+              "h2s": true,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": false,
+              "cl": 90,
+              "amine": true,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "amine": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "potential",
+          "sides": {
+            "through": "potential"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "ферритная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "> 12% Cr"
+        },
+        "parameters": {
+          "temperature_max_c": 52,
+          "pressure_operating_mpa": 1.5,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": false,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": false
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 5,
+              "h2s": false,
+              "h2": true,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": true,
+              "cl": 95,
+              "amine": false,
+              "caustic": true,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "углеродистая",
+          "rbi_group": "углеродистая",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 100,
+          "pressure_operating_mpa": null,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": true,
+        "external_process": false,
+        "soil_contact": true,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": true
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": false,
+              "ph": 6,
+              "h2s": true,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": true,
+              "clOn": false,
+              "cl": 100,
+              "amine": false,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "active",
+          "sides": {
+            "through": "active"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "низколегированная",
+          "rbi_group": "1Cr-0.5Mo",
+          "rbi_crCO2": "< 13% Cr",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 205,
+          "pressure_operating_mpa": 0,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": null
+        },
+        "insulated": null,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": true,
+        "pipeline": false,
+        "vibration_present": null
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": true,
+              "water": true,
+              "ph": 7,
+              "h2s": false,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": true,
+              "cl": 105,
+              "amine": true,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "active",
+          "sides": {
+            "external": "active"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "potential",
+          "sides": {
+            "through": "potential"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "аустенитная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "не применимо"
+        },
+        "parameters": {
+          "temperature_max_c": 400,
+          "pressure_operating_mpa": 0.3,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": false,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": true,
+        "vibration_present": false
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 8,
+              "h2s": true,
+              "h2": true,
+              "pH2": 0.5,
+              "co2": false,
+              "clOn": false,
+              "cl": 110,
+              "amine": false,
+              "caustic": true,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "active",
+          "sides": {
+            "internal": "active"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "material": {
+          "kind": "сталь",
+          "subtype": "ферритная нержавеющая",
+          "rbi_group": "не применимо",
+          "rbi_crCO2": "не применимо",
+          "rbi_cr885": "> 12% Cr"
+        },
+        "parameters": {
+          "temperature_max_c": 600,
+          "pressure_operating_mpa": 1.5,
+          "temperature_min_c": -40,
+          "temperature_mdmt_c": -20
+        },
+        "insulated": true,
+        "external_process": false,
+        "soil_contact": false,
+        "tank_floor": false,
+        "pipeline": false,
+        "vibration_present": true
+      },
+      "internal": [
+        {
+          "id": "F1",
+          "category": "main",
+          "medium_kind": "fluid",
+          "screening": {
+            "values": {
+              "hcl": false,
+              "water": true,
+              "ph": 9,
+              "h2s": false,
+              "h2": false,
+              "pH2": 0.5,
+              "co2": true,
+              "clOn": true,
+              "cl": 115,
+              "amine": false,
+              "caustic": false,
+              "hf": false,
+              "sulf": false,
+              "sbc": false,
+              "cw": false,
+              "o2": false,
+              "h2so4": false
+            }
+          }
+        }
+      ],
+      "external": [],
+      "expected": {
+        "hcl": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htsna": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hth2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "h2so4": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "sw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "amine": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "htox": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "asw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "cw": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "soil": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "co2": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ast": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "acscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "aminescc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "causticscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "clscc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hichf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hschf": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "pascc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "hich2s": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "ssc": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "extf": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuif": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "extcl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "cuicl": {
+          "state": "inactive",
+          "sides": {
+            "external": "inactive"
+          }
+        },
+        "htha": {
+          "state": "inactive",
+          "sides": {
+            "internal": "inactive"
+          }
+        },
+        "bf": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "lase": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "e885": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "sigma": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        },
+        "mfat": {
+          "state": "inactive",
+          "sides": {
+            "through": "inactive"
+          }
+        }
+      }
+    }
+  ]
+}

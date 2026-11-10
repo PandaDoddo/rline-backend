@@ -20,6 +20,9 @@ final class OperatingScopeSchema
         foreach (ScopeFields::fields() as $key => $field) {
             $property = ($field['type'] ?? null) === 'number' ? new NumberType : new StringType;
             $property->nullable(true)->setDescription($field['label']);
+            if (($field['type'] ?? null) === 'date') {
+                $property->format('date');
+            }
             if (isset($field['options'])) {
                 $property->enum($field['options']);
             }
@@ -31,7 +34,11 @@ final class OperatingScopeSchema
                 }
             }
             $values->addProperty($key, $property);
-            $qualifiers->addProperty($key, (new ObjectType)->addProperty('state', (new StringType)->enum(['unknown', 'not_applicable', 'not_present']))->setRequired(['state'])->nullable($input));
+            $qualifier = (new ObjectType)->addProperty('state', (new StringType)->enum(['unknown', 'not_applicable', 'not_present']))->setRequired(['state'])->nullable($input);
+            if (($field['type'] ?? null) === 'date') {
+                $qualifier->addProperty('precision', (new StringType)->enum(['day', 'year']))->setRequired([]);
+            }
+            $qualifiers->addProperty($key, $qualifier);
             $checks->addProperty($key, $input ? new BooleanType : (new ObjectType)->addProperty('by', new IntegerType)->addProperty('at', (new StringType)->format('date-time'))->setRequired(['by', 'at']));
         }
         $scope = (new ObjectType)->addProperty('kind', (new StringType)->enum(['tube', 'coil']))->addProperty('component_id', (new StringType)->format('uuid')->nullable(true))->addProperty('values', $values)->addProperty('qualifiers', $qualifiers)->addProperty($input ? 'verification' : 'checks', $checks)->setRequired(['kind', 'component_id']);

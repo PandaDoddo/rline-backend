@@ -3,6 +3,8 @@
 namespace App\Modules\Catalogs\Application;
 
 use App\Modules\Catalogs\Domain\CatalogValues;
+use App\Modules\Catalogs\Infrastructure\SubstancePropertyRepository;
+use App\Modules\Catalogs\Models\Substance;
 use App\Modules\Shared\Infrastructure\TenantWrites;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
@@ -24,8 +26,8 @@ class CatalogRecords
             foreach (array_unique([...array_keys($values), ...array_keys($data['sources'] ?? [])]) as $key) {
                 $sources[$key] = $this->source($data['sources'][$key] ?? [], $actor);
             }
-            $model = (new $modelClass(['label' => $values['name'], 'overrides' => $values]))->forceFill(['sources' => $sources, 'created_by' => $actor, 'updated_by' => $actor]);
-            $model->save();
+            $model = (new $modelClass(['label' => $values['name']]))->forceFill(['created_by' => $actor, 'updated_by' => $actor]);
+            $this->save($model, $values, $sources, []);
             $this->writes->event($entity, $model, 'created', $actor);
 
             return $model;
@@ -74,7 +76,8 @@ class CatalogRecords
                 }
                 $checks[$key] ??= ['by' => $actor, 'at' => now()->toIso8601String()];
             }
-            $model->forceFill(['label' => $effective['name'], 'overrides' => $overrides, 'sources' => $sources, 'checks' => $checks, 'status' => $data['status'] ?? $model->status, 'version' => $model->version + 1, 'updated_by' => $actor])->save();
+            $model->forceFill(['label' => $effective['name'], 'status' => $data['status'] ?? $model->status, 'version' => $model->version + 1, 'updated_by' => $actor]);
+            $this->save($model, $overrides, $sources, $checks);
             $this->writes->event($entity, $model, 'updated', $actor, $before);
 
             return $model;
@@ -85,6 +88,16 @@ class CatalogRecords
     {
         if (! is_string($values['name'] ?? null) || trim($values['name']) === '') {
             throw ValidationException::withMessages(['values.name' => 'Наименование обязательно.']);
+        }
+    }
+
+    private function save(Model $model, array $values, array $sources, array $checks): void
+    {
+        if ($model instanceof Substance) {
+            $model->save();
+            app(SubstancePropertyRepository::class)->save($model, $values, $sources, $checks);
+        } else {
+            $model->forceFill(['overrides' => $values, 'sources' => $sources, 'checks' => $checks])->save();
         }
     }
 

@@ -15,11 +15,31 @@ class Installation extends TenantModel
 
     protected $attributes = ['status' => 'active'];
 
-    protected $with = ['technicalPassport'];
+    protected $with = ['technicalPassport', 'costProjection'];
 
-    protected $hidden = ['technicalPassport'];
+    protected $hidden = ['technicalPassport', 'costProjection'];
 
-    protected $appends = ['passport'];
+    protected $appends = ['passport', 'cost_values', 'cost_sources', 'cost_checks'];
+
+    public function costProjection(): HasOne
+    {
+        return $this->hasOne(InstallationCostProjection::class, 'installation_id');
+    }
+
+    public function getCostValuesAttribute(): array
+    {
+        return $this->costProjection?->values ?? [];
+    }
+
+    public function getCostSourcesAttribute(): array
+    {
+        return $this->costProjection?->sources ?? [];
+    }
+
+    public function getCostChecksAttribute(): array
+    {
+        return $this->costProjection?->checks ?? [];
+    }
 
     public function technicalPassport(): HasOne
     {
@@ -33,7 +53,7 @@ class Installation extends TenantModel
 
     protected function casts(): array
     {
-        return ['archive_manifest' => 'array', 'cost_values' => 'array', 'cost_sources' => 'array', 'cost_checks' => 'array', 'no_stops' => 'boolean', 'flow_setup' => 'array', 'flow_structure_version' => 'integer', 'version' => 'integer'];
+        return ['archive_manifest' => 'array', 'no_stops' => 'boolean', 'flow_setup' => 'array', 'flow_structure_version' => 'integer', 'version' => 'integer'];
     }
 
     public function parent(): BelongsTo

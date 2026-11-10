@@ -1,0 +1,9 @@
+{
+  "version": "installation-maintenance-v1",
+  "kinds": {
+    "mri": {"table":"installation_mri_parameters","fields":{"effective_date":"date","interval_months":"integer","reason":"text"},"required":["effective_date","interval_months"]},
+    "repair": {"table":"installation_repair_parameters","fields":{"starts_on":"date","ends_on":"date","repair_kind":"choice","reason":"text"},"required":["starts_on","ends_on","repair_kind"]},
+    "stop": {"table":"installation_stop_parameters","fields":{"starts_at":"timestamp","ends_at":"timestamp","reason":"text"},"required":["starts_at","ends_at"]}
+  },
+  "repair_kinds":["capital","extended_medium","medium"]
+}

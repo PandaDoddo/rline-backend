@@ -29,6 +29,9 @@ class InstallationMaintenanceSchemaTransformer implements DocumentTransformer
                 continue;
             }
             if (class_basename($name) === 'InstallationMaintenanceResource') {
+                $origin = ImportOriginSchema::make()->addProperty('source_verified', (new BooleanType)->nullable(true));
+                $origin->setRequired(array_keys($origin->properties));
+                $type->addProperty('data_origin', $origin->nullable(true));
                 $type->addProperty('kind', (new StringType)->enum(['mri', 'repair', 'stop']))->addProperty('values', $values->clone());
                 $type->addProperty('check', (new ObjectType)->addProperty('by', new IntegerType)->addProperty('at', (new StringType)->format('date-time'))->setRequired(['by', 'at'])->nullable(true));
                 $type->addProperty('duration_hours', (new NumberType)->nullable(true));

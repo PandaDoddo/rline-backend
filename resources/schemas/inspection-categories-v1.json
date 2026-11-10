@@ -1,0 +1,13 @@
+{
+  "version": "inspection-categories-v1",
+  "categories": ["A", "B", "C", "D", "E", "none"],
+  "groups": [
+    { "code": "thin", "label": "Утонение", "automatic": true, "cracks": false, "mechanisms": ["thin"] },
+    { "code": "ext", "label": "Ext Corr", "automatic": true, "cracks": false, "mechanisms": ["ext"] },
+    { "code": "cui", "label": "CUI", "automatic": true, "cracks": false, "mechanisms": ["cui"] },
+    { "code": "cl", "label": "CUI / Ext ClSCC", "automatic": false, "cracks": true, "mechanisms": ["ecl", "ccl"] },
+    { "code": "scc", "label": "SCC", "automatic": false, "cracks": true, "mechanisms": ["ssc", "hschf", "acscc", "aminescc", "causticscc"] },
+    { "code": "hic", "label": "HIC / SOHIC", "automatic": false, "cracks": true, "mechanisms": ["hich2s", "hichf"] },
+    { "code": "aus", "label": "PASCC / ClSCC внутр.", "automatic": false, "cracks": true, "mechanisms": ["pascc", "clscc"] }
+  ]
+}

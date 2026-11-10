@@ -1,0 +1,1207 @@
+{
+  "version": "thinning-builder-reference-v1",
+  "source": {
+    "oracle_version": "old-v1",
+    "snapshot_at": "2026-10-28T15:26:07.619Z",
+    "checksums": {
+      "cardreg.js": "2c380c5599d8e9ef05b2f4d95dee0572ba3801ac8944dbd16c9669f0c769bd00",
+      "chemcat.js": "a822eb92e215358598213049cc8ca0edac83a4220eb3ee8ce62e7aafab9ef368",
+      "corrdm.js": "173835832837bdbf62f1b17bdf2b8b72eb63ebdd03afc31b87bb291ed7705842",
+      "armtypes.js": "fdff235c24ce1133037487b930f3f54bab7fafbe0a847f5757ccdf96629fb1f6",
+      "ditbl.js": "3efbdec80bb0cd7368e2aae51b9a8fa46d4fb1948a3088e6e01033ec4875b9a7",
+      "fincost.js": "d57c09342de78fe9b6190a3b4d323295232cd4d029c309e6a62a4ee07d6e5ad6",
+      "cofdata.js": "07e8555d1cd15ee27e48cdbd7d3254e2e821fc8b5dab3cd00403b7db29153a9a",
+      "cofcalc.js": "fb2a8e93901f4dc929dfc9a889e2765d775318c1f4d320887e72b5ad5c0e0d0d",
+      "pofcalc.js": "3d809029a0968e1e48d9d9fbb73da08b3941e31725a335abf28261fa8c845986",
+      "riskcalc.js": "d32a03cf130e894597782cc8ba4681325bf45635f2b6d04d8894d513484a462c",
+      "mscheck.js": "fa8ebb1c5eab9ea3e2cc40b800e64889ef3e4dc896b555ac459cd9b02a4a30dd",
+      "dfthin.js": "3b1dd12451ed6677cc7b91c3b93ce98992735e84ee07b225400027c6fdcf2d79",
+      "dfext.js": "3d8f1cbb17dde863dd7480d2f216d4a0f7248fb8f73ec7e56c8289356e92db3f",
+      "dfcl.js": "b6ec80f2d144b1025a419293cbfab1141a75de84c882fdf1d4430d3cd2f545fe",
+      "dfscc.js": "7eaed46f92a86cae3ba41823f7e3b996eb46d5c4c6854a9e611fd29fac2b0873",
+      "dfscc2.js": "2732f62a2b8952699761ed4dbf0619dde3b328cfc9bf51fa102f159d55087843",
+      "dfemb.js": "02e65f7e1836a386eda3f2a6ab374de6fe11a7d5555a9786030327bda587da49",
+      "mdscr.js": "d2bed4d83ea0b020c4ef1ee5faa915d55909c63c6d88a45ee863dfede66bade3",
+      "rldata.js": "550b0b66d7745f91eb209d303c82547dc33134ec8859a40c639c2beebccbd4aa",
+      "dmcat_a.js": "cfa1b40f538f0af224a86a25d24576e6d824bac45f89cdc07ccd654cfb6fc67b",
+      "dmcat_b.js": "b64f9438651d2d4de532f6646f6e5159e27854bb36bce39fe2c02e0c07cb262e",
+      "dmcat_c.js": "9abff96121bec19d363a6afa2936c35137112969819d6f4f1a6ffd96474036a6",
+      "sanpin21.js": "759c7cdccf66147e2e1e6a6e57b82f5854f1f466723b8178b9e1446707c21cd3",
+      "ppktbl.js": "4a00bafff931d8a3ab8628edc6dcfc610d836cf86a18ec8378d935bde5d75f43",
+      "ppkcalc.js": "7d24c1d9d06db38fcd827dd9cd2758ce9b80e35698ca5abd79093f276b403ae7",
+      "index.dc.html": "4cdb4fd742c105e57ae1e6c2a9f63610773b5e9682d02d78c3499d6c48591873"
+    }
+  },
+  "cases": [
+    {
+      "name": "measured vessel",
+      "source": {
+        "analysis_on": "2030-01-01",
+        "commissioned_on": "2010-01-01",
+        "pipeline": false,
+        "spherical_vessel": false,
+        "applicability": {
+          "state": "active",
+          "sources": [
+            {
+              "mechanism": "hcl",
+              "side": "internal",
+              "state": "active"
+            }
+          ]
+        },
+        "component": {
+          "type_code": "shell",
+          "diameter_mm": 1220,
+          "seam_type": null
+        },
+        "component_rbi": {
+          "weld_efficiency": 1
+        },
+        "passport": {
+          "temperature_design_c": 20,
+          "pressure_design_mpa": 0.5,
+          "corrosion_monitoring": "отсутствует",
+          "design_corrosion_mm_year": 0.1
+        },
+        "material": {
+          "re_nom": 235,
+          "rm_nom": 370,
+          "stress": {
+            "rows": [
+              {
+                "t": 20,
+                "gost": 140,
+                "rd": 120
+              },
+              {
+                "t": 100,
+                "gost": 120,
+                "rd": 100
+              }
+            ]
+          }
+        },
+        "measurement": {
+          "nominal_mm": 12,
+          "rejection_mm": 4,
+          "rejection_source": "passport",
+          "series": [
+            {
+              "stage_id": "first",
+              "date": "2018-01-01",
+              "values": {
+                "min": 11
+              }
+            },
+            {
+              "stage_id": "last",
+              "date": "2024-01-01",
+              "values": {
+                "min": 10
+              }
+            }
+          ]
+        },
+        "inspection_counts": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0,
+          "E": 7
+        }
+      },
+      "expected_input": {
+        "tAn": 2030,
+        "tIn": 2010,
+        "tbm": 12,
+        "tmin": 4,
+        "CrM": 0.16666666666666666,
+        "trdiM": 10,
+        "tLast": 2024,
+        "CrT": 0.1,
+        "S": 140,
+        "YS": 235,
+        "TS": 370,
+        "alpha": 2,
+        "E": 1,
+        "FIP": 1,
+        "FDL": 1,
+        "FOM": 1,
+        "P": 0.5,
+        "D": 1220,
+        "tc": null,
+        "N": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0
+        },
+        "prp": [
+          0.7,
+          0.2,
+          0.1
+        ],
+        "cop": {
+          "A": [
+            0.9,
+            0.09,
+            0.01
+          ],
+          "B": [
+            0.7,
+            0.2,
+            0.1
+          ],
+          "C": [
+            0.5,
+            0.3,
+            0.2
+          ],
+          "D": [
+            0.4,
+            0.33,
+            0.27
+          ]
+        }
+      },
+      "expected": {
+        "age10": 20,
+        "measured": true,
+        "Cr": 0.16666666666666666,
+        "CrSrc": "измеренная (наибольшая)",
+        "agetk": 6,
+        "trdi": 10,
+        "Art": 0.1,
+        "FS": 332.75,
+        "SRP14": 0.16829451540195342,
+        "SRP15": 0.09166040570999248,
+        "srpEq": "2.15",
+        "srpWhy": "tc не задана → ур. 2.15",
+        "SRP": 0.09166040570999248,
+        "Cop": [
+          0.24499999999999997,
+          0.012000000000000002,
+          0.0020000000000000005
+        ],
+        "I": [
+          0.17149999999999996,
+          0.0024000000000000007,
+          0.00020000000000000006
+        ],
+        "Pop": [
+          0.9850660539919586,
+          0.013785180930499718,
+          0.0011487650775416432
+        ],
+        "beta": [
+          4.461880354838211,
+          4.293282321022539,
+          3.522922614070088
+        ],
+        "Dfb": 0.02800009904248859,
+        "DF": 0.1
+      }
+    },
+    {
+      "name": "explicit project zero",
+      "source": {
+        "analysis_on": "2030-01-01",
+        "commissioned_on": "2010-01-01",
+        "pipeline": false,
+        "spherical_vessel": false,
+        "applicability": {
+          "state": "active",
+          "sources": [
+            {
+              "mechanism": "hcl",
+              "side": "internal",
+              "state": "active"
+            }
+          ]
+        },
+        "component": {
+          "type_code": "shell",
+          "diameter_mm": 1220,
+          "seam_type": null
+        },
+        "component_rbi": {
+          "weld_efficiency": 1
+        },
+        "passport": {
+          "temperature_design_c": 20,
+          "pressure_design_mpa": 0.5,
+          "corrosion_monitoring": "отсутствует",
+          "design_corrosion_mm_year": 0
+        },
+        "material": {
+          "re_nom": 235,
+          "rm_nom": 370,
+          "stress": {
+            "rows": [
+              {
+                "t": 20,
+                "gost": 140,
+                "rd": 120
+              },
+              {
+                "t": 100,
+                "gost": 120,
+                "rd": 100
+              }
+            ]
+          }
+        },
+        "measurement": {
+          "nominal_mm": 12,
+          "rejection_mm": 4,
+          "rejection_source": "passport",
+          "series": []
+        },
+        "inspection_counts": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0,
+          "E": 7
+        }
+      },
+      "expected_input": {
+        "tAn": 2030,
+        "tIn": 2010,
+        "tbm": 12,
+        "tmin": 4,
+        "CrM": null,
+        "trdiM": null,
+        "tLast": null,
+        "CrT": 0,
+        "S": 140,
+        "YS": 235,
+        "TS": 370,
+        "alpha": 2,
+        "E": 1,
+        "FIP": 1,
+        "FDL": 1,
+        "FOM": 1,
+        "P": 0.5,
+        "D": 1220,
+        "tc": null,
+        "N": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0
+        },
+        "prp": [
+          0.7,
+          0.2,
+          0.1
+        ],
+        "cop": {
+          "A": [
+            0.9,
+            0.09,
+            0.01
+          ],
+          "B": [
+            0.7,
+            0.2,
+            0.1
+          ],
+          "C": [
+            0.5,
+            0.3,
+            0.2
+          ],
+          "D": [
+            0.4,
+            0.33,
+            0.27
+          ]
+        }
+      },
+      "expected": {
+        "age10": 20,
+        "measured": false,
+        "Cr": 0,
+        "CrSrc": "проектная (замеров нет)",
+        "agetk": 20,
+        "trdi": 12,
+        "Art": 0,
+        "FS": 332.75,
+        "SRP14": 0.14024542950162783,
+        "SRP15": 0.07638367142499373,
+        "srpEq": "2.15",
+        "srpWhy": "tc не задана → ур. 2.15",
+        "SRP": 0.07638367142499373,
+        "Cop": [
+          0.24499999999999997,
+          0.012000000000000002,
+          0.0020000000000000005
+        ],
+        "I": [
+          0.17149999999999996,
+          0.0024000000000000007,
+          0.00020000000000000006
+        ],
+        "Pop": [
+          0.9850660539919586,
+          0.013785180930499718,
+          0.0011487650775416432
+        ],
+        "beta": [
+          4.6172398719308525,
+          4.6172398719308525,
+          4.6172398719308525
+        ],
+        "Dfb": 0.012464028487897164,
+        "DF": 0.1
+      }
+    },
+    {
+      "name": "pipe injection point",
+      "source": {
+        "analysis_on": "2030-01-01",
+        "commissioned_on": "2010-01-01",
+        "pipeline": true,
+        "spherical_vessel": false,
+        "applicability": {
+          "state": "active",
+          "sources": [
+            {
+              "mechanism": "hcl",
+              "side": "internal",
+              "state": "active"
+            }
+          ]
+        },
+        "component": {
+          "type_code": "pipe",
+          "diameter_mm": 1220,
+          "seam_type": "seamless"
+        },
+        "component_rbi": {
+          "injection_point": true
+        },
+        "passport": {
+          "temperature_design_c": 20,
+          "pressure_design_mpa": 0.5,
+          "corrosion_monitoring": "отсутствует",
+          "design_corrosion_mm_year": 0.1,
+          "injection_point": "да",
+          "dead_leg": "нет"
+        },
+        "material": {
+          "re_nom": 235,
+          "rm_nom": 370,
+          "stress": {
+            "rows": [
+              {
+                "t": 20,
+                "gost": 140,
+                "rd": 120
+              },
+              {
+                "t": 100,
+                "gost": 120,
+                "rd": 100
+              }
+            ]
+          }
+        },
+        "measurement": {
+          "nominal_mm": 12,
+          "rejection_mm": 4,
+          "rejection_source": "passport",
+          "series": [
+            {
+              "stage_id": "first",
+              "date": "2018-01-01",
+              "values": {
+                "min": 11
+              }
+            },
+            {
+              "stage_id": "last",
+              "date": "2024-01-01",
+              "values": {
+                "min": 10
+              }
+            }
+          ]
+        },
+        "inspection_counts": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0,
+          "E": 7
+        }
+      },
+      "expected_input": {
+        "tAn": 2030,
+        "tIn": 2010,
+        "tbm": 12,
+        "tmin": 4,
+        "CrM": 0.16666666666666666,
+        "trdiM": 10,
+        "tLast": 2024,
+        "CrT": 0.1,
+        "S": 120,
+        "YS": 235,
+        "TS": 370,
+        "alpha": 2,
+        "E": 1,
+        "FIP": 3,
+        "FDL": 1,
+        "FOM": 1,
+        "P": 0.5,
+        "D": 1220,
+        "tc": null,
+        "N": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0
+        },
+        "prp": [
+          0.7,
+          0.2,
+          0.1
+        ],
+        "cop": {
+          "A": [
+            0.9,
+            0.09,
+            0.01
+          ],
+          "B": [
+            0.7,
+            0.2,
+            0.1
+          ],
+          "C": [
+            0.5,
+            0.3,
+            0.2
+          ],
+          "D": [
+            0.4,
+            0.33,
+            0.27
+          ]
+        }
+      },
+      "expected": {
+        "age10": 20,
+        "measured": true,
+        "Cr": 0.16666666666666666,
+        "CrSrc": "измеренная (наибольшая)",
+        "agetk": 6,
+        "trdi": 10,
+        "Art": 0.1,
+        "FS": 332.75,
+        "SRP14": 0.14425244177310292,
+        "SRP15": 0.09166040570999248,
+        "srpEq": "2.15",
+        "srpWhy": "tc не задана → ур. 2.15",
+        "SRP": 0.09166040570999248,
+        "Cop": [
+          0.24499999999999997,
+          0.012000000000000002,
+          0.0020000000000000005
+        ],
+        "I": [
+          0.17149999999999996,
+          0.0024000000000000007,
+          0.00020000000000000006
+        ],
+        "Pop": [
+          0.9850660539919586,
+          0.013785180930499718,
+          0.0011487650775416432
+        ],
+        "beta": [
+          4.461880354838211,
+          4.293282321022539,
+          3.522922614070088
+        ],
+        "Dfb": 0.02800009904248859,
+        "DF": 0.1
+      }
+    },
+    {
+      "name": "spherical head",
+      "source": {
+        "analysis_on": "2030-01-01",
+        "commissioned_on": "2010-01-01",
+        "pipeline": false,
+        "spherical_vessel": true,
+        "applicability": {
+          "state": "active",
+          "sources": [
+            {
+              "mechanism": "hcl",
+              "side": "internal",
+              "state": "active"
+            }
+          ]
+        },
+        "component": {
+          "type_code": "head",
+          "diameter_mm": 1220,
+          "seam_type": null
+        },
+        "component_rbi": {
+          "weld_efficiency": 1
+        },
+        "passport": {
+          "temperature_design_c": 20,
+          "pressure_design_mpa": 0.5,
+          "corrosion_monitoring": "отсутствует",
+          "design_corrosion_mm_year": 0.1
+        },
+        "material": {
+          "re_nom": 235,
+          "rm_nom": 370,
+          "stress": {
+            "rows": [
+              {
+                "t": 20,
+                "gost": 140,
+                "rd": 120
+              },
+              {
+                "t": 100,
+                "gost": 120,
+                "rd": 100
+              }
+            ]
+          }
+        },
+        "measurement": {
+          "nominal_mm": 12,
+          "rejection_mm": 4,
+          "rejection_source": "passport",
+          "series": [
+            {
+              "stage_id": "first",
+              "date": "2018-01-01",
+              "values": {
+                "min": 11
+              }
+            },
+            {
+              "stage_id": "last",
+              "date": "2024-01-01",
+              "values": {
+                "min": 10
+              }
+            }
+          ]
+        },
+        "inspection_counts": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0,
+          "E": 7
+        }
+      },
+      "expected_input": {
+        "tAn": 2030,
+        "tIn": 2010,
+        "tbm": 12,
+        "tmin": 4,
+        "CrM": 0.16666666666666666,
+        "trdiM": 10,
+        "tLast": 2024,
+        "CrT": 0.1,
+        "S": 140,
+        "YS": 235,
+        "TS": 370,
+        "alpha": 4,
+        "E": 1,
+        "FIP": 1,
+        "FDL": 1,
+        "FOM": 1,
+        "P": 0.5,
+        "D": 1220,
+        "tc": null,
+        "N": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0
+        },
+        "prp": [
+          0.7,
+          0.2,
+          0.1
+        ],
+        "cop": {
+          "A": [
+            0.9,
+            0.09,
+            0.01
+          ],
+          "B": [
+            0.7,
+            0.2,
+            0.1
+          ],
+          "C": [
+            0.5,
+            0.3,
+            0.2
+          ],
+          "D": [
+            0.4,
+            0.33,
+            0.27
+          ]
+        }
+      },
+      "expected": {
+        "age10": 20,
+        "measured": true,
+        "Cr": 0.16666666666666666,
+        "CrSrc": "измеренная (наибольшая)",
+        "agetk": 6,
+        "trdi": 10,
+        "Art": 0.1,
+        "FS": 332.75,
+        "SRP14": 0.16829451540195342,
+        "SRP15": 0.04583020285499624,
+        "srpEq": "2.15",
+        "srpWhy": "tc не задана → ур. 2.15",
+        "SRP": 0.04583020285499624,
+        "Cop": [
+          0.24499999999999997,
+          0.012000000000000002,
+          0.0020000000000000005
+        ],
+        "I": [
+          0.17149999999999996,
+          0.0024000000000000007,
+          0.00020000000000000006
+        ],
+        "Pop": [
+          0.9850660539919586,
+          0.013785180930499718,
+          0.0011487650775416432
+        ],
+        "beta": [
+          4.715986230480205,
+          4.572384745277017,
+          3.8419912600626858
+        ],
+        "Dfb": 0.008256964213039715,
+        "DF": 0.1
+      }
+    },
+    {
+      "name": "interpolated strengths",
+      "source": {
+        "analysis_on": "2030-01-01",
+        "commissioned_on": "2010-01-01",
+        "pipeline": false,
+        "spherical_vessel": false,
+        "applicability": {
+          "state": "active",
+          "sources": [
+            {
+              "mechanism": "hcl",
+              "side": "internal",
+              "state": "active"
+            }
+          ]
+        },
+        "component": {
+          "type_code": "shell",
+          "diameter_mm": 1220,
+          "seam_type": null
+        },
+        "component_rbi": {
+          "weld_efficiency": 1
+        },
+        "passport": {
+          "temperature_design_c": 60,
+          "pressure_design_mpa": 0.5,
+          "corrosion_monitoring": "отсутствует",
+          "design_corrosion_mm_year": 0.1
+        },
+        "material": {
+          "re_nom": 235,
+          "rm_nom": 370,
+          "stress": {
+            "rows": [
+              {
+                "t": 20,
+                "gost": 140,
+                "rd": 120
+              },
+              {
+                "t": 100,
+                "gost": 120,
+                "rd": 100
+              }
+            ]
+          }
+        },
+        "measurement": {
+          "nominal_mm": 12,
+          "rejection_mm": 4,
+          "rejection_source": "passport",
+          "series": [
+            {
+              "stage_id": "first",
+              "date": "2018-01-01",
+              "values": {
+                "min": 11
+              }
+            },
+            {
+              "stage_id": "last",
+              "date": "2024-01-01",
+              "values": {
+                "min": 10
+              }
+            }
+          ]
+        },
+        "inspection_counts": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0,
+          "E": 7
+        }
+      },
+      "expected_input": {
+        "tAn": 2030,
+        "tIn": 2010,
+        "tbm": 12,
+        "tmin": 4,
+        "CrM": 0.16666666666666666,
+        "trdiM": 10,
+        "tLast": 2024,
+        "CrT": 0.1,
+        "S": 130,
+        "YS": 218.21428571428572,
+        "TS": 343.57142857142856,
+        "alpha": 2,
+        "E": 1,
+        "FIP": 1,
+        "FDL": 1,
+        "FOM": 1,
+        "P": 0.5,
+        "D": 1220,
+        "tc": null,
+        "N": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0
+        },
+        "prp": [
+          0.7,
+          0.2,
+          0.1
+        ],
+        "cop": {
+          "A": [
+            0.9,
+            0.09,
+            0.01
+          ],
+          "B": [
+            0.7,
+            0.2,
+            0.1
+          ],
+          "C": [
+            0.5,
+            0.3,
+            0.2
+          ],
+          "D": [
+            0.4,
+            0.33,
+            0.27
+          ]
+        }
+      },
+      "expected": {
+        "age10": 20,
+        "measured": true,
+        "Cr": 0.16666666666666666,
+        "CrSrc": "измеренная (наибольшая)",
+        "agetk": 6,
+        "trdi": 10,
+        "Art": 0.1,
+        "FS": 308.98214285714283,
+        "SRP14": 0.16829451540195345,
+        "SRP15": 0.09871120614922269,
+        "srpEq": "2.15",
+        "srpWhy": "tc не задана → ур. 2.15",
+        "SRP": 0.09871120614922269,
+        "Cop": [
+          0.24499999999999997,
+          0.012000000000000002,
+          0.0020000000000000005
+        ],
+        "I": [
+          0.17149999999999996,
+          0.0024000000000000007,
+          0.00020000000000000006
+        ],
+        "Pop": [
+          0.9850660539919586,
+          0.013785180930499718,
+          0.0011487650775416432
+        ],
+        "beta": [
+          4.422735192918831,
+          4.25028509105972,
+          3.4737788548306816
+        ],
+        "Dfb": 0.033603241334077924,
+        "DF": 0.1
+      }
+    },
+    {
+      "name": "negative measured rate",
+      "source": {
+        "analysis_on": "2030-01-01",
+        "commissioned_on": "2010-01-01",
+        "pipeline": false,
+        "spherical_vessel": false,
+        "applicability": {
+          "state": "active",
+          "sources": [
+            {
+              "mechanism": "hcl",
+              "side": "internal",
+              "state": "active"
+            }
+          ]
+        },
+        "component": {
+          "type_code": "shell",
+          "diameter_mm": 1220,
+          "seam_type": null
+        },
+        "component_rbi": {
+          "weld_efficiency": 1
+        },
+        "passport": {
+          "temperature_design_c": 20,
+          "pressure_design_mpa": 0.5,
+          "corrosion_monitoring": "отсутствует",
+          "design_corrosion_mm_year": 0.1
+        },
+        "material": {
+          "re_nom": 235,
+          "rm_nom": 370,
+          "stress": {
+            "rows": [
+              {
+                "t": 20,
+                "gost": 140,
+                "rd": 120
+              },
+              {
+                "t": 100,
+                "gost": 120,
+                "rd": 100
+              }
+            ]
+          }
+        },
+        "measurement": {
+          "nominal_mm": 12,
+          "rejection_mm": 4,
+          "rejection_source": "passport",
+          "series": [
+            {
+              "stage_id": "first",
+              "date": "2018-01-01",
+              "values": {
+                "min": 11
+              }
+            },
+            {
+              "stage_id": "last",
+              "date": "2024-01-01",
+              "values": {
+                "min": 13
+              }
+            }
+          ]
+        },
+        "inspection_counts": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0,
+          "E": 7
+        }
+      },
+      "expected_input": {
+        "tAn": 2030,
+        "tIn": 2010,
+        "tbm": 12,
+        "tmin": 4,
+        "CrM": -0.07142857142857142,
+        "trdiM": 13,
+        "tLast": 2024,
+        "CrT": 0.1,
+        "S": 140,
+        "YS": 235,
+        "TS": 370,
+        "alpha": 2,
+        "E": 1,
+        "FIP": 1,
+        "FDL": 1,
+        "FOM": 1,
+        "P": 0.5,
+        "D": 1220,
+        "tc": null,
+        "N": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0
+        },
+        "prp": [
+          0.7,
+          0.2,
+          0.1
+        ],
+        "cop": {
+          "A": [
+            0.9,
+            0.09,
+            0.01
+          ],
+          "B": [
+            0.7,
+            0.2,
+            0.1
+          ],
+          "C": [
+            0.5,
+            0.3,
+            0.2
+          ],
+          "D": [
+            0.4,
+            0.33,
+            0.27
+          ]
+        }
+      },
+      "expected": {
+        "age10": 20,
+        "measured": true,
+        "Cr": -0.07142857142857142,
+        "CrSrc": "измеренная (наибольшая)",
+        "agetk": 6,
+        "trdi": 13,
+        "Art": 0,
+        "FS": 332.75,
+        "SRP14": 0.12945731953996417,
+        "SRP15": 0.07050800439230191,
+        "srpEq": "2.15",
+        "srpWhy": "tc не задана → ур. 2.15",
+        "SRP": 0.07050800439230191,
+        "Cop": [
+          0.24499999999999997,
+          0.012000000000000002,
+          0.0020000000000000005
+        ],
+        "I": [
+          0.17149999999999996,
+          0.0024000000000000007,
+          0.00020000000000000006
+        ],
+        "Pop": [
+          0.9850660539919586,
+          0.013785180930499718,
+          0.0011487650775416432
+        ],
+        "beta": [
+          4.646738137388764,
+          4.646738137388764,
+          4.646738137388764
+        ],
+        "Dfb": 0.010808487314058784,
+        "DF": 0.1
+      }
+    },
+    {
+      "name": "single measurement",
+      "source": {
+        "analysis_on": "2030-01-01",
+        "commissioned_on": "2010-01-01",
+        "pipeline": false,
+        "spherical_vessel": false,
+        "applicability": {
+          "state": "active",
+          "sources": [
+            {
+              "mechanism": "hcl",
+              "side": "internal",
+              "state": "active"
+            }
+          ]
+        },
+        "component": {
+          "type_code": "shell",
+          "diameter_mm": 1220,
+          "seam_type": null
+        },
+        "component_rbi": {
+          "weld_efficiency": 1
+        },
+        "passport": {
+          "temperature_design_c": 20,
+          "pressure_design_mpa": 0.5,
+          "corrosion_monitoring": "отсутствует",
+          "design_corrosion_mm_year": 0.1
+        },
+        "material": {
+          "re_nom": 235,
+          "rm_nom": 370,
+          "stress": {
+            "rows": [
+              {
+                "t": 20,
+                "gost": 140,
+                "rd": 120
+              },
+              {
+                "t": 100,
+                "gost": 120,
+                "rd": 100
+              }
+            ]
+          }
+        },
+        "measurement": {
+          "nominal_mm": 12,
+          "rejection_mm": 4,
+          "rejection_source": "passport",
+          "series": [
+            {
+              "stage_id": "last",
+              "date": "2024-01-01",
+              "values": {
+                "min": 10
+              }
+            }
+          ]
+        },
+        "inspection_counts": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0,
+          "E": 7
+        }
+      },
+      "expected_input": {
+        "tAn": 2030,
+        "tIn": 2010,
+        "tbm": 12,
+        "tmin": 4,
+        "CrM": 0.14285714285714285,
+        "trdiM": 10,
+        "tLast": 2024,
+        "CrT": 0.1,
+        "S": 140,
+        "YS": 235,
+        "TS": 370,
+        "alpha": 2,
+        "E": 1,
+        "FIP": 1,
+        "FDL": 1,
+        "FOM": 1,
+        "P": 0.5,
+        "D": 1220,
+        "tc": null,
+        "N": {
+          "A": 0,
+          "B": 2,
+          "C": 1,
+          "D": 0
+        },
+        "prp": [
+          0.7,
+          0.2,
+          0.1
+        ],
+        "cop": {
+          "A": [
+            0.9,
+            0.09,
+            0.01
+          ],
+          "B": [
+            0.7,
+            0.2,
+            0.1
+          ],
+          "C": [
+            0.5,
+            0.3,
+            0.2
+          ],
+          "D": [
+            0.4,
+            0.33,
+            0.27
+          ]
+        }
+      },
+      "expected": {
+        "age10": 20,
+        "measured": true,
+        "Cr": 0.14285714285714285,
+        "CrSrc": "измеренная (наибольшая)",
+        "agetk": 6,
+        "trdi": 10,
+        "Art": 0.08571428571428572,
+        "FS": 332.75,
+        "SRP14": 0.16829451540195342,
+        "SRP15": 0.09166040570999248,
+        "srpEq": "2.15",
+        "srpWhy": "tc не задана → ур. 2.15",
+        "SRP": 0.09166040570999248,
+        "Cop": [
+          0.24499999999999997,
+          0.012000000000000002,
+          0.0020000000000000005
+        ],
+        "I": [
+          0.17149999999999996,
+          0.0024000000000000007,
+          0.00020000000000000006
+        ],
+        "Pop": [
+          0.9850660539919586,
+          0.013785180930499718,
+          0.0011487650775416432
+        ],
+        "beta": [
+          4.477697792909658,
+          4.35305438511798,
+          3.8127839740771305
+        ],
+        "Dfb": 0.024921392978788273,
+        "DF": 0.1
+      }
+    }
+  ]
+}

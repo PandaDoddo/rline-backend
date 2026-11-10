@@ -234,17 +234,25 @@ class EquipmentTest extends TestCase
         app(TenantContext::class)->set($tenant);
         try {
             foreach ([fn () => DB::connection('tenant')->table('equipment_component_assemblies')->where('id', $assembly)->update(['code' => 'L2']),
+                fn () => DB::connection('tenant')->table('equipment_component_assemblies')->where('id', $assembly)->update(['after_component_id' => $lens1]),
                 fn () => DB::connection('tenant')->table('equipment_component_assembly_members')->insert(['assembly_id' => $assembly, 'equipment_id' => $id, 'member_component_id' => $other, 'position' => 2])] as $invalid) {
                 try {
                     DB::connection('tenant')->transaction($invalid);
-                    $this->fail('PostgreSQL must protect assembly identity and ownership.');
-                } catch (QueryException $exception) {
+                    $this->fail('PostgreSQL must protect assembly identity, ownership and predecessor membership.');
+                } catch (\PDOException $exception) {
                     $this->assertSame('23514', $exception->getCode());
                 }
             }
         } finally {
             app(TenantContext::class)->set(null);
         }
+        // One atomic edit may remove the old member and make it the new predecessor.
+        $body['version'] = 3;
+        $body['structure'][0]['assemblies'][0] = array_replace($group, ['status' => 'active', 'after_component_id' => $lens1, 'members' => [$lens2]]);
+        $updated = $this->patchJson('/api/equipment/'.$id, $body)->assertOk()->json('data');
+        $assemblyData = collect($updated['components'])->firstWhere('id', $root)['assemblies'][0];
+        $this->assertSame($lens1, $assemblyData['after_component_id']);
+        $this->assertSame([$lens2], $assemblyData['members']);
     }
 
     public function test_unresolved_source_targets_remain_explicit_until_the_user_resolves_them(): void
@@ -1411,6 +1419,61 @@ class EquipmentTest extends TestCase
         $new = (string) Str::uuid();
         $saved = $this->patchJson('/api/equipment/'.$id, ['installation_id' => $installation, 'passport' => $passport, 'version' => 2, 'structure' => [$make($new, $root)]])->assertOk()->json('data.components');
         $this->assertSame('K-01.S2', collect($saved)->firstWhere('id', $new)['code']);
+    }
+
+    public function test_scope_protection_monitoring_and_date_precision_are_typed_independent_and_guarded_in_sql(): void
+    {
+        $tenant = $this->setupTenant('scope-protection');
+        $this->login($tenant);
+        $installation = $this->installation();
+        $passport = ['name' => 'КТТ', 'external_coating_present' => 'присутствует', 'temperature_max_c' => 10];
+        $created = $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => 'ves_teplo', 'passport' => $passport])->assertCreated()->json('data');
+        $url = '/api/equipment/'.$created['id'];
+        $head = (string) Str::uuid();
+        $coil = (string) Str::uuid();
+        $body = ['installation_id' => $installation, 'passport' => $passport, 'version' => 1,
+            'structure' => [['id' => $head, 'parent_id' => null, 'kind' => 'head', 'name' => 'Днище ТП', 'flow_space' => 'tube', 'is_coil' => false, 'status' => 'active', 'position' => 0],
+                ['id' => $coil, 'parent_id' => null, 'kind' => 'coil', 'name' => 'Змеевик', 'is_coil' => true, 'status' => 'active', 'position' => 1]],
+            'operating_scopes' => [['kind' => 'tube', 'component_id' => null, 'values' => ['temperature_max_c' => 150, 'external_coating_present' => 'отсутствует', 'insulation_present' => 'присутствует', 'external_coating_applied_on' => '2020', 'external_coating_life_years' => 0, 'corrosion_monitoring' => 'зонды электрического сопротивления', 'design_corrosion_mm_year' => '0,1'], 'verification' => ['external_coating_applied_on' => true]],
+                ['kind' => 'coil', 'component_id' => $coil, 'values' => ['flow_velocity_m_s' => 0, 'external_coating_present' => 'присутствует', 'insulation_present' => 'отсутствует']]]];
+        $saved = $this->patchJson($url, $body)->assertOk()->json('data');
+        $this->assertSame('2020-01-01', $saved['operating_scopes'][0]['values']['external_coating_applied_on']);
+        $this->assertSame('year', $saved['operating_scopes'][0]['qualifiers']['external_coating_applied_on']['precision']);
+        $this->assertSame('зонды электрического сопротивления', $saved['operating_scopes'][0]['values']['corrosion_monitoring']);
+        $this->assertSame(0, $saved['operating_scopes'][1]['values']['flow_velocity_m_s']);
+        $this->assertSame(0, $saved['operating_scopes'][0]['values']['external_coating_life_years']);
+        $visual = array_column($saved['visual_inspections']['elements'], null, 'component_id');
+        $this->assertFalse($visual[$head]['coating_applicable']);
+        $this->assertTrue($visual[$head]['insulated']);
+        $this->assertSame('passport', $visual[$head]['insulation_source']);
+        $this->assertTrue($visual[$coil]['coating_applicable']);
+        $this->assertFalse($visual[$coil]['insulated']);
+        $body = ['installation_id' => $installation, 'passport' => $passport, 'version' => $saved['version'], 'operating_scopes' => [['kind' => 'tube', 'component_id' => null, 'values' => ['external_coating_applied_on' => '2020-02-02'], 'qualifiers' => ['external_coating_applied_on' => ['precision' => 'year']]]]];
+        $this->patchJson($url, $body)->assertUnprocessable();
+        app(TenantContext::class)->set($tenant);
+        $db = DB::connection('tenant');
+        foreach (['external_coating_present' => 'invented', 'external_coating_life_years' => -1, 'external_coating_applied_on' => '2020-02-02'] as $field => $value) {
+            try {
+                $db->transaction(function () use ($db, $saved, $field, $value) {
+                    $db->table('equipment_operating_scopes')->where('id', $saved['operating_scopes'][0]['id'])->update([$field => $value]);
+                    $db->statement('SET CONSTRAINTS ALL IMMEDIATE');
+                });
+                $this->fail('Invalid scope value must fail SQL guards.');
+            } catch (QueryException $error) {
+                $this->assertSame('23514', $error->getCode());
+            }
+        }
+        $migration = require database_path('tenant-migrations/2026_11_10_000068_extend_operating_scope_protection_and_rbi_fields.php');
+        $previous = DB::getDefaultConnection();
+        DB::setDefaultConnection('tenant');
+        try {
+            $migration->down();
+            $this->fail('Populated independent protection inputs must not be discarded.');
+        } catch (\RuntimeException $error) {
+            $this->assertStringContainsString('Cannot discard', $error->getMessage());
+        } finally {
+            DB::setDefaultConnection($previous);
+        }
     }
 
     protected function tearDown(): void

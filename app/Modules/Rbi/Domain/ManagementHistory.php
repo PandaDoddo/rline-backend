@@ -9,6 +9,13 @@ final class ManagementHistory
         $old = array_column($before['answers'] ?? [], null, 'question_id');
         $new = array_column($after['answers'] ?? [], null, 'question_id');
         $changes = [];
+        foreach (['assessed_on' => 'Дата оценки', 'auditor_name' => 'Аудитор', 'notes' => 'Комментарий к оценке'] as $key => $label) {
+            $from = $before['details'][$key] ?? null;
+            $to = $after['details'][$key] ?? null;
+            if ($from !== $to) {
+                $changes[] = ['key' => 'details|'.$key, 'label' => $label, 'from' => $from, 'to' => $to];
+            }
+        }
         foreach ($sections as $section) {
             foreach ($section['questions'] as $question) {
                 if ($question['kind'] === 'heading') {

@@ -32,6 +32,10 @@ class ProcessFlowSchemaTransformer implements DocumentTransformer
         $checks = new ObjectType;
         $checks->additionalProperties = (new ObjectType)->addProperty('by', new IntegerType)->addProperty('at', (new StringType)->format('date-time'))->setRequired(['by', 'at']);
         $properties = (new ObjectType)->addProperty('molecular_weight', (new NumberType)->nullable(true))->addProperty('boiling_point', (new NumberType)->nullable(true))->addProperty('liquid_density', (new NumberType)->nullable(true))->setRequired(['molecular_weight', 'boiling_point', 'liquid_density']);
+        // New fields are optional in historical v1.1 snapshots.
+        $properties->addProperty('gas_density', (new NumberType)->nullable(true))->addProperty('density', (new NumberType)->nullable(true));
+        $conditions = (new ObjectType)->addProperty('phase', (new StringType)->enum(['gas', 'liquid', 'two_phase', 'solid'])->nullable(true))
+            ->addProperty('pressure', (new NumberType)->nullable(true))->addProperty('temperature', (new NumberType)->nullable(true))->setRequired(['phase', 'pressure', 'temperature']);
         $flags = new ObjectType;
         foreach (['flammable', 'toxic', 'nfnt', 'inert'] as $key) {
             $flags->addProperty($key, (new BooleanType)->nullable(true));
@@ -62,6 +66,7 @@ class ProcessFlowSchemaTransformer implements DocumentTransformer
         $result = (new ObjectType)->addProperty('engine_version', new StringType)->addProperty('signature', new StringType)->addProperty('input_basis', (new StringType)->enum(['mass', 'mole']))->addProperty('input_sum', new NumberType)->addProperty('complete', new BooleanType)
             ->addProperty('rows', (new ArrayType)->setItems($row))->addProperty('properties', $properties)->addProperty('criteria', (new ArrayType)->setItems($criterion))->addProperty('warnings', (new ArrayType)->setItems(new StringType));
         $result->setRequired(array_keys($result->properties));
+        $result->addProperty('conditions', $conditions->clone())->addProperty('density_method', (new StringType)->enum(['ideal_gas', 'catalog_liquid'])->nullable(true));
         foreach ($document->components->schemas as $name => $schema) {
             if (class_basename($name) === 'ProcessFlowResource') {
                 $schema->type = new ObjectType;
@@ -72,6 +77,8 @@ class ProcessFlowSchemaTransformer implements DocumentTransformer
             }
             $class = class_basename($name);
             if (in_array($class, ['ProcessFlowNodeResource', 'ProcessFlowResource'], true)) {
+                $type->addProperty('code', (new StringType)->nullable(true));
+                $type->addProperty('data_origin', ImportOriginSchema::make()->nullable(true));
                 $type->addProperty('parent_id', (new StringType)->format('uuid')->nullable(true))->addProperty('kind', (new StringType)->enum(['folder', 'flow']))->addProperty('category', (new StringType)->enum(array_keys(config('process-flows.categories'))))
                     ->addProperty('medium_kind', (new StringType)->enum(array_keys(config('process-flows.media'))))->addProperty('status', (new StringType)->enum(['active', 'archived']));
             }
@@ -89,7 +96,7 @@ class ProcessFlowSchemaTransformer implements DocumentTransformer
                 $type->addProperty('path', new StringType);
             }
             if ($class === 'ProcessFlowCalculationResource') {
-                $type->addProperty('inputs', (new ObjectType)->addProperty('basis', (new StringType)->enum(['mass', 'mole']))->addProperty('components', (new ArrayType)->setItems($component->clone()))->setRequired(['basis', 'components']))->addProperty('result', $result->clone());
+                $type->addProperty('inputs', (new ObjectType)->addProperty('basis', (new StringType)->enum(['mass', 'mole']))->addProperty('conditions', $conditions->clone())->addProperty('components', (new ArrayType)->setItems($component->clone()))->setRequired(['basis', 'components']))->addProperty('result', $result->clone());
             }
             if ($class === 'UpdateProcessFlowRequest') {
                 $type->addProperty('screening', FlowScreeningSchema::state(true));

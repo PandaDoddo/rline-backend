@@ -1,0 +1,115 @@
+{
+  "version": "risk-targets-v1",
+  "policy": "old-risk-targets-explicit-v1",
+  "fields": [
+    {
+      "key": "area",
+      "label": "Риск по площади последствий",
+      "unit": "м²/год",
+      "default": 50,
+      "nullable": true,
+      "min": 0,
+      "max": 1000000000000000
+    },
+    {
+      "key": "fin",
+      "label": "Риск по финансовым потерям",
+      "unit": "млн руб./год",
+      "default": 1,
+      "nullable": true,
+      "min": 0,
+      "max": 1000000000000000
+    },
+    {
+      "key": "pof",
+      "label": "Частота отказов (PoF)",
+      "unit": "отказов/год",
+      "default": 0.1,
+      "nullable": true,
+      "min": 0,
+      "max": 1000000
+    },
+    {
+      "key": "dfmax",
+      "label": "Максимальный суммарный DF",
+      "unit": "—",
+      "default": 1000,
+      "nullable": true,
+      "min": 0,
+      "max": 1000000000000000
+    },
+    {
+      "key": "dThin",
+      "label": "Минимальный целевой DF утонения",
+      "unit": "—",
+      "default": 5,
+      "nullable": false,
+      "min": 0,
+      "max": 1000000000000000
+    },
+    {
+      "key": "dScc",
+      "label": "Минимальный целевой DF растрескивания",
+      "unit": "—",
+      "default": 5,
+      "nullable": false,
+      "min": 0,
+      "max": 1000000000000000
+    },
+    {
+      "key": "dExt",
+      "label": "Минимальный целевой DF наружных повреждений",
+      "unit": "—",
+      "default": 5,
+      "nullable": false,
+      "min": 0,
+      "max": 1000000000000000
+    },
+    {
+      "key": "intvl",
+      "label": "Максимальный интервал между инспекциями",
+      "unit": "лет",
+      "default": 12,
+      "nullable": true,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "planRec",
+      "label": "Рекомендуемый интервал планирования",
+      "unit": "лет",
+      "default": 8,
+      "nullable": false,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "planMax",
+      "label": "Максимальный интервал планирования",
+      "unit": "лет",
+      "default": 10,
+      "nullable": false,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "planScc",
+      "label": "Плановый интервал SCC",
+      "unit": "лет",
+      "default": 4,
+      "nullable": false,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "H",
+      "label": "Горизонт расчёта",
+      "unit": "лет",
+      "default": 12,
+      "nullable": false,
+      "min": 0.5,
+      "max": 100,
+      "step": 0.5
+    }
+  ]
+}

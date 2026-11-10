@@ -54,12 +54,21 @@ class EquipmentSchemaTransformer implements DocumentTransformer
         }
         $passport->setRequired($required);
         foreach ($document->components->schemas as $name => $schema) {
+            if (class_basename($name) === 'MechanismElementResource') {
+                $schema->type = MechanismApiSchema::make()->properties['elements']->items;
+
+                continue;
+            }
             if (! $schema->type instanceof ObjectType) {
                 continue;
             }
             $type = $schema->type;
             $class = class_basename($name);
             if ($class === 'EquipmentResource') {
+                $type->addProperty('mechanisms', MechanismApiSchema::make());
+                $type->addProperty('inspection_categories', InspectionCategoryApiSchema::make());
+                $type->addProperty('visual_inspections', VisualInspectionApiSchema::make());
+                $type->setRequired(array_values(array_diff($type->required, ['visual_inspections', 'inspection_categories', 'mechanisms'])));
                 $origin = (new ObjectType)->addProperty('batch_id', (new StringType)->format('uuid'))->addProperty('kind', (new StringType)->enum(['stored_snapshot', 'demo_expanded']))
                     ->addProperty('label', new StringType)->addProperty('source_id', new StringType)->addProperty('source_snapshot_at', (new StringType)->format('date-time'))
                     ->addProperty('applied_at', (new StringType)->format('date-time'))->addProperty('imported_version', new IntegerType)->addProperty('changed_since_import', new BooleanType)->addProperty('source_issue_count', new IntegerType)
@@ -150,6 +159,10 @@ class EquipmentSchemaTransformer implements DocumentTransformer
                 }
             }
             if ($class === 'UpdateEquipmentRequest') {
+                $type->addProperty('mechanisms', MechanismApiSchema::make(true));
+                $type->addProperty('inspection_categories', InspectionCategoryApiSchema::make(true));
+                $type->addProperty('visual_inspections', VisualInspectionApiSchema::make(true));
+                $type->setRequired(['installation_id', 'passport', 'version']);
                 $type->addProperty('verification', $verification);
                 $type->addProperty('operating_scopes', OperatingScopeSchema::make(true));
             }

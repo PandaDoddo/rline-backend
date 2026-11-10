@@ -2,6 +2,7 @@
 
 namespace App\Modules\Installations\Application;
 
+use App\Modules\Installations\Infrastructure\InstallationMaintenanceRepository;
 use App\Modules\Installations\Models\Installation;
 use App\Modules\Installations\Models\InstallationMaintenanceRecord;
 use App\Modules\Shared\Domain\ValueEquality;
@@ -40,6 +41,7 @@ class InstallationMaintenance
                 if ($record->check) {
                     $this->invalid('delete_ids', 'Проверенную запись нельзя удалить: сначала снимите проверку и сохраните.');
                 }
+                $record->forceFill(['version' => $record->version + 1, 'updated_by' => $actor])->save();
                 $record->delete();
             }
             foreach ($upserts as $index => $entry) {
@@ -82,10 +84,15 @@ class InstallationMaintenance
                     $check ??= ['by' => $actor, 'at' => now()->toIso8601String()];
                 }
                 $record ??= (new InstallationMaintenanceRecord)->forceFill(['id' => $entry['id'], 'installation_id' => $id, 'kind' => $kind, 'created_by' => $actor]);
-                $record->forceFill(['values' => $values, 'check' => $check, 'updated_by' => $actor])->save();
+                $record->forceFill(['verified_by' => $check['by'] ?? null, 'verified_at' => $check['at'] ?? null, 'verification_signature' => $check === null ? null : $record->verification_signature, 'updated_by' => $actor, 'version' => $record->exists ? $record->version + 1 : 1]);
+                $repository = app(InstallationMaintenanceRepository::class);
+                $repository->save($record, $values);
+                if ($entry['verified'] ?? false) {
+                    $repository->bindVerification($record);
+                }
             }
             $noStops = array_key_exists('no_stops', $data) ? $data['no_stops'] : $installation->no_stops;
-            if (InstallationMaintenanceRecord::where('installation_id', $id)->where('kind', 'mri')->whereRaw("installation_maintenance_records.values->>'effective_date' IS NOT NULL")->groupByRaw("installation_maintenance_records.values->>'effective_date'")->havingRaw('count(*) > 1')->selectRaw('1')->exists()) {
+            if (InstallationMaintenanceRecord::where('installation_maintenance_records.installation_id', $id)->where('installation_maintenance_records.kind', 'mri')->join('installation_mri_parameters as m', 'm.record_id', '=', 'installation_maintenance_records.id')->whereNotNull('m.effective_date')->groupBy('m.effective_date')->havingRaw('count(*) > 1')->selectRaw('1')->exists()) {
                 $this->invalid('upserts', 'На одну дату допускается одна запись МРИ. Исправьте существующую запись.');
             }
             if ($noStops && InstallationMaintenanceRecord::where('installation_id', $id)->where('kind', 'stop')->exists()) {
@@ -108,6 +115,14 @@ class InstallationMaintenance
 
     private function validateValues(string $kind, array $values, string $path): void
     {
+        foreach (['effective_date', 'starts_on', 'ends_on', 'starts_at', 'ends_at'] as $key) {
+            if (isset($values[$key])) {
+                $year = CarbonImmutable::parse($values[$key])->year;
+                if ($year < 1 || $year > 9999) {
+                    $this->invalid($path.'.'.$key, 'Дата выходит за представимый диапазон 0001–9999.');
+                }
+            }
+        }
         foreach ([['starts_on', 'ends_on'], ['starts_at', 'ends_at']] as [$start, $end]) {
             if (isset($values[$start], $values[$end]) && CarbonImmutable::parse($values[$end])->lt(CarbonImmutable::parse($values[$start]))) {
                 $this->invalid($path.'.'.$end, 'Окончание не может быть раньше начала.');

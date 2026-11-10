@@ -28,6 +28,10 @@ class EquipmentFlowSchema
             ->addProperty('mode', (new StringType)->enum(['assign', 'none', 'unknown']))
             ->addProperty('main_share_percent', (new NumberType)->nullable(true))->setRequired(['component_id', 'side', 'active', 'contact_id', 'inherited', 'mode', 'main_share_percent']);
 
-        return (new ObjectType)->addProperty('contacts', (new ArrayType)->setItems($contact))->addProperty('effective', (new ArrayType)->setItems($effective))->setRequired(['contacts', 'effective']);
+        $selected = (new ObjectType)->addProperty('flow_id', (new StringType)->format('uuid'))->addProperty('flow_name', new StringType)->addProperty('flow_code', (new StringType)->nullable(true))
+            ->addProperty('flow_category', (new StringType)->enum(['main', 'alternative', 'auxiliary', 'repair', 'external']))->addProperty('medium_kind', (new StringType)->enum(['fluid', 'air', 'soil', 'insulation']))->addProperty('flow_status', (new StringType)->enum(['active', 'archived']))
+            ->setRequired(['flow_id', 'flow_name', 'flow_code', 'flow_category', 'medium_kind', 'flow_status']);
+
+        return (new ObjectType)->addProperty('contacts', (new ArrayType)->setItems($contact))->addProperty('effective', (new ArrayType)->setItems($effective))->addProperty('selected', (new ArrayType)->setItems($selected))->setRequired(['contacts', 'effective', 'selected']);
     }
 }

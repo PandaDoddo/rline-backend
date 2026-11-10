@@ -71,6 +71,57 @@ class EquipmentFlowContactsTest extends TestCase
         return ['id' => (string) Str::uuid(), 'parent_id' => $parent, 'kind' => $parent ? 'element' : $kind, 'is_coil' => $kind === 'coil', 'name' => $kind, 'status' => 'active', 'position' => 0];
     }
 
+    public function test_selected_flows_do_not_assign_exposure_and_used_flow_cannot_be_removed_silently(): void
+    {
+        $this->prepare();
+        $main = $this->flow();
+        $outside = $this->flow('external');
+        $root = $this->makeComponent();
+        $first = $this->updateEquipment(['structure' => [$root], 'flow_selection' => [$main['id'], $outside['id']]])->assertOk()->assertJsonCount(0, 'data.flows.contacts')->json('data');
+        $this->assertSame([$main['id'], $outside['id']], array_column($first['flows']['selected'], 'flow_id'));
+        foreach ($first['flows']['effective'] as $row) {
+            $this->assertSame('unknown', $row['mode']);
+        }
+        $this->body['version'] = $first['version'];
+        $reordered = $this->updateEquipment(['flow_selection' => [$outside['id'], $main['id']]])->assertOk()->json('data');
+        $this->assertSame([$outside['id'], $main['id']], array_column($reordered['flows']['selected'], 'flow_id'));
+        $this->body['version'] = $reordered['version'];
+        $contact = $this->contact($main);
+        $assigned = $this->updateEquipment(['flow_contacts' => [$contact]])->assertOk()->json('data');
+        $this->body['version'] = $assigned['version'];
+        $this->updateEquipment(['flow_selection' => []])->assertUnprocessable()->assertJsonValidationErrors('flow_selection');
+        $contact['mode'] = 'none';
+        $contact['flows'] = [];
+        $this->updateEquipment(['flow_selection' => [], 'flow_contacts' => [$contact]])->assertOk()->assertJsonCount(0, 'data.flows.selected')->assertJsonPath('data.flows.contacts.0.mode', 'none');
+    }
+
+    public function test_new_assignment_selects_its_flow_and_canonical_duplicate_ids_are_rejected(): void
+    {
+        $this->prepare();
+        $main = $this->flow();
+        $root = $this->makeComponent();
+        $contact = $this->contact($main);
+        $saved = $this->updateEquipment(['structure' => [$root], 'flow_contacts' => [$contact]])->assertOk()->assertJsonPath('data.flows.selected.0.flow_id', $main['id'])->json('data');
+        $this->body['version'] = $saved['version'];
+        $uuid = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+        $this->updateEquipment(['flow_selection' => [$main['id'], $uuid, strtoupper($uuid)]])->assertUnprocessable()->assertJsonValidationErrors('flow_selection');
+        $this->getJson('/api/equipment/'.$this->equipment)->assertOk()->assertJsonPath('data.version', $saved['version'])->assertJsonCount(1, 'data.flows.selected');
+    }
+
+    public function test_process_medium_can_touch_bundle_and_coil_outer_surfaces_without_becoming_an_ambient_default(): void
+    {
+        $this->prepare();
+        $main = $this->flow();
+        $bundle = $this->makeComponent('tube_bundle');
+        $tube = $this->makeComponent('element', $bundle['id']);
+        $coil = $this->makeComponent('coil');
+        $shell = $this->makeComponent();
+        $saved = $this->updateEquipment(['structure' => [$bundle, $tube, $coil, $shell], 'flow_contacts' => [$this->contact($main, 'component', $tube['id'], 'external'), $this->contact($main, 'component', $coil['id'], 'external')]])->assertOk()->json('data');
+        $this->body['version'] = $saved['version'];
+        $this->updateEquipment(['flow_contacts' => [$this->contact($main, 'component', $shell['id'], 'external')]])->assertUnprocessable();
+        $this->updateEquipment(['flow_contacts' => [$this->contact($main, 'equipment', null, 'external')]])->assertUnprocessable();
+    }
+
     public function test_atomic_contacts_inheritance_coils_spaces_and_recheck(): void
     {
         $this->prepare();

@@ -1,0 +1,1658 @@
+{
+  "version": "component-screening-v1",
+  "source": {
+    "file": "old/mdscr.js",
+    "sha256": "d2bed4d83ea0b020c4ef1ee5faa915d55909c63c6d88a45ee863dfede66bade3",
+    "flow_schema_version": "flow-screening-v2"
+  },
+  "mechanisms": [
+    {
+      "id": "hcl",
+      "label": "Коррозия солянокислотная",
+      "english_label": "HCl Corrosion",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "hcl"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "hcl|1",
+          "label": "Присутствие HCl",
+          "english_label": "Does the process contain HCl?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "hcl",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "hcl|2",
+          "label": "Наличие свободной воды (вкл. начальную конденсацию)",
+          "english_label": "Is free water present in the process stream (including initial condensing condition)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "water",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "hcl|3",
+          "label": "pH < 7,0",
+          "english_label": "Is the pH < 7.0?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "ph",
+              "operator": "<",
+              "threshold": [
+                7
+              ],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "htsna",
+      "label": "Коррозия высокотемпературная сульфидная / нафтенокислотная",
+      "english_label": "High-temperature Sulfidic/Naphthenic Acid Corrosion",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "sulf",
+        "nap"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "htsna|1",
+          "label": "Присутствие нефти с сернистыми соединениями",
+          "english_label": "Does the process contain oil with sulfur compounds?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "sulf",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "htsna|2",
+          "label": "Рабочая температура > 204 °C",
+          "english_label": "Is the operating temperature > 204 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                204
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "hth2s",
+      "label": "Коррозия высокотемпературная в H₂S/H₂",
+      "english_label": "High-temperature H₂S/H₂ Corrosion",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "h2h2s"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "hth2s|1.1",
+          "label": "Присутствие H₂S",
+          "english_label": "Does the process contain H₂S?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "h2s",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "hth2s|1.2",
+          "label": "Присутствие водорода",
+          "english_label": "Does the process contain hydrogen?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "h2",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "hth2s|2",
+          "label": "Рабочая температура > 204 °C",
+          "english_label": "Is the operating temperature > 204 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                204
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "h2so4",
+      "label": "Коррозия сернокислотная",
+      "english_label": "Sulfuric Acid (H₂SO₄) Corrosion",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "h2so4"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "h2so4|1",
+          "label": "Присутствие H₂SO₄",
+          "english_label": "Does the process contain H₂SO₄?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "h2so4",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "hf",
+      "label": "Коррозия фтористоводородная",
+      "english_label": "HF Corrosion",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "hf"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "hf|1",
+          "label": "Присутствие HF",
+          "english_label": "Does the process stream contain HF?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "hf",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "sw",
+      "label": "Коррозия кислой щелочной водой",
+      "english_label": "Sour Water Corrosion",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "nh4hs"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "sw|1.1",
+          "label": "Наличие свободной воды (вкл. начальную конденсацию)",
+          "english_label": "Is free water present in the process stream (including initial condensing condition)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "water",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "sw|1.2",
+          "label": "Присутствие H₂S",
+          "english_label": "Is H₂S present?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "h2s",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "amine",
+      "label": "Коррозия аминная",
+      "english_label": "Amine Corrosion",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "aminec"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "amine|1",
+          "label": "Присутствие аминов (МЭА, ДЭА, ДИПА, МДЭА)",
+          "english_label": "Is equipment exposed to acid gas treating amines (MEA, DEA, DIPA or MDEA)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "amine",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "htox",
+      "label": "Окисление высокотемпературное",
+      "english_label": "High-temperature Oxidation",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "oxid"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "htox|1",
+          "label": "Рабочая температура ≥ 482 °C",
+          "english_label": "Is the temperature ≥ 482 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                482
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "htox|2",
+          "label": "Присутствие кислорода",
+          "english_label": "Is there oxygen present?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "o2",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "asw",
+      "label": "Коррозия кислой кислотной водой",
+      "english_label": "Acid Sour Water",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "sourw"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "asw|1.1",
+          "label": "Наличие свободной воды (вкл. начальную конденсацию)",
+          "english_label": "Is free water present in the process stream (including initial condensing condition)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "water",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "asw|1.2",
+          "label": "Присутствие H₂S",
+          "english_label": "Is H₂S present?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "h2s",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "asw|1.3",
+          "label": "pH < 7,0",
+          "english_label": "Is the pH < 7.0?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "ph",
+              "operator": "<",
+              "threshold": [
+                7
+              ],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "asw|2",
+          "label": "Присутствие хлоридов < 50 ppm",
+          "english_label": "Does the process contain < 50 ppm chlorides?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "cl",
+              "operator": "<",
+              "threshold": [
+                50
+              ],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "cw",
+      "label": "Коррозия в охлаждающей воде",
+      "english_label": "Cooling Water",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "cw"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "cw|1",
+          "label": "Является ли поток охлаждающей водой",
+          "english_label": "Is equipment in cooling water service?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "cw",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "soil",
+      "label": "Коррозия почвенная",
+      "english_label": "Soil-side corrosion",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "soil"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "soil|1",
+          "label": "Наличие контакта с грунтом (подземное или частично заглублённое)",
+          "english_label": "Is equipment in contact with soil (buried or partially buried)?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "soil_contact"
+        },
+        {
+          "id": "soil|2",
+          "label": "Углеродистая сталь",
+          "english_label": "Is the material of construction carbon steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "external"
+    },
+    {
+      "id": "co2",
+      "label": "Коррозия углекислотная",
+      "english_label": "CO₂ Corrosion",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "co2"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "co2|1.1",
+          "label": "Наличие свободной воды (вкл. начальную конденсацию)",
+          "english_label": "Is free water present in the process stream (including initial condensing condition)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "water",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "co2|1.2",
+          "label": "Присутствие CO₂",
+          "english_label": "Is CO₂ present?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "co2",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "co2|2",
+          "label": "Углеродистая сталь или < 13 % Cr",
+          "english_label": "Is the material of construction carbon steel or < 13 % Cr?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "Cr",
+              "operator": "<",
+              "threshold": [
+                13
+              ],
+              "near": []
+            }
+          ],
+          "rule": "material_cr_co2"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "process"
+    },
+    {
+      "id": "ast",
+      "label": "Коррозия днища резервуара (AST)",
+      "english_label": "AST Bottom",
+      "source": "API 581, 4-е изд., табл. 2.B.1.1, с. 82",
+      "damage_mechanisms": [
+        "soil"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "ast|1",
+          "label": "Компонент является днищем РВС",
+          "english_label": "Is the equipment item an AST tank bottom?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "tank_floor"
+        }
+      ],
+      "group": "2.B",
+      "side_policy": "external"
+    },
+    {
+      "id": "acscc",
+      "label": "Растрескивание коррозионное карбонатное (ACSCC)",
+      "english_label": "ACSCC Cracking",
+      "source": "API 581, 4-е изд., табл. 2.C.1.1, с. 203",
+      "damage_mechanisms": [
+        "carbscc"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "acscc|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "acscc|2",
+          "label": "Наличие свободной воды (вкл. начальную конденсацию)",
+          "english_label": "Is free water present in the process stream (including initial condensing condition)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "water",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "acscc|3",
+          "label": "pH > 7,5",
+          "english_label": "Is the pH > 7.5?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "ph",
+              "operator": ">",
+              "threshold": [
+                7.5
+              ],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.C",
+      "side_policy": "process"
+    },
+    {
+      "id": "aminescc",
+      "label": "Растрескивание коррозионное аминное",
+      "english_label": "Amine Cracking",
+      "source": "API 581, 4-е изд., табл. 2.C.1.1, с. 203",
+      "damage_mechanisms": [
+        "aminescc"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "aminescc|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "aminescc|2",
+          "label": "Рабочая температура > 51 °C",
+          "english_label": "Is the operating temperature > 51 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                51
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "aminescc|3",
+          "label": "Присутствие аминов (МЭА, ДЭА, ДИПА, МДЭА)",
+          "english_label": "Is equipment exposed to acid gas treating amines (MEA, DEA, DIPA, or MDEA)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "amine",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.C",
+      "side_policy": "process"
+    },
+    {
+      "id": "causticscc",
+      "label": "Растрескивание коррозионное щелочное",
+      "english_label": "Caustic SCC",
+      "source": "API 581, 4-е изд., табл. 2.C.1.1, с. 203",
+      "damage_mechanisms": [
+        "causticscc"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "causticscc|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "causticscc|2",
+          "label": "Присутствие щёлочи",
+          "english_label": "Process containing caustic?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "caustic",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "causticscc|3",
+          "label": "Рабочая температура > 51 °C",
+          "english_label": "Is the operating temperature > 51 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                51
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        }
+      ],
+      "group": "2.C",
+      "side_policy": "process"
+    },
+    {
+      "id": "clscc",
+      "label": "Растрескивание коррозионное хлоридное",
+      "english_label": "ClSCC",
+      "source": "API 581, 4-е изд., табл. 2.C.1.1, с. 203",
+      "damage_mechanisms": [
+        "clscc"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "clscc|1",
+          "label": "Аустенитная нержавеющая сталь или никелевый сплав",
+          "english_label": "Austenitic stainless steel or nickel-based alloy?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_austenitic_or_nickel"
+        },
+        {
+          "id": "clscc|2.1",
+          "label": "Наличие свободной воды (вкл. начальную конденсацию)",
+          "english_label": "Is free water present in the process stream (including initial condensing condition)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "water",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "clscc|2.2",
+          "label": "Присутствие хлоридов в свободной воде",
+          "english_label": "Does the free water contain chlorides?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "cl",
+              "operator": ">",
+              "threshold": [
+                0
+              ],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "clscc|3.1.1",
+          "label": "Рабочая температура > 23,9 °C",
+          "english_label": "Operating temperature > 23.9 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                23.9
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "clscc|3.1.2",
+          "label": "Рабочая температура < 173,9 °C",
+          "english_label": "Operating temperature < 173.9 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": "<",
+              "threshold": [
+                173.9
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "clscc|3.2.1",
+          "label": "pH > 2,5",
+          "english_label": "pH > 2.5?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "ph",
+              "operator": ">",
+              "threshold": [
+                2.5
+              ],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "clscc|3.2.2",
+          "label": "pH < 10,5",
+          "english_label": "pH < 10.5?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "ph",
+              "operator": "<",
+              "threshold": [
+                10.5
+              ],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.C",
+      "side_policy": "process"
+    },
+    {
+      "id": "hichf",
+      "label": "Растрескивание водородное в HF (HIC/SOHIC-HF)",
+      "english_label": "Hydrofluoric Acid — HIC/SOHIC-HF",
+      "source": "API 581, 4-е изд., табл. 2.C.1.1, с. 203",
+      "damage_mechanisms": [
+        "hichf"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "hichf|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "hichf|2",
+          "label": "Присутствие HF",
+          "english_label": "Process containing HF?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "hf",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.C",
+      "side_policy": "process"
+    },
+    {
+      "id": "hschf",
+      "label": "Растрескивание водородное под напряжением в HF (HSC)",
+      "english_label": "Hydrofluoric Acid — HSC",
+      "source": "API 581, 4-е изд., табл. 2.C.1.1, с. 203",
+      "damage_mechanisms": [
+        "hschf"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "hschf|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "hschf|2",
+          "label": "Присутствие HF",
+          "english_label": "Process containing HF?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "hf",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.C",
+      "side_policy": "process"
+    },
+    {
+      "id": "pascc",
+      "label": "Растрескивание коррозионное в политионовых кислотах",
+      "english_label": "PASCC",
+      "source": "API 581, 4-е изд., табл. 2.C.1.1, с. 203",
+      "damage_mechanisms": [
+        "pta"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "pascc|1",
+          "label": "Аустенитная нержавеющая сталь или никелевый сплав",
+          "english_label": "Austenitic stainless steel or nickel-based alloy?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_austenitic_or_nickel"
+        },
+        {
+          "id": "pascc|2",
+          "label": "Присутствие сернистых соединений",
+          "english_label": "Process exposed to sulfur bearing compounds?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "sbc",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.C",
+      "side_policy": "process"
+    },
+    {
+      "id": "hich2s",
+      "label": "Растрескивание водородное во влажном H₂S (HIC/SOHIC-H₂S)",
+      "english_label": "Wet H₂S — HIC/SOHIC-H₂S",
+      "source": "API 581, 4-е изд., табл. 2.C.1.1, с. 203",
+      "damage_mechanisms": [
+        "hich2s"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "hich2s|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "hich2s|2",
+          "label": "Присутствие H₂S",
+          "english_label": "Process containing H₂S?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "h2s",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "hich2s|3",
+          "label": "Давление рабочее > 0,3 МПа",
+          "english_label": "Pressure > 0.3 MPa?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "P",
+              "operator": ">",
+              "threshold": [
+                0.3
+              ],
+              "near": []
+            }
+          ],
+          "rule": "pressure"
+        },
+        {
+          "id": "hich2s|4",
+          "label": "Наличие свободной воды (вкл. начальную конденсацию)",
+          "english_label": "Is free water present in the process stream (including initial condensing condition)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "water",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.C",
+      "side_policy": "process"
+    },
+    {
+      "id": "ssc",
+      "label": "Растрескивание сульфидное под напряжением во влажном H₂S (SSC)",
+      "english_label": "Wet H₂S — Sulfide Stress Cracking (SSC)",
+      "source": "API 581, 4-е изд., табл. 2.C.1.1, с. 203",
+      "damage_mechanisms": [
+        "wh2s"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "ssc|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "ssc|2",
+          "label": "Присутствие H₂S",
+          "english_label": "Process containing H₂S?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "h2s",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        },
+        {
+          "id": "ssc|3",
+          "label": "Давление рабочее > 0,3 МПа",
+          "english_label": "Pressure > 0.3 MPa?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "P",
+              "operator": ">",
+              "threshold": [
+                0.3
+              ],
+              "near": []
+            }
+          ],
+          "rule": "pressure"
+        },
+        {
+          "id": "ssc|4",
+          "label": "Наличие свободной воды (вкл. начальную конденсацию)",
+          "english_label": "Is free water present in the process stream (including initial condensing condition)?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "water",
+              "operator": "yes",
+              "threshold": [],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.C",
+      "side_policy": "process"
+    },
+    {
+      "id": "extf",
+      "label": "Коррозия внешняя — ферритные компоненты",
+      "english_label": "External Corrosion — Ferritic Component",
+      "source": "API 581, 4-е изд., табл. 2.D.1.1, с. 258",
+      "damage_mechanisms": [
+        "atm"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "extf|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "extf|2.1",
+          "label": "Рабочая температура > −12 °C",
+          "english_label": "Operating temperature > -12 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                -12
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "extf|2.2",
+          "label": "Рабочая температура < 121 °C",
+          "english_label": "Operating temperature < 121 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": "<",
+              "threshold": [
+                121
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "extf|3",
+          "label": "Компонент без изоляции",
+          "english_label": "Is component uninsulated?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "uninsulated"
+        }
+      ],
+      "group": "2.D",
+      "side_policy": "external"
+    },
+    {
+      "id": "cuif",
+      "label": "Коррозия под изоляцией (CUI) — ферритные компоненты",
+      "english_label": "Corrosion Under Insulation (CUI) — Ferritic Component",
+      "source": "API 581, 4-е изд., табл. 2.D.1.1, с. 258",
+      "damage_mechanisms": [
+        "cui"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "cuif|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "cuif|2.1",
+          "label": "Рабочая температура > −12 °C",
+          "english_label": "Operating temperature > -12 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                -12
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "cuif|2.2",
+          "label": "Рабочая температура < 177 °C",
+          "english_label": "Operating temperature < 177 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": "<",
+              "threshold": [
+                177
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "cuif|3",
+          "label": "Компонент теплоизолирован",
+          "english_label": "Is component insulated?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "insulated"
+        }
+      ],
+      "group": "2.D",
+      "side_policy": "external"
+    },
+    {
+      "id": "extcl",
+      "label": "Растрескивание коррозионное хлоридное внешнее (ExtClSCC) — аустенитные компоненты",
+      "english_label": "External Chloride SCC (ExtClSCC) — Austenitic Component",
+      "source": "API 581, 4-е изд., табл. 2.D.1.1, с. 258",
+      "damage_mechanisms": [
+        "clscc_ext"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "extcl|1",
+          "label": "Аустенитная нержавеющая сталь",
+          "english_label": "Austenitic stainless steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_austenitic"
+        },
+        {
+          "id": "extcl|2",
+          "label": "Компонент без изоляции",
+          "english_label": "Is component uninsulated?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "uninsulated"
+        },
+        {
+          "id": "extcl|3.1",
+          "label": "Рабочая температура > 50 °C",
+          "english_label": "Operating temperature > 50 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                50
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "extcl|3.2",
+          "label": "Рабочая температура < 150 °C",
+          "english_label": "Operating temperature < 150 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": "<",
+              "threshold": [
+                150
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        }
+      ],
+      "group": "2.D",
+      "side_policy": "external"
+    },
+    {
+      "id": "cuicl",
+      "label": "Растрескивание коррозионное хлоридное под изоляцией (CUI ClSCC) — аустенитные компоненты",
+      "english_label": "External CUI Chloride SCC (CUI ClSCC) — Austenitic Component",
+      "source": "API 581, 4-е изд., табл. 2.D.1.1, с. 258",
+      "damage_mechanisms": [
+        "clscc_cui"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "cuicl|1",
+          "label": "Аустенитная нержавеющая сталь",
+          "english_label": "Austenitic stainless steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_austenitic"
+        },
+        {
+          "id": "cuicl|2",
+          "label": "Компонент теплоизолирован",
+          "english_label": "Is component insulated?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "insulated"
+        },
+        {
+          "id": "cuicl|3.1",
+          "label": "Рабочая температура > 50 °C",
+          "english_label": "Operating temperature > 50 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                50
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "cuicl|3.2",
+          "label": "Рабочая температура < 150 °C",
+          "english_label": "Operating temperature < 150 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": "<",
+              "threshold": [
+                150
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        }
+      ],
+      "group": "2.D",
+      "side_policy": "external"
+    },
+    {
+      "id": "htha",
+      "label": "Высокотемпературное водородное разрушение (HTHA)",
+      "english_label": "HTHA",
+      "source": "API 581, 4-е изд., табл. 2.E.1.1, с. 296",
+      "damage_mechanisms": [
+        "htha"
+      ],
+      "component_only": false,
+      "questions": [
+        {
+          "id": "htha|1",
+          "label": "Углеродистая сталь, C-½Mo или Cr-Mo низколегированная сталь (½Cr-½Mo, 1Cr-½Mo, 1¼Cr-½Mo, 2¼Cr-1Mo, 3Cr-1Mo, 5Cr-½Mo, 7Cr-1Mo, 9Cr-1Mo)",
+          "english_label": "Carbon steel, C-1/2 Mo or a Cr-Mo low-alloy steel (such as 1/2Cr-1/2 Mo, 1 Cr-1/2 Mo, 11/4Cr-1/2 Mo, 21/4Cr-1 Mo, 3Cr-1 Mo, 5Cr-1/2 Mo, 7Cr-1 Mo, and 9Cr-1 Mo)?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_cr_mo"
+        },
+        {
+          "id": "htha|2",
+          "label": "Рабочая температура > 177 °C",
+          "english_label": "Operating temperature > 177 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                177
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "htha|3",
+          "label": "Рабочее парциальное давление водорода > 0,345 МПа",
+          "english_label": "Operating hydrogen partial pressure > 0.345 MPa?",
+          "scope": "flow",
+          "conditions": [
+            {
+              "field": "pH2",
+              "operator": ">",
+              "threshold": [
+                0.345
+              ],
+              "near": []
+            }
+          ],
+          "rule": "flow"
+        }
+      ],
+      "group": "2.E",
+      "side_policy": "process"
+    },
+    {
+      "id": "bf",
+      "label": "Хрупкое разрушение",
+      "english_label": "Brittle Fracture",
+      "source": "API 581, 4-е изд., табл. 2.E.1.1, с. 296",
+      "damage_mechanisms": [
+        "brittle"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "bf|1",
+          "label": "Углеродистая или низколегированная сталь",
+          "english_label": "Carbon or low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_carbon_low_alloy"
+        },
+        {
+          "id": "bf|2",
+          "label": "Минимальная расчётная температура металла или минимально допустимая температура неизвестна либо ниже рабочей / температуры при нарушении режима",
+          "english_label": "Minimum design metal temperature or minimum allowable temperature is unknown or below operating or upset temperature?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "brittleness_temperature"
+        }
+      ],
+      "group": "2.E",
+      "side_policy": "through"
+    },
+    {
+      "id": "lase",
+      "label": "Охрупчивание низколегированных сталей",
+      "english_label": "Low-alloy Steel Embrittlement",
+      "source": "API 581, 4-е изд., табл. 2.E.1.1, с. 296",
+      "damage_mechanisms": [
+        "temper"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "lase|1",
+          "label": "Низколегированная сталь 1Cr-0,5Mo, 1,25Cr-0,5Mo, 2,25Cr-1Mo или 3Cr-1Mo",
+          "english_label": "1Cr-0.5Mo, 1.25Cr-0.5Mo, 2.25Cr-1Mo or 3Cr-1Mo low-alloy steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_low_cr_mo"
+        },
+        {
+          "id": "lase|2.1",
+          "label": "Рабочая температура > 343 °C",
+          "english_label": "Operating temperature > 343 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                343
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "lase|2.2",
+          "label": "Рабочая температура < 577 °C",
+          "english_label": "Operating temperature < 577 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": "<",
+              "threshold": [
+                577
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        }
+      ],
+      "group": "2.E",
+      "side_policy": "through"
+    },
+    {
+      "id": "e885",
+      "label": "Охрупчивание при 885 °F (475 °C)",
+      "english_label": "885 °F Embrittlement",
+      "source": "API 581, 4-е изд., табл. 2.E.1.1, с. 296",
+      "damage_mechanisms": [
+        "e885"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "e885|1",
+          "label": "Высокохромистая (> 12 % Cr) ферритная сталь",
+          "english_label": "High chromium (> 12 % Cr) ferritic steel?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "Cr",
+              "operator": ">",
+              "threshold": [
+                12
+              ],
+              "near": []
+            }
+          ],
+          "rule": "material_cr_885"
+        },
+        {
+          "id": "e885|2.1",
+          "label": "Рабочая температура > 371 °C",
+          "english_label": "Operating temperature > 371 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                371
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "e885|2.2",
+          "label": "Рабочая температура < 566 °C",
+          "english_label": "Operating temperature < 566 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": "<",
+              "threshold": [
+                566
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        }
+      ],
+      "group": "2.E",
+      "side_policy": "through"
+    },
+    {
+      "id": "sigma",
+      "label": "Охрупчивание сигма-фазой",
+      "english_label": "Sigma Phase Embrittlement",
+      "source": "API 581, 4-е изд., табл. 2.E.1.1, с. 296",
+      "damage_mechanisms": [
+        "sigma"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "sigma|1",
+          "label": "Аустенитная нержавеющая сталь",
+          "english_label": "Austenitic stainless steel?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "material_austenitic"
+        },
+        {
+          "id": "sigma|2.1",
+          "label": "Рабочая температура > 593 °C",
+          "english_label": "Operating temperature > 593 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": ">",
+              "threshold": [
+                593
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        },
+        {
+          "id": "sigma|2.2",
+          "label": "Рабочая температура < 927 °C",
+          "english_label": "Operating temperature < 927 °C?",
+          "scope": "component",
+          "conditions": [
+            {
+              "field": "T",
+              "operator": "<",
+              "threshold": [
+                927
+              ],
+              "near": []
+            }
+          ],
+          "rule": "temperature"
+        }
+      ],
+      "group": "2.E",
+      "side_policy": "through"
+    },
+    {
+      "id": "mfat",
+      "label": "Усталость механическая (трубопроводы)",
+      "english_label": "Mechanical Fatigue (Piping)",
+      "source": "API 581, 4-е изд., табл. 2.E.1.1, с. 296",
+      "damage_mechanisms": [
+        "mechfat"
+      ],
+      "component_only": true,
+      "questions": [
+        {
+          "id": "mfat|1",
+          "label": "Компонент — трубопровод",
+          "english_label": "Component piping?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "pipeline"
+        },
+        {
+          "id": "mfat|2",
+          "label": "Наличие усталостных разрушений, видимой/слышимой вибрации или источника вибрации в пределах ~15,24 м, связанного прямо или косвенно (через конструкцию)",
+          "english_label": "History of fatigue failures, visible/audible shaking or a source of cyclic vibration (continuous or intermittent) within approximately 15.24 m that is connected (directly or indirectly via structure)?",
+          "scope": "component",
+          "conditions": [],
+          "rule": "vibration"
+        }
+      ],
+      "group": "2.E",
+      "side_policy": "through"
+    }
+  ]
+}

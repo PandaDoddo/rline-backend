@@ -1,0 +1,91 @@
+{
+  "version": "visual-inspections-v1",
+  "fields": [
+    {
+      "key": "corrosion_present",
+      "label": "Коррозия",
+      "type": "boolean"
+    },
+    {
+      "key": "corrosion_kind",
+      "label": "Вид коррозии",
+      "type": "choice",
+      "options": {
+        "uniform": "сплошная",
+        "localized": "местная",
+        "ulcerative": "язвенная",
+        "pitting": "питтинговая"
+      }
+    },
+    {
+      "key": "severity",
+      "label": "Степень",
+      "type": "choice",
+      "options": {
+        "none": "нет",
+        "slight": "слабая",
+        "moderate": "умеренная",
+        "severe": "сильная"
+      }
+    },
+    {
+      "key": "depth_mm",
+      "label": "Глубина, мм",
+      "type": "number",
+      "min": 0,
+      "max": 100000
+    },
+    {
+      "key": "affected_area",
+      "label": "Площадь поражения",
+      "type": "number",
+      "min": 0,
+      "max": 1000000000000000
+    },
+    {
+      "key": "area_unit",
+      "label": "Ед. площади",
+      "type": "choice",
+      "options": {
+        "percent": "%",
+        "m2": "м²"
+      }
+    },
+    {
+      "key": "coating_condition",
+      "label": "Покрытие",
+      "type": "choice",
+      "options": {
+        "poor": "poor — плохое",
+        "medium": "medium — среднее",
+        "high": "high — хорошее"
+      }
+    },
+    {
+      "key": "insulation_condition",
+      "label": "Состояние изоляции",
+      "type": "choice",
+      "options": {
+        "below_average": "ниже среднего",
+        "average": "среднее",
+        "above_average": "выше среднего"
+      }
+    },
+    {
+      "key": "cracks_present",
+      "label": "Трещины",
+      "type": "boolean"
+    },
+    {
+      "key": "partial",
+      "label": "Частичный осмотр",
+      "type": "boolean"
+    },
+    {
+      "key": "notes",
+      "label": "Комментарий",
+      "type": "text",
+      "max_length": 5000
+    }
+  ]
+}

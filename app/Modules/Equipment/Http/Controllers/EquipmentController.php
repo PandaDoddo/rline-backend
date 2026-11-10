@@ -5,11 +5,14 @@ namespace App\Modules\Equipment\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\DataExchange\Application\EquipmentOrigins;
 use App\Modules\Diagnostics\Application\DiagnosticPlans;
+use App\Modules\Diagnostics\Domain\InspectionCategorySchema;
+use App\Modules\Diagnostics\Domain\VisualInspectionSchema;
 use App\Modules\Equipment\Application\ComponentSpecifications;
 use App\Modules\Equipment\Application\EquipmentCommands;
 use App\Modules\Equipment\Application\EquipmentReadQuery;
 use App\Modules\Equipment\Domain\ComponentDetailSchema;
 use App\Modules\Equipment\Domain\OperatingScopeSchema;
+use App\Modules\Equipment\Domain\Screening\ComponentScreeningSchema;
 use App\Modules\Equipment\Http\Requests\EquipmentIndexRequest;
 use App\Modules\Equipment\Http\Requests\EquipmentRequest;
 use App\Modules\Equipment\Http\Requests\UpdateEquipmentRequest;
@@ -26,7 +29,7 @@ class EquipmentController extends Controller
 {
     public function catalog()
     {
-        return ['version' => '2026-11-09-component-types-v1', 'geometry_fields' => ComponentDetailSchema::metadata(), 'component_types' => ComponentTypeResource::collection(ComponentType::orderBy('position')->get()), 'profiles' => config('equipment.profiles'), 'operating_scope_fields' => collect(OperatingScopeSchema::fields())->map(fn ($field) => array_diff_key($field, ['rules' => true]))->values(),
+        return ['mechanism_schema' => ComponentScreeningSchema::metadata(), 'inspection_category_schema' => InspectionCategorySchema::metadata(), 'visual_inspection_schema' => VisualInspectionSchema::metadata(), 'version' => '2026-11-09-component-types-v1', 'geometry_fields' => ComponentDetailSchema::metadata(), 'component_types' => ComponentTypeResource::collection(ComponentType::orderBy('position')->get()), 'profiles' => config('equipment.profiles'), 'operating_scope_fields' => collect(OperatingScopeSchema::fields())->map(fn ($field) => array_diff_key($field, ['rules' => true]))->values(),
             'fields' => collect(config('equipment.passport'))->map(fn ($field, $key) => ['key' => $key] + array_diff_key($field, ['rules' => true]))->values()];
     }
 

@@ -12,17 +12,23 @@ use App\Modules\Catalogs\Http\Controllers\SubstanceController;
 use App\Modules\Diagnostics\Http\Controllers\DiagnosticScheduleController;
 use App\Modules\Equipment\Http\Controllers\ComponentHistoryController;
 use App\Modules\Equipment\Http\Controllers\EquipmentController;
+use App\Modules\Equipment\Http\Controllers\EquipmentMechanismController;
 use App\Modules\Installations\Http\Controllers\FacilityController;
 use App\Modules\Installations\Http\Controllers\InstallationCostController;
 use App\Modules\Installations\Http\Controllers\InstallationMaintenanceController;
 use App\Modules\ProcessFlows\Http\Controllers\ProcessFlowController;
 use App\Modules\Rbi\Http\Controllers\ManagementController;
+use App\Modules\Rbi\Http\Controllers\RiskCriteriaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/public/tenants', [PublicTenantController::class, 'index'])->middleware('throttle:60,1');
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(TenantDatabaseReady::class)->group(function () {
+        Route::get('/rbi/risk-criteria/schema', [RiskCriteriaController::class, 'schema']);
+        Route::get('/installations/{installation}/risk-criteria', [RiskCriteriaController::class, 'show'])->whereUuid('installation');
+        Route::patch('/installations/{installation}/risk-criteria', [RiskCriteriaController::class, 'update'])->whereUuid('installation');
+        Route::get('/installations/{installation}/risk-criteria/events', [RiskCriteriaController::class, 'events'])->whereUuid('installation');
         Route::get('/rbi/management/schema', [ManagementController::class, 'schema']);
         Route::get('/installations/{installation}/management', [ManagementController::class, 'show'])->whereUuid('installation');
         Route::patch('/installations/{installation}/management', [ManagementController::class, 'update'])->whereUuid('installation');
@@ -72,6 +78,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/equipment', [EquipmentController::class, 'index']);
         Route::post('/equipment', [EquipmentController::class, 'store']);
         Route::get('/equipment/{equipment}', [EquipmentController::class, 'show'])->whereUuid('equipment');
+        Route::get('/equipment/{equipment}/components/{component}/mechanisms', [EquipmentMechanismController::class, 'show'])->whereUuid(['equipment', 'component']);
         Route::get('/equipment/{equipment}/components/{component}/history', [ComponentHistoryController::class, 'index'])->whereUuid(['equipment', 'component']);
         Route::patch('/equipment/{equipment}', [EquipmentController::class, 'update'])->whereUuid('equipment');
         Route::get('/equipment/{equipment}/events', [EquipmentController::class, 'events'])->whereUuid('equipment');

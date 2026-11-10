@@ -15,7 +15,7 @@ class ProcessFlowResource extends JsonResource
     public function toArray(Request $request): array
     {
         $components = $this->kind === 'flow' ? app(FlowCompositionResolver::class)->resolve($this->resource) : [];
-        $proposed = $this->kind === 'flow' && $this->medium_kind === 'fluid' ? app(MixtureCalculator::class)->calculate($this->basis, $components) : null;
+        $proposed = $this->kind === 'flow' && in_array($this->medium_kind, ['fluid', 'air'], true) ? app(MixtureCalculator::class)->calculate($this->basis, $components, $this->resource->attributes ?? []) : null;
         $engine = app(FlowScreening::class);
         $screening = $engine->eligible($this->category, $this->medium_kind, $this->kind) ? $engine->evaluate($this->screening) : null;
         $state = $this->screening;

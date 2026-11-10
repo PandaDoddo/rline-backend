@@ -54,6 +54,8 @@ class EquipmentFlowContacts
             if ($row['component_id'] && ! $components->has($row['component_id'])) {
                 $this->invalid('Компонент принадлежит другой ЕО.');
             }
+            $root = $row['component_id'] ? $tree->root($row['component_id']) : null;
+            $processSurface = $row['scope'] === 'component' && $row['side'] === 'external' && ($root['kind'] === 'tube_bundle' || $root['is_coil']);
             if ($existing && ($this->target($existing) !== $this->target($row))) {
                 $this->invalid('Область и сторона назначения неизменны; создайте новую запись.');
             }
@@ -96,7 +98,7 @@ class EquipmentFlowContacts
                 if ($flow->status !== 'active' && (! $previous || $previous['flow_id'] !== $link['flow_id'])) {
                     $this->invalid('Нельзя назначить архивный поток.');
                 }
-                if ($row['side'] === 'internal' && $flow->category === 'external' || in_array($row['side'], ['external', 'insulation'], true) && $flow->category !== 'external') {
+                if ($row['side'] === 'internal' && $flow->category === 'external' || in_array($row['side'], ['external', 'insulation'], true) && $flow->category !== 'external' && ! $processSurface) {
                     $this->invalid('Наружная и внутренняя среды назначаются на соответствующие стороны.');
                 }
                 if ($row['side'] === 'insulation' && $flow->medium_kind !== 'insulation') {
@@ -157,7 +159,7 @@ class EquipmentFlowContacts
         $rows = $contacts->map(fn ($row) => ['id' => $row->id, 'scope' => $row->scope, 'component_id' => $row->component_id, 'side' => $row->side, 'mode' => $row->mode, 'notes' => $row->notes, 'check' => $row->check === null ? null : json_decode($row->check, true), 'created_at' => $row->created_at,
             'flows' => ($links->get($row->id) ?? collect())->map(fn ($link) => ['id' => $link->id, 'flow_id' => $link->flow_id, 'share_percent' => $link->share_percent === null ? null : (float) $link->share_percent, 'notes' => $link->notes, 'flow_name' => $link->flow_name, 'flow_category' => $link->flow_category, 'flow_version' => (int) $link->flow_version, 'accepted_version' => (int) $link->accepted_version, 'stale' => (int) $link->accepted_version !== (int) $link->flow_version, 'flow_status' => $link->flow_status])->all()])->all();
 
-        return ['contacts' => $rows, 'effective' => $this->effective($equipment->components->toArray(), $rows)];
+        return ['contacts' => $rows, 'effective' => $this->effective($equipment->components->toArray(), $rows), 'selected' => app(EquipmentFlowSelection::class)->read($equipment)];
     }
 
     public function effective(array $components, array $contacts): array

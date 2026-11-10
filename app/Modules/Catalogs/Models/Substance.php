@@ -4,18 +4,46 @@ namespace App\Modules\Catalogs\Models;
 
 use App\Models\TenantModel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Substance extends TenantModel
 {
     use HasUuids;
 
-    protected $fillable = ['label', 'overrides', 'status'];
+    protected $fillable = ['label', 'status'];
 
-    protected $attributes = ['base_values' => '{}', 'base_raw' => '{}', 'base_flags' => '{}', 'overrides' => '{}', 'sources' => '{}', 'checks' => '{}', 'status' => 'active', 'version' => 1, 'origin' => 'custom'];
+    protected $attributes = ['base_values' => '{}', 'base_raw' => '{}', 'base_flags' => '{}', 'status' => 'active', 'version' => 1, 'origin' => 'custom'];
+
+    protected $with = ['cardProjection'];
+
+    protected $hidden = ['cardProjection'];
+
+    protected $appends = ['overrides', 'sources', 'checks'];
 
     protected function casts(): array
     {
-        return ['base_values' => 'array', 'base_raw' => 'array', 'base_flags' => 'array', 'overrides' => 'array', 'sources' => 'array', 'checks' => 'array', 'version' => 'integer'];
+        return ['base_values' => 'array', 'base_raw' => 'array', 'base_flags' => 'array', 'version' => 'integer'];
+    }
+
+    public function cardProjection(): HasOne
+    {
+        return $this->hasOne(SubstanceCardProjection::class, 'substance_id');
+    }
+
+    public function getOverridesAttribute(): array
+    {
+        return $this->cardProjection?->overrides ?? [];
+    }
+
+    public function getSourcesAttribute(): array
+    {
+        return $this->cardProjection?->sources ?? [];
+    }
+
+    public function getChecksAttribute(mixed $value): array
+    {
+        // List projection selects only checks, without eager-loading full cards.
+        return $value !== null ? (is_string($value) ? json_decode($value, true, flags: JSON_THROW_ON_ERROR) : $value) : ($this->cardProjection?->checks ?? []);
     }
 
     public function effective(): array

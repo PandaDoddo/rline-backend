@@ -7,6 +7,21 @@ use Tests\TestCase;
 
 class FlowScreeningTest extends TestCase
 {
+    public function test_current_thresholds_keep_unicode_minus_without_rewriting_the_migration_baseline(): void
+    {
+        $legacy = json_decode(file_get_contents(resource_path('catalogs/flow-screening.json')), true, flags: JSON_THROW_ON_ERROR);
+        $engine = new FlowScreening;
+        $this->assertSame('flow-screening-v1', $legacy['version']);
+        $this->assertSame('flow-screening-v2', $engine->schema()['version']);
+        foreach (['extf', 'cuif'] as $id) {
+            $mechanism = collect($engine->schema()['mechanisms'])->firstWhere('id', $id);
+            $question = collect($mechanism['questions'])->firstWhere('id', $id.'|2.1');
+            $this->assertSame([-12], $question['conditions'][0]['threshold']);
+            $this->assertSame('active', $engine->compare('>', -12, [-12], []));
+            $this->assertSame('inactive', $engine->compare('>', -12.001, [-12], []));
+        }
+    }
+
     public function test_all_primary_mechanisms_match_existing_javascript_reference(): void
     {
         $engine = new FlowScreening;

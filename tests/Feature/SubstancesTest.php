@@ -2,15 +2,22 @@
 
 namespace Tests\Feature;
 
-use App\Modules\Catalogs\Infrastructure\SubstanceBaseline;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;
+use App\Modules\Catalogs\Application\CatalogRecords;
+use App\Modules\Catalogs\Domain\SubstancePropertySchema;
+use App\Modules\Catalogs\Infrastructure\SubstanceBaseline;
+use App\Modules\Catalogs\Infrastructure\SubstanceCardProjection;
+use App\Modules\Catalogs\Models\Substance;
 use App\Tenancy\TenantContext;
 use App\Tenancy\TenantDatabaseManager;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class SubstancesTest extends TestCase
 {
@@ -94,6 +101,98 @@ class SubstancesTest extends TestCase
         $this->getJson('/api/substances/'.$id)->assertOk();
         $this->postJson('/api/substances', ['values' => ['name' => 'Запрещено']])->assertForbidden();
         $this->patchJson('/api/substances/'.$id, ['version' => 1, 'status' => 'archived'])->assertForbidden();
+    }
+
+    public function test_runtime_substance_contract_matches_the_frozen_relational_schema(): void
+    {
+        $fields = SubstancePropertySchema::fields();
+        $this->assertSame(array_keys(config('substances.fields')), array_keys($fields));
+        foreach (config('substances.fields') as $key => $field) {
+            $this->assertSame($field['type'], $fields[$key]['type'], $key);
+            $this->assertSame($field['readonly'] ?? false, $fields[$key]['column'] === null, $key);
+            foreach (['min', 'max', 'options'] as $property) {
+                $this->assertSame($field[$property] ?? null, $fields[$key][$property] ?? null, $key.' '.$property);
+            }
+            if (in_array($field['type'], ['number', 'integer'], true)) {
+                $this->assertSame([...config('substances.missing_values'), ...($field['qualifiers'] ?? [])], $fields[$key]['qualifiers'], $key);
+            }
+        }
+        $this->assertSame(SubstanceCardProjection::definition().";\n", file_get_contents(resource_path('schemas/substance-cards-v1.sql')));
+    }
+
+    public function test_relational_values_preserve_unknown_zero_false_and_reject_conflicting_sql_states(): void
+    {
+        $tenant = $this->tenant('substance-sql-shape');
+        $actor = User::factory()->create();
+        app(TenantContext::class)->set($tenant);
+        $records = app(CatalogRecords::class);
+        $model = $records->create(Substance::class, ['values' => ['name' => 'Физические свойства', 'pdk' => 0, 'flammable' => false, 'idlh' => 'не определено', 'mw' => null]], $actor->id, 'substance');
+        $this->assertFalse(Schema::connection('tenant')->hasColumn('substances', 'overrides'));
+        $this->assertSame(0.0, (float) DB::connection('tenant')->table('substance_properties')->where('substance_id', $model->id)->value('pdk'));
+        $this->assertFalse($model->fresh()->effective()['flammable']);
+        $this->assertArrayHasKey('mw', $model->fresh()->overrides);
+        $this->assertNull($model->fresh()->effective()['mw']);
+        $this->assertSame('не определено', $model->fresh()->effective()['idlh']);
+        $db = DB::connection('tenant');
+        $invalid = [
+            fn () => $db->table('substance_properties')->where('substance_id', $model->id)->update(['pdk' => -1]),
+            fn () => $db->table('substance_properties')->where('substance_id', $model->id)->update(['idlh' => 10]),
+            fn () => $db->table('substance_property_annotations')->where('substance_id', $model->id)->where('field_key', 'pdk')->update(['value_present' => false]),
+            fn () => $db->table('substance_property_annotations')->where('substance_id', $model->id)->where('field_key', 'idlh')->update(['qualifier' => 'произвольный текст']),
+            fn () => $db->table('substance_property_annotations')->where('substance_id', $model->id)->where('field_key', 'mw')->update(['verified_by' => $actor->id, 'verified_at' => now()]),
+        ];
+        foreach ($invalid as $write) {
+            $db->beginTransaction();
+            try {
+                $write();
+                $db->statement('SET CONSTRAINTS ALL IMMEDIATE');
+                $this->fail('Invalid substance state must be rejected by PostgreSQL.');
+            } catch (QueryException $exception) {
+                $this->assertContains($exception->errorInfo[0], ['23514', '23503']);
+            } finally {
+                $db->rollBack();
+            }
+        }
+        $updated = $records->update(Substance::class, $model->id, ['version' => 1, 'reset_fields' => ['mw', 'idlh'], 'verification' => ['pdk' => true, 'flammable' => true]], $actor->id, 'substance');
+        $this->assertArrayNotHasKey('mw', $updated->overrides);
+        $this->assertArrayNotHasKey('idlh', $updated->overrides);
+        $this->assertArrayHasKey('pdk', $updated->checks);
+        $this->assertFalse($updated->effective()['flammable']);
+    }
+
+    public function test_substance_normalization_backfills_and_rolls_back_without_changing_values_or_evidence(): void
+    {
+        $tenant = $this->tenant('substance-backfill');
+        app(TenantContext::class)->set($tenant);
+        $db = DB::connection('tenant');
+        $path = 'database/tenant-migrations/2026_11_10_000056_normalize_substance_properties.php';
+        $this->assertSame(0, Artisan::call('migrate:rollback', ['--database' => 'tenant', '--path' => $path, '--step' => $db->table('migrations')->where('migration', '>=', '2026_11_10_000056')->count(), '--force' => true]));
+        $db = DB::connection('tenant');
+        $id = $db->table('substances')->where('legacy_code', 'chem1')->value('id');
+        $values = ['mw' => null, 'pdk' => 0, 'idlh' => 'не определено', 'flammable' => false];
+        $sources = ['mw' => ['citation' => 'Протокол', 'conditions' => null, 'by' => 1, 'at' => '2026-11-10T00:00:00+00:00']];
+        $checks = ['pdk' => ['by' => 1, 'at' => '2026-11-10T00:00:00+00:00']];
+        $db->table('substances')->where('id', $id)->update(['overrides' => json_encode($values), 'sources' => json_encode($sources), 'checks' => json_encode($checks)]);
+        $this->assertSame(0, Artisan::call('migrate', ['--database' => 'tenant', '--path' => $path, '--force' => true]));
+        $model = Substance::findOrFail($id);
+        $this->assertEquals($values, $model->overrides);
+        $this->assertEquals($sources, $model->sources);
+        $this->assertEquals($checks, $model->checks);
+        $this->assertSame(0, Artisan::call('migrate:rollback', ['--database' => 'tenant', '--path' => $path, '--step' => $db->table('migrations')->where('migration', '>=', '2026_11_10_000056')->count(), '--force' => true]));
+        $legacy = $db->table('substances')->where('id', $id)->first();
+        $this->assertEquals($values, json_decode($legacy->overrides, true));
+        $this->assertEquals($sources, json_decode($legacy->sources, true));
+        $this->assertEquals($checks, json_decode($legacy->checks, true));
+        // Unknown legacy keys abort the whole DDL transaction rather than silently dropping values.
+        $db->table('substances')->where('id', $id)->update(['overrides' => json_encode($values + ['unsupported_key' => 1])]);
+        try {
+            Artisan::call('migrate', ['--database' => 'tenant', '--path' => $path, '--force' => true]);
+            $this->fail('Unknown field must stop normalization.');
+        } catch (\RuntimeException $exception) {
+            $this->assertStringContainsString('Unknown substance properties', $exception->getMessage());
+        }
+        $this->assertFalse(Schema::connection('tenant')->hasTable('substance_properties'));
+        $this->assertSame(1, json_decode($db->table('substances')->where('id', $id)->value('overrides'), true)['unsupported_key']);
     }
 
     protected function tearDown(): void

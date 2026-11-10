@@ -5,6 +5,7 @@ namespace App\Modules\ProcessFlows\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Catalogs\Application\CatalogHistory;
 use App\Modules\Catalogs\Http\Resources\SteelGradeEventResource;
+use App\Modules\DataExchange\Application\FlowOrigins;
 use App\Modules\Installations\Models\Installation;
 use App\Modules\ProcessFlows\Application\ProcessFlows;
 use App\Modules\ProcessFlows\Domain\FlowScreening;
@@ -40,7 +41,8 @@ class ProcessFlowController extends Controller
             $data = $request->validated();
             $query = ProcessFlowNode::without(['cardProjection', 'screeningProjection'])->where('installation_id', $installation)->where('status', $data['status'] ?? 'active');
             if (($q = trim($data['q'] ?? '')) !== '') {
-                $query->where('name', 'ILIKE', '%'.addcslashes($q, '\\%_').'%');
+                $pattern = '%'.addcslashes($q, '\\%_').'%';
+                $query->where(fn ($query) => $query->where('name', 'ILIKE', $pattern)->orWhere('code', 'ILIKE', $pattern));
             } elseif (! ($data['flat'] ?? false)) {
                 $query->where('parent_id', $data['parent_id'] ?? null);
             }
@@ -57,11 +59,14 @@ class ProcessFlowController extends Controller
                 array_unshift($ancestors, (new ProcessFlowNodeResource($node))->toArray($request));
                 $parent = $node->parent_id;
             }
-            $query->select(['id', 'installation_id', 'parent_id', 'kind', 'category', 'name', 'medium_kind', 'status', 'version'])
+            $query->select(['id', 'installation_id', 'parent_id', 'kind', 'category', 'name', 'code', 'medium_kind', 'status', 'version'])
                 ->selectRaw('(SELECT count(*) FROM process_flow_nodes children WHERE children.parent_id = process_flow_nodes.id AND children.status = ?) AS children_count', [$data['status'] ?? 'active']);
             FlowNodeProjection::path($query);
 
-            return ProcessFlowNodeResource::collection($query->orderBy('kind')->orderBy('name')->orderBy('id')->paginate($data['per_page'] ?? 50))->additional([
+            $page = $query->orderBy('kind')->orderBy('name')->orderBy('id')->paginate($data['per_page'] ?? 50);
+            app(FlowOrigins::class)->attach($page->getCollection());
+
+            return ProcessFlowNodeResource::collection($page)->additional([
                 'structure_version' => (int) $model->flow_structure_version, 'setup' => $model->flow_setup, 'initialized' => $model->flow_setup !== null || ProcessFlowNode::where('installation_id', $installation)->exists(), 'ancestors' => $ancestors,
             ])->response();
         });
@@ -77,12 +82,13 @@ class ProcessFlowController extends Controller
     #[Response(status: 201, type: ProcessFlowNodeResource::class)]
     public function store(ProcessFlowNodeRequest $request, string $installation, ProcessFlows $flows)
     {
-        return (new ProcessFlowNodeResource($flows->createNode($installation, $request->validated(), $request->user()->id)))->response()->setStatusCode(201);
+        return DB::connection('tenant')->transaction(fn () => $this->resourceResponse($flows->createNode($installation, $request->validated(), $request->user()->id), false, 201));
     }
 
+    #[Response(status: 200, type: ProcessFlowNodeResource::class)]
     public function updateNode(UpdateProcessFlowNodeRequest $request, string $node, ProcessFlows $flows)
     {
-        return new ProcessFlowNodeResource($flows->updateNode($node, $request->validated(), $request->user()->id));
+        return DB::connection('tenant')->transaction(fn () => $this->resourceResponse($flows->updateNode($node, $request->validated(), $request->user()->id)));
     }
 
     #[Response(status: 200, type: ProcessFlowResource::class)]
@@ -91,13 +97,22 @@ class ProcessFlowController extends Controller
         return DB::connection('tenant')->transaction(function () use ($node) {
             DB::connection('tenant')->statement('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
 
-            return (new ProcessFlowResource(ProcessFlowNode::findOrFail($node)))->response();
+            return $this->resourceResponse(ProcessFlowNode::findOrFail($node), true);
         });
     }
 
+    #[Response(status: 200, type: ProcessFlowResource::class)]
     public function update(UpdateProcessFlowRequest $request, string $node, ProcessFlows $flows)
     {
-        return new ProcessFlowResource($flows->updateCard($node, $request->validated(), $request->user()->id));
+        return DB::connection('tenant')->transaction(fn () => $this->resourceResponse($flows->updateCard($node, $request->validated(), $request->user()->id), true));
+    }
+
+    private function resourceResponse(ProcessFlowNode $model, bool $card = false, int $status = 200)
+    {
+        app(FlowOrigins::class)->attach(collect([$model]));
+        $resource = $card ? new ProcessFlowResource($model) : new ProcessFlowNodeResource($model);
+
+        return $resource->response()->setStatusCode($status);
     }
 
     public function calculations(string $node)

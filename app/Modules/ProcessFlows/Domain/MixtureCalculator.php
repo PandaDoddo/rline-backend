@@ -4,11 +4,12 @@ namespace App\Modules\ProcessFlows\Domain;
 
 class MixtureCalculator
 {
-    public const VERSION = 'mixture-v1.1';
+    public const VERSION = 'mixture-v1.2';
 
     /** @param array $components Resolved catalog values are supplied explicitly; no hidden defaults. */
-    public function calculate(string $basis, array $components): array
+    public function calculate(string $basis, array $components, array $conditions = []): array
     {
+        $conditions = $this->conditions($conditions);
         $main = array_values(array_filter($components, fn ($row) => $row['role'] === 'main'));
         $inputSum = array_sum(array_map(fn ($row) => $row['amount'] ?? 0, $main));
         $amountsKnown = $main !== [] && collect($main)->every(fn ($row) => $row['amount'] !== null);
@@ -31,7 +32,7 @@ class MixtureCalculator
             $rows[] = ['id' => $row['id'], 'substance_id' => $row['substance_id'], 'substance_version' => $row['substance_version'], 'name' => $values['name'],
                 'mass_percent' => $mass, 'mole_percent' => $mole, 'mw' => $mw, 'nbp' => $this->number($values['nbp'] ?? null), 'density' => $this->number($values['dens'] ?? null, true), 'flags' => $flags];
         }
-        $properties = ['molecular_weight' => null, 'boiling_point' => null, 'liquid_density' => null];
+        $properties = ['molecular_weight' => null, 'boiling_point' => null, 'liquid_density' => null, 'gas_density' => null, 'density' => null];
         if ($complete && $mwKnown && $denominator > 0) {
             $properties['molecular_weight'] = $basis === 'mass' ? 100 / $denominator : $denominator / 100;
             if (collect($rows)->every(fn ($row) => $row['nbp'] !== null)) {
@@ -44,6 +45,22 @@ class MixtureCalculator
                     $properties['liquid_density'] = 1 / $volume;
                 }
             }
+        }
+        $densityMethod = null;
+        if ($conditions['phase'] === 'gas') {
+            $pressure = $conditions['pressure'];
+            $temperature = $conditions['temperature'];
+            if ($properties['molecular_weight'] !== null && $pressure !== null && $pressure > -0.101325 && $temperature !== null && $temperature > -273.15) {
+                // Same explicit atmospheric reference and R as the old comparison calculator; Z = 1.
+                $density = (($pressure + 0.101325) * 1e6) * ($properties['molecular_weight'] / 1000) / (8.314 * ($temperature + 273.15));
+                if (is_finite($density) && $density > 0) {
+                    $properties['gas_density'] = $properties['density'] = $density;
+                    $densityMethod = 'ideal_gas';
+                }
+            }
+        } elseif ($conditions['phase'] === 'liquid') {
+            $properties['density'] = $properties['liquid_density'];
+            $densityMethod = $properties['density'] !== null ? 'catalog_liquid' : null;
         }
         $criteria = [];
         foreach (['flammable', 'toxic', 'nfnt', 'inert', 'unknown'] as $key) {
@@ -70,10 +87,16 @@ class MixtureCalculator
         if ($properties['boiling_point'] === null) {
             $warnings[] = 'Нормальная температура кипения смеси не определена.';
         }
-        if ($properties['liquid_density'] === null) {
-            $warnings[] = 'Плотность смеси не определена.';
+        if ($conditions['phase'] === 'gas') {
+            $warnings[] = $densityMethod === 'ideal_gas'
+                ? 'Плотность газа: ρ = (Pизб + 0.101325)·10⁶·(MW/1000) / (8.314·(T + 273.15)). Допущение идеального газа, Z = 1; Pизб в МПа, T в °C.'
+                : 'Плотность газа не определена: нужны MW полного состава, избыточное давление выше −0.101325 МПа и температура выше −273.15 °C.';
+        } elseif ($conditions['phase'] === 'liquid') {
+            $warnings[] = $densityMethod === 'catalog_liquid'
+                ? 'Плотность рассчитана по каталожным ρL; поправки на рабочие температуру и давление этим расчётом не выполняются.'
+                : 'Плотность жидкой смеси не определена: нужны плотности всех компонентов полного состава.';
         } else {
-            $warnings[] = 'Плотность рассчитана по каталожным ρL; поправки на рабочие температуру и давление этим расчётом не выполняются.';
+            $warnings[] = 'Плотность потока не определена: задайте газовую или жидкую фазу. Для двухфазной среды и твёрдого вещества этот метод неприменим.';
         }
         $signatureRows = array_map(function ($row) {
             $used = [];
@@ -85,8 +108,19 @@ class MixtureCalculator
         }, $main);
         usort($signatureRows, fn ($a, $b) => strcmp($a['id'], $b['id']));
 
-        return ['engine_version' => self::VERSION, 'signature' => hash('sha256', json_encode([self::VERSION, $basis, $signatureRows], JSON_THROW_ON_ERROR)),
+        return ['engine_version' => self::VERSION, 'signature' => hash('sha256', json_encode([self::VERSION, $basis, $signatureRows, $conditions], JSON_THROW_ON_ERROR)),
+            'conditions' => $conditions, 'density_method' => $densityMethod,
             'input_basis' => $basis, 'input_sum' => $inputSum, 'complete' => $complete && $mwKnown && $denominator > 0, 'rows' => $rows, 'properties' => $properties, 'criteria' => $criteria, 'warnings' => $warnings];
+    }
+
+    /** Only conditions actually used by this engine affect its signature. */
+    private function conditions(array $attributes): array
+    {
+        $phase = in_array($attributes['phase'] ?? null, ['gas', 'liquid', 'two_phase', 'solid'], true) ? $attributes['phase'] : null;
+
+        return ['phase' => $phase,
+            'pressure' => $phase === 'gas' ? $this->number($attributes['pressure'] ?? null) : null,
+            'temperature' => $phase === 'gas' ? $this->number($attributes['temperature'] ?? null) : null];
     }
 
     private function number(mixed $value, bool $positive = false): ?float

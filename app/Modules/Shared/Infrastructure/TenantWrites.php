@@ -21,6 +21,9 @@ class TenantWrites
             return DB::connection('tenant')->transaction($action);
         } catch (QueryException $exception) {
             if ($exception->getCode() === '23505') {
+                if (str_contains($exception->getMessage(), 'flow_installation_code_unique')) {
+                    throw ValidationException::withMessages(['code' => 'Такой код потока уже используется на этой установке.']);
+                }
                 if (str_contains($exception->getMessage(), 'damage_mechanisms_active_name_unique')) {
                     throw ValidationException::withMessages(['values.name' => 'В каталоге уже есть действующий механизм с таким наименованием.']);
                 }

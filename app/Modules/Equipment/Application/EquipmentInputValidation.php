@@ -3,9 +3,12 @@
 namespace App\Modules\Equipment\Application;
 
 use App\Modules\Diagnostics\Application\EquipmentDiagnostics;
+use App\Modules\Diagnostics\Application\InspectionCategoryInputValidation;
+use App\Modules\Diagnostics\Application\VisualInspectionInputValidation;
 use App\Modules\Equipment\Domain\ComponentDetailSchema;
 use App\Modules\Equipment\Domain\OperatingScopeSchema;
 use App\Modules\ProcessFlows\Application\EquipmentFlowContacts;
+use App\Modules\ProcessFlows\Application\EquipmentFlowSelection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -19,6 +22,15 @@ final class EquipmentInputValidation
 
     public function normalize(array $input): array
     {
+        if (is_array($input['mechanisms'] ?? null)) {
+            $input['mechanisms'] = app(MechanismInputValidation::class)->normalize($input['mechanisms']);
+        }
+        if (is_array($input['inspection_categories'] ?? null)) {
+            $input['inspection_categories'] = app(InspectionCategoryInputValidation::class)->normalize($input['inspection_categories']);
+        }
+        if (is_array($input['visual_inspections'] ?? null)) {
+            $input['visual_inspections'] = app(VisualInspectionInputValidation::class)->normalize($input['visual_inspections']);
+        }
         if (is_array($input['passport'] ?? null)) {
             $passport = $input['passport'];
             $qualifiers = array_key_exists('passport_qualifiers', $input) ? $input['passport_qualifiers'] : [];
@@ -105,6 +117,15 @@ final class EquipmentInputValidation
                     if (($fields[$key]['type'] ?? null) === 'number') {
                         $value = $this->decimal($value);
                     }
+                    if (($fields[$key]['type'] ?? null) === 'date' && is_scalar($value) && preg_match('/^[0-9]{4}$/D', (string) $value)) {
+                        $value .= '-01-01';
+                        if (! array_key_exists('qualifiers', $scope)) {
+                            $scope['qualifiers'] = [];
+                        }
+                        if (is_array($scope['qualifiers']) && (! isset($scope['qualifiers'][$key]) || is_array($scope['qualifiers'][$key]))) {
+                            $scope['qualifiers'][$key] = array_replace($scope['qualifiers'][$key] ?? [], ['precision' => 'year']);
+                        }
+                    }
                 }
                 unset($value);
             }
@@ -161,6 +182,6 @@ final class EquipmentInputValidation
             $rules['verification.'.$key] = 'sometimes|boolean';
         }
 
-        return $rules + EquipmentStructure::rules() + EquipmentDiagnostics::rules() + EquipmentThickness::rules() + EquipmentFlowContacts::rules() + EquipmentOperatingScopes::rules();
+        return $rules + EquipmentStructure::rules() + EquipmentDiagnostics::rules() + EquipmentThickness::rules() + EquipmentFlowContacts::rules() + EquipmentFlowSelection::rules() + EquipmentOperatingScopes::rules() + VisualInspectionInputValidation::rules() + InspectionCategoryInputValidation::rules() + MechanismInputValidation::rules();
     }
 }

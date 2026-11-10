@@ -3,16 +3,17 @@
 namespace App\Modules\Rbi\Http\Requests;
 
 use App\Http\Requests\TenantWriteRequest;
+use App\Modules\Rbi\Application\ManagementInputValidation;
 
 class UpdateManagementRequest extends TenantWriteRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $this->replace(app(ManagementInputValidation::class)->normalize($this->all()));
+    }
+
     public function rules(): array
     {
-        return ['version' => 'required|integer|min:1', 'schema_version' => 'required|string|max:100', 'answers' => 'required|array|max:200',
-            'answers.*' => 'required|array:question_id,state,value,comment', 'answers.*.question_id' => 'required|string|max:32|distinct:strict',
-            'answers.*.state' => 'required|in:answered,unanswered,not_applicable',
-            /** @var bool|float|array<int,int>|null */
-            'answers.*.value' => 'present|nullable',
-            'answers.*.comment' => 'present|nullable|string|max:4000'];
+        return app(ManagementInputValidation::class)->rules();
     }
 }

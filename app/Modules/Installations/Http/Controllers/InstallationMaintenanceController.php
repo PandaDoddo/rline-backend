@@ -5,6 +5,7 @@ namespace App\Modules\Installations\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Catalogs\Application\CatalogHistory;
 use App\Modules\Catalogs\Http\Resources\SteelGradeEventResource;
+use App\Modules\DataExchange\Application\ImportedRecordOrigins;
 use App\Modules\Installations\Application\InstallationMaintenance;
 use App\Modules\Installations\Application\InstallationMaintenanceSummary;
 use App\Modules\Installations\Domain\MaintenanceHistory;
@@ -25,11 +26,16 @@ class InstallationMaintenanceController extends Controller
             DB::connection('tenant')->statement('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
             $model = Installation::findOrFail($installation);
             $data = $request->validated();
-            $query = InstallationMaintenanceRecord::where('installation_id', $installation)->where('kind', $data['kind'])->select('installation_maintenance_records.*');
+            [$table,$dateColumn] = match ($data['kind']) {
+                'mri' => ['installation_mri_parameters', 'effective_date'],'repair' => ['installation_repair_parameters', 'starts_on'],'stop' => ['installation_stop_parameters', 'starts_at']
+            };
+            $query = InstallationMaintenanceRecord::where('installation_maintenance_records.installation_id', $installation)->where('installation_maintenance_records.kind', $data['kind'])->leftJoin($table.' as p', 'p.record_id', '=', 'installation_maintenance_records.id')->select('installation_maintenance_records.*');
             if ($data['kind'] === 'repair') {
-                $query->selectRaw("(SELECT count(*) FROM (SELECT i.equipment_id, i.kind, max(i.performed_on) AS performed_on FROM equipment_inspections i JOIN equipment e ON e.id = i.equipment_id WHERE e.installation_id = installation_maintenance_records.installation_id GROUP BY i.equipment_id, i.kind) latest WHERE latest.performed_on BETWEEN (installation_maintenance_records.values->>'starts_on')::date AND (installation_maintenance_records.values->>'ends_on')::date) AS performed_inspections");
+                $query->selectRaw('(SELECT count(*) FROM (SELECT i.equipment_id,i.kind,max(i.performed_on) AS performed_on FROM equipment_inspections i JOIN equipment e ON e.id=i.equipment_id WHERE e.installation_id=installation_maintenance_records.installation_id GROUP BY i.equipment_id,i.kind) latest WHERE latest.performed_on BETWEEN p.starts_on AND p.ends_on) AS performed_inspections');
             }
-            $rows = $query->orderByRaw("coalesce(installation_maintenance_records.values->>'effective_date', installation_maintenance_records.values->>'starts_on', installation_maintenance_records.values->>'starts_at') DESC NULLS LAST")->orderBy('id')->paginate($data['per_page'] ?? 50);
+            $rows = $query->orderByRaw('p.'.$dateColumn.' DESC NULLS LAST')->orderBy('installation_maintenance_records.id')->paginate($data['per_page'] ?? 50);
+
+            app(ImportedRecordOrigins::class)->attach($rows->getCollection(), 'maintenance');
 
             return InstallationMaintenanceResource::collection($rows)->additional(['installation_version' => (int) $model->version, 'no_stops' => $model->no_stops])->response();
         });

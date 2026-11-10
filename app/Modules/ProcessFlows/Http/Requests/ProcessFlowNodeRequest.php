@@ -3,7 +3,7 @@
 namespace App\Modules\ProcessFlows\Http\Requests;
 
 use App\Http\Requests\TenantWriteRequest;
-use Illuminate\Validation\Rule;
+use App\Modules\ProcessFlows\Application\FlowInputValidation;
 
 class ProcessFlowNodeRequest extends TenantWriteRequest
 {
@@ -12,12 +12,13 @@ class ProcessFlowNodeRequest extends TenantWriteRequest
         if (is_string($this->input('name'))) {
             $this->merge(['name' => trim($this->input('name'))]);
         }
+        if (is_string($this->input('code'))) {
+            $this->merge(['code' => trim($this->input('code')) ?: null]);
+        }
     }
 
     public function rules(): array
     {
-        return ['structure_version' => 'required|integer|min:1', 'name' => 'required|string|min:1|max:255', 'kind' => 'required|in:folder,flow',
-            'category' => ['required', Rule::in(array_keys(config('process-flows.categories')))], 'parent_id' => 'sometimes|nullable|uuid',
-            'medium_kind' => ['sometimes', Rule::in(array_keys(config('process-flows.media')))]];
+        return app(FlowInputValidation::class)->nodeRules();
     }
 }

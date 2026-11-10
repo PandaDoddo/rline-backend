@@ -5,11 +5,16 @@ namespace Tests\Feature;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;
+use App\Modules\Installations\Application\InstallationMaintenance;
+use App\Modules\Installations\Application\InstallationMaintenanceInputValidation;
 use App\Tenancy\TenantContext;
 use App\Tenancy\TenantDatabaseManager;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class InstallationMaintenanceTest extends TestCase
@@ -161,6 +166,141 @@ class InstallationMaintenanceTest extends TestCase
         $this->patchJson('/api/installations/'.$id.'/costs', ['version' => 3, 'values' => ['prodcost' => 0]])->assertOk();
         $this->getJson($url.'/summary')->assertJsonPath('data.production_loss', 0);
         $this->patchJson($url, ['version' => 4, 'upserts' => ['bad']])->assertUnprocessable();
+    }
+
+    public function test_shared_input_contract_preserves_boolean_zero_and_matches_frozen_parameter_kinds(): void
+    {
+        $schema = json_decode(file_get_contents(resource_path('schemas/installation-maintenance-v1.json')), true, flags: JSON_THROW_ON_ERROR);
+        foreach (config('installation-maintenance.fields') as $kind => $fields) {
+            $this->assertSame(array_keys($fields), array_keys($schema['kinds'][$kind]['fields']));
+            $this->assertSame(app(InstallationMaintenance::class)->requiredFields($kind), $schema['kinds'][$kind]['required']);
+        }
+        $this->assertSame(array_keys(config('installation-maintenance.repair_kinds')), $schema['repair_kinds']);
+        $id = strtoupper((string) Str::uuid());
+        $input = app(InstallationMaintenanceInputValidation::class)->validated(['version' => 1, 'no_stops' => 0, 'upserts' => [['id' => $id, 'kind' => 'mri', 'values' => ['reason' => '  '], 'verified' => '0', 'unlock' => 1]]]);
+        $this->assertFalse($input['no_stops']);
+        $this->assertFalse($input['upserts'][0]['verified']);
+        $this->assertTrue($input['upserts'][0]['unlock']);
+        $this->assertSame(strtolower($id), $input['upserts'][0]['id']);
+        $this->assertNull($input['upserts'][0]['values']['reason']);
+    }
+
+    public function test_typed_parameters_preserve_microseconds_and_bind_verification_to_current_values(): void
+    {
+        $this->travelTo(now()->setDate(2026, 11, 8)->setTime(12, 0, 0, 0));
+        $this->login('maintenance-sql-shape');
+        $id = $this->installation();
+        $url = '/api/installations/'.$id.'/maintenance';
+        $mri = $this->entry('mri', ['effective_date' => '2026-01-01', 'interval_months' => 12], true);
+        $stop = $this->entry('stop', ['starts_at' => '2026-11-08T10:00:00.123456+03:00', 'ends_at' => '2026-11-08T12:00:00.654321+03:00']);
+        $repair = $this->entry('repair', ['starts_on' => null, 'ends_on' => null, 'repair_kind' => null, 'reason' => null]);
+        $this->patchJson($url, ['version' => 1, 'upserts' => [$mri, $stop, $repair]])->assertOk();
+        $response = $this->getJson($url.'?kind=stop')->assertOk()->assertJsonPath('data.0.values.starts_at', '2026-11-08T07:00:00.123456Z')->json('data.0');
+        $this->assertEqualsWithDelta(2.0001474625, $response['duration_hours'], 1e-10);
+        $this->getJson($url.'/summary')->assertOk()->assertJsonPath('data.downtime_hours', fn ($value) => abs($value - 2.0001474625) < 1e-10);
+        app(TenantContext::class)->set(Tenant::where('slug', 'maintenance-sql-shape')->firstOrFail());
+        $db = DB::connection('tenant');
+        $this->assertFalse(Schema::connection('tenant')->hasColumn('installation_maintenance_records', 'values'));
+        $signature = $db->table('installation_maintenance_records')->where('id', $mri['id'])->value('verification_signature');
+        $this->assertSame(64, strlen($signature));
+        $invalid = [
+            fn () => $db->table('installation_mri_parameters')->where('record_id', $mri['id'])->update(['interval_months' => 0]),
+            fn () => $db->table('installation_mri_parameters')->where('record_id', $mri['id'])->update(['interval_months' => 24]),
+            fn () => $db->table('installation_repair_parameters')->where('record_id', $repair['id'])->update(['repair_kind' => 'other']),
+            fn () => $db->table('installation_stop_parameters')->where('record_id', $stop['id'])->update(['ends_at' => '2026-11-08T06:00:00Z']),
+            fn () => $db->table('installation_maintenance_presence')->where('record_id', $mri['id'])->where('field_key', 'effective_date')->delete(),
+            fn () => $db->table('installation_maintenance_records')->where('id', $mri['id'])->update(['kind' => 'repair']),
+            fn () => $db->table('installation_repair_parameters')->insert(['record_id' => $mri['id']]),
+            fn () => $db->table('installations')->where('id', $id)->update(['no_stops' => true]),
+        ];
+        foreach ($invalid as $index => $write) {
+            $db->beginTransaction();
+            try {
+                $write();
+                $db->statement('SET CONSTRAINTS ALL IMMEDIATE');
+                $this->fail('Invalid maintenance state must be rejected.');
+            } catch (QueryException $exception) {
+                $this->assertContains($exception->getCode(), ['23514', '23503']);
+                if ($index === 1) {
+                    $this->assertStringContainsString('explicitly unlock or reverify', $exception->getMessage());
+                }
+            } finally {
+                $db->rollBack();
+            }
+        }
+        $this->patchJson($url, ['version' => 2, 'upserts' => [['id' => $mri['id'], 'kind' => 'mri', 'verified' => 0]]])->assertOk();
+        $this->getJson($url.'?kind=mri')->assertOk()->assertJsonPath('data.0.check', null);
+        $this->patchJson($url, ['version' => 3, 'upserts' => [['id' => $mri['id'], 'kind' => 'mri', 'values' => ['interval_months' => 24], 'verified' => true]]])->assertOk();
+        $this->getJson($url.'?kind=mri')->assertOk()->assertJsonPath('data.0.values.interval_months', 24)->assertJsonPath('data.0.check.by', auth()->id());
+        app(TenantContext::class)->set(Tenant::where('slug', 'maintenance-sql-shape')->firstOrFail());
+        $this->assertNotSame($signature, DB::connection('tenant')->table('installation_maintenance_records')->where('id', $mri['id'])->value('verification_signature'));
+    }
+
+    public function test_mri_date_swaps_and_soft_delete_reuse_keep_a_single_active_date_owner(): void
+    {
+        $this->login('maintenance-mri-dates');
+        $id = $this->installation();
+        $url = '/api/installations/'.$id.'/maintenance';
+        $a = $this->entry('mri', ['effective_date' => '2026-01-01', 'interval_months' => 12]);
+        $b = $this->entry('mri', ['effective_date' => '2026-07-01', 'interval_months' => 24]);
+        $this->patchJson($url, ['version' => 1, 'upserts' => [$a, $b]])->assertOk();
+        $this->patchJson($url, ['version' => 2, 'upserts' => [['id' => $a['id'], 'kind' => 'mri', 'values' => ['effective_date' => '2026-07-01']], ['id' => $b['id'], 'kind' => 'mri', 'values' => ['effective_date' => '2026-01-01']]]])->assertOk();
+        $this->patchJson($url, ['version' => 3, 'delete_ids' => [$a['id']]])->assertOk();
+        $c = $this->entry('mri', ['effective_date' => '2026-07-01', 'interval_months' => 6]);
+        $this->patchJson($url, ['version' => 4, 'upserts' => [$c]])->assertOk();
+        app(TenantContext::class)->set(Tenant::where('slug', 'maintenance-mri-dates')->firstOrFail());
+        $db = DB::connection('tenant');
+        $this->assertNull($db->table('installation_mri_parameters')->where('record_id', $a['id'])->value('active_slot'));
+        $db->beginTransaction();
+        try {
+            $db->table('installation_maintenance_records')->where('id', $a['id'])->update(['deleted_at' => null]);
+            $db->statement('SET CONSTRAINTS ALL IMMEDIATE');
+            $this->fail('Restoring duplicate MRI date must fail.');
+        } catch (QueryException $exception) {
+            $this->assertSame('23505', $exception->getCode());
+        } finally {
+            $db->rollBack();
+        }
+        $this->assertNotNull($db->table('installation_maintenance_records')->where('id', $a['id'])->value('deleted_at'));
+        $this->patchJson($url, ['version' => 5, 'upserts' => [$this->entry('mri'), $this->entry('mri')]])->assertOk();
+    }
+
+    public function test_maintenance_migration_roundtrip_preserves_deleted_records_checks_and_fractional_timestamps(): void
+    {
+        $this->login('maintenance-backfill');
+        $id = $this->installation();
+        $url = '/api/installations/'.$id.'/maintenance';
+        $mri = $this->entry('mri', ['effective_date' => '2026-01-01', 'interval_months' => 12], true);
+        $repair = $this->entry('repair', ['starts_on' => '2026-07-05', 'ends_on' => '2026-07-12', 'repair_kind' => 'capital', 'reason' => null], true);
+        $stop = $this->entry('stop', ['starts_at' => '2026-11-08T07:00:00.123456Z', 'ends_at' => '2026-11-08T09:00:00.654321Z']);
+        $this->patchJson($url, ['version' => 1, 'upserts' => [$mri, $repair, $stop]])->assertOk();
+        $this->patchJson($url, ['version' => 2, 'delete_ids' => [$stop['id']]])->assertOk();
+        app(TenantContext::class)->set(Tenant::where('slug', 'maintenance-backfill')->firstOrFail());
+        $db = DB::connection('tenant');
+        $before = $db->table('installation_maintenance_cards')->orderBy('record_id')->get()->map(fn ($row) => (array) $row)->all();
+        $path = 'database/tenant-migrations';
+        $rollback = fn () => Artisan::call('migrate:rollback', ['--database' => 'tenant', '--path' => $path, '--step' => $db->table('migrations')->where('migration', '>=', '2026_11_10_000061')->count(), '--force' => true]);
+        $this->assertSame(0, $rollback());
+        $this->assertTrue(Schema::connection('tenant')->hasColumn('installation_maintenance_records', 'values'));
+        foreach ($before as $row) {
+            $legacy = $db->table('installation_maintenance_records')->where('id', $row['record_id'])->first();
+            $this->assertEquals(json_decode($row['values'], true), json_decode($legacy->values, true));
+            $this->assertEquals(json_decode($row['check'] ?? 'null', true), json_decode($legacy->check ?? 'null', true));
+        }
+        $this->assertSame(0, Artisan::call('migrate', ['--database' => 'tenant', '--path' => $path, '--force' => true]));
+        $this->assertEquals($before, $db->table('installation_maintenance_cards')->orderBy('record_id')->get()->map(fn ($row) => (array) $row)->all());
+        $this->assertNotNull($db->table('installation_maintenance_records')->where('id', $stop['id'])->value('deleted_at'));
+        $this->assertSame(0, $rollback());
+        $legacyValues = json_decode($db->table('installation_maintenance_records')->where('id', $mri['id'])->value('values'), true);
+        $db->table('installation_maintenance_records')->where('id', $mri['id'])->update(['values' => json_encode($legacyValues + ['unsupported' => 1])]);
+        try {
+            Artisan::call('migrate', ['--database' => 'tenant', '--path' => $path, '--force' => true]);
+            $this->fail('Unknown legacy field must stop normalization.');
+        } catch (\RuntimeException $exception) {
+            $this->assertStringContainsString('Unknown maintenance field', $exception->getMessage());
+        }
+        $this->assertFalse(Schema::connection('tenant')->hasTable('installation_mri_parameters'));
+        $this->assertSame(1, json_decode($db->table('installation_maintenance_records')->where('id', $mri['id'])->value('values'), true)['unsupported']);
     }
 
     protected function tearDown(): void

@@ -5,6 +5,7 @@ namespace App\Modules\Rbi\Application;
 use App\Modules\Installations\Models\Installation;
 use App\Modules\Rbi\Domain\ManagementAssessment;
 use App\Modules\Rbi\Models\ManagementAnswer;
+use App\Modules\Rbi\Models\ManagementDetails;
 use App\Modules\Shared\Infrastructure\TenantWrites;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -36,7 +37,9 @@ final class InstallationManagement
             return ['question_id' => $answer->question_id, 'state' => $answer->state, 'value' => $value, 'comment' => $answer->comment];
         })->all();
 
-        return ['installation_id' => (string) $installation->id, 'version' => (int) $installation->version, 'schema_version' => $this->schema()['version'], 'answers' => $answers, 'assessment' => (new ManagementAssessment)->calculate($this->schema()['sections'], $answers)];
+        $details = ManagementDetails::find($installation->id)?->publicValues() ?? ['assessed_on' => null, 'auditor_name' => null, 'notes' => null];
+
+        return ['installation_id' => (string) $installation->id, 'version' => (int) $installation->version, 'schema_version' => $this->schema()['version'], 'details' => $details, 'answers' => $answers, 'assessment' => (new ManagementAssessment)->calculate($this->schema()['sections'], $answers)];
     }
 
     public function update(string $id, array $data, int $actor, TenantWrites $writes): array
@@ -62,6 +65,8 @@ final class InstallationManagement
                     $questions[$question['id']] = $question;
                 }
             }
+            $details = ManagementDetails::find($id) ?? (new ManagementDetails)->forceFill(['installation_id' => $id]);
+            $details->fill($data['details'] ?? [])->forceFill(['updated_by' => $actor])->save();
             foreach ($data['answers'] as $answer) {
                 $model = ManagementAnswer::where('installation_id', $id)->where('question_id', $answer['question_id'])->first() ?? (new ManagementAnswer)->forceFill(['installation_id' => $id, 'question_id' => $answer['question_id']]);
                 $kind = $questions[$answer['question_id']]['kind'];
