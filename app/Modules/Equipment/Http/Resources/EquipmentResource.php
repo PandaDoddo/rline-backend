@@ -12,6 +12,7 @@ use App\Modules\Equipment\Application\EquipmentOperatingScopes;
 use App\Modules\Equipment\Application\EquipmentThickness;
 use App\Modules\Equipment\Application\MechanismProjection;
 use App\Modules\Equipment\Domain\CorrosionCalculator;
+use App\Modules\Equipment\Domain\EquipmentIdentity;
 use App\Modules\Equipment\Models\Equipment;
 use App\Modules\Installations\Http\Resources\InstallationResource;
 use App\Modules\ProcessFlows\Application\EquipmentFlowContacts;
@@ -43,6 +44,7 @@ class EquipmentResource extends JsonResource
         }
 
         return ['id' => (string) $this->id, 'installation_id' => (string) $this->installation_id, 'profile_code' => $this->profile_code,
+            'technical_position' => EquipmentIdentity::position($this->passport),
             'data_origin' => $this->resource->getAttribute('import_origin'),
             'passport' => (object) $this->passport, 'passport_qualifiers' => (object) $this->passport_qualifiers, 'checks' => (object) $this->checks, 'status' => $this->status, 'version' => (int) $this->version,
             'components' => EquipmentComponentResource::collection($this->whenLoaded('components')),

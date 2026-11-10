@@ -1,10 +1,60 @@
 <?php
 
 use App\Models\Tenant;
+use App\Modules\DataExchange\Application\DatasetEquipmentIdentifiers;
 use App\Modules\DataExchange\Application\DatasetImport;
+use App\Modules\DataExchange\Application\DatasetSchedulePlans;
 use App\Tenancy\TenantContext;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\ValidationException;
+
+Artisan::command('dataset:identifiers {path} {--tenant=rline} {--actor=} {--apply}', function () {
+    $path = realpath($this->argument('path'));
+    if (! $path || ! is_file($path) || filesize($path) > 4 * 1024 * 1024 || ! ctype_digit((string) $this->option('actor'))) {
+        return 1;
+    }
+    $context = app(TenantContext::class);
+    $previous = $context->tenant;
+    try {
+        $context->set(Tenant::where('slug', $this->option('tenant'))->where('status', 'active')->firstOrFail());
+        $input = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+        $report = app(DatasetEquipmentIdentifiers::class)->run($input, (int) $this->option('actor'), ! $this->option('apply'));
+        $this->line(json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR));
+
+        return 0;
+    } catch (ValidationException $exception) {
+        $this->error(json_encode($exception->errors(), JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR));
+
+        return 1;
+    } finally {
+        $context->set($previous);
+    }
+})->purpose('Дополнить отсутствующие техпозиции импортированного old, по умолчанию с откатом');
+
+Artisan::command('dataset:schedule-plans {path} {--tenant=rline} {--actor=} {--apply}', function () {
+    $path = realpath($this->argument('path'));
+    if (! $path || ! is_file($path) || filesize($path) > 4 * 1024 * 1024 || ! ctype_digit((string) $this->option('actor'))) {
+        $this->error('Укажите JSON-дельту до 4 МБ и --actor администратора организации.');
+
+        return 1;
+    }
+    $context = app(TenantContext::class);
+    $previous = $context->tenant;
+    try {
+        $context->set(Tenant::where('slug', $this->option('tenant'))->where('status', 'active')->firstOrFail());
+        $input = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+        $report = app(DatasetSchedulePlans::class)->run($input, (int) $this->option('actor'), ! $this->option('apply'));
+        $this->line(json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR));
+
+        return 0;
+    } catch (ValidationException $exception) {
+        $this->error(json_encode($exception->errors(), JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR));
+
+        return 1;
+    } finally {
+        $context->set($previous);
+    }
+})->purpose('Дополнить только отсутствующие демо-планы old; по умолчанию предпросмотр с откатом');
 
 Artisan::command('dataset:import {path} {--tenant=rline} {--actor=} {--apply} {--allow-source-issues}', function () {
     if (! ctype_digit((string) $this->option('actor')) || (int) $this->option('actor') < 1) {

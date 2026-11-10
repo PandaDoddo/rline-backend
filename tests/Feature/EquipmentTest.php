@@ -23,6 +23,39 @@ class EquipmentTest extends TestCase
 
     private array $tenants = [];
 
+    public function test_technical_position_reads_pipeline_lines_and_matches_registry_search_sort_schedule_and_navigation(): void
+    {
+        $tenant = $this->setupTenant('equipment-position');
+        $this->login($tenant);
+        $installation = $this->installation();
+        $pipe = $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => 'pipe_tech', 'passport' => ['name' => 'Линия масла', 'line_numbers' => '117/2Т, 117/3Т']])->assertCreated()->json('data');
+        $this->assertSame('117/2Т, 117/3Т', $pipe['technical_position']);
+        $this->assertNull($pipe['passport']['tag'] ?? null);
+        $second = $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => 'pipe_tech', 'passport' => ['name' => 'Вторая линия', 'line_numbers' => '20']])->assertCreated()->json('data.id');
+        $vessel = $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => 'ves_fnp_rtn', 'passport' => ['name' => 'Сосуд', 'tag' => '050']])->assertCreated()->json('data.id');
+        $empty = $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => 'pump', 'passport' => ['name' => 'Без позиции']])->assertCreated()->json('data.id');
+        $this->getJson('/api/equipment?q='.urlencode('117/2Т'))->assertOk()->assertJsonPath('meta.total', 1)->assertJsonPath('data.0.technical_position', '117/2Т, 117/3Т');
+        $this->getJson('/api/equipment/navigation?q='.urlencode('117/2Т'))->assertOk()->assertJsonPath('data.total', 1);
+        $this->getJson('/api/diagnostic-schedule?q='.urlencode('117/2Т'))->assertOk()->assertJsonPath('meta.total', 1)->assertJsonPath('data.0.technical_position', '117/2Т, 117/3Т');
+        $this->assertSame([$vessel, $pipe['id'], $second, $empty], $this->getJson('/api/equipment?sort=tag')->assertOk()->json('data.*.id'));
+        $this->assertSame([$second, $pipe['id'], $vessel, $empty], $this->getJson('/api/equipment?sort=tag&direction=desc')->assertOk()->json('data.*.id'));
+        $this->patchJson('/api/equipment/'.$pipe['id'], ['installation_id' => $installation, 'version' => $pipe['version'], 'passport' => ['name' => 'Линия масла', 'line_numbers' => '220']])->assertOk()->assertJsonPath('data.technical_position', '220');
+        $this->getJson('/api/equipment?q='.urlencode('117/2Т'))->assertOk()->assertJsonPath('meta.total', 0);
+        $this->getJson('/api/diagnostic-schedule?q=220')->assertOk()->assertJsonPath('data.0.technical_position', '220');
+        foreach (['Первый клапан', 'Второй клапан'] as $name) {
+            $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => 'ppk', 'passport' => ['name' => $name, 'protected_equipment_position' => '050']])
+                ->assertCreated()->assertJsonPath('data.technical_position', '050')->assertJsonMissingPath('data.passport.tag');
+        }
+        $this->getJson('/api/equipment?q=050')->assertOk()->assertJsonPath('meta.total', 3);
+        $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => 'ves_fnp_rtn', 'passport' => ['name' => 'Чужой атрибут', 'protected_equipment_position' => '050']])->assertUnprocessable();
+        $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => 'ppk', 'passport' => ['name' => 'Повтор собственного тега', 'tag' => '050']])->assertUnprocessable();
+        foreach (['7475', '7476'] as $number) {
+            $this->postJson('/api/equipment', ['installation_id' => $installation, 'profile_code' => 'pipe_tech', 'passport' => ['name' => 'Участок '.$number, 'tag' => 'Л-1', 'line_numbers' => $number]])
+                ->assertCreated()->assertJsonPath('data.technical_position', 'Л-1')->assertJsonPath('data.passport.line_numbers', $number);
+        }
+        $this->getJson('/api/equipment?q='.urlencode('Л-1'))->assertOk()->assertJsonPath('meta.total', 2);
+    }
+
     public function test_registry_type_tree_accepts_static_dynamic_multi_and_explicit_empty_selections(): void
     {
         $tenant = $this->setupTenant('registry-type-families');

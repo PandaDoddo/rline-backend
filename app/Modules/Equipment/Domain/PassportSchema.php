@@ -4,13 +4,13 @@ namespace App\Modules\Equipment\Domain;
 
 final class PassportSchema
 {
-    public const VERSION = 'equipment-passport-v3';
+    public const VERSION = 'equipment-passport-v4';
 
     public static function fields(): array
     {
         static $fields;
 
-        return $fields ??= json_decode(file_get_contents(resource_path('schema/equipment-passport-v3.json')), true, flags: JSON_THROW_ON_ERROR)['fields'];
+        return $fields ??= json_decode(file_get_contents(resource_path('schema/equipment-passport-v4.json')), true, flags: JSON_THROW_ON_ERROR)['fields'];
     }
 
     public static function tables(): array

@@ -7,10 +7,13 @@ use App\Models\TenantMembership;
 use App\Models\User;
 use App\Modules\Catalogs\Application\CatalogRecords;
 use App\Modules\Catalogs\Models\Substance;
+use App\Modules\DataExchange\Application\DatasetEquipmentIdentifiers;
 use App\Modules\DataExchange\Application\DatasetImport;
 use App\Modules\DataExchange\Application\DatasetManifest;
+use App\Modules\DataExchange\Application\DatasetSchedulePlans;
 use App\Modules\DataExchange\Application\EquipmentOrigins;
 use App\Modules\DataExchange\Application\InstallationImportData;
+use App\Modules\Diagnostics\Application\DiagnosticPlans;
 use App\Modules\Diagnostics\Application\EquipmentInspectionCategories;
 use App\Modules\Diagnostics\Application\EquipmentVisualInspections;
 use App\Modules\Equipment\Application\EquipmentCommands;
@@ -44,6 +47,161 @@ class DatasetImportTest extends TestCase
     use DatabaseMigrations;
 
     private array $tenants = [];
+
+    public function test_identifier_delta_keeps_shared_valve_protected_positions_separate_from_unique_tags(): void
+    {
+        $actor = User::factory()->create();
+        $this->tenant($actor, 'valve-identifiers');
+        $manifest = $this->manifest();
+        $manifest['source']['kind'] = 'demo_expanded';
+        $first = $manifest['equipment'][0];
+        $first['create']['profile_code'] = 'ppk';
+        $first['components'] = [];
+        $first['inspections'] = [];
+        $first['thickness'] = ['cmls' => [], 'stages' => []];
+        $second = $first;
+        $second['id'] = (string) Str::uuid();
+        $second['source_id'] = 'EQ0002';
+        $manifest['equipment'] = [$first, $second];
+        app(DatasetImport::class)->apply($manifest, $actor->id);
+        $delta = ['format' => 'old-equipment-identifiers-v1', 'base_source_version' => 'test-v1', 'source' => [...$manifest['source'], 'version' => 'old-equipment-identifiers-v1'],
+            'records' => [['source_id' => 'EQ0001', 'tag' => 'С-1'], ['source_id' => 'EQ0002', 'tag' => 'С-1']]];
+        $report = app(DatasetEquipmentIdentifiers::class)->run($delta, $actor->id, false);
+        $this->assertSame(2, $report['updated']);
+        foreach ([$first, $second] as $source) {
+            $row = Equipment::findOrFail($source['id']);
+            $this->assertNull($row->passport['tag'] ?? null);
+            $this->assertSame('С-1', $row->passport['protected_equipment_position']);
+        }
+    }
+
+    public function test_identifier_delta_previews_and_preserves_manual_clears_on_replay_or_new_input(): void
+    {
+        $actor = User::factory()->create();
+        $this->tenant($actor, 'identifier-delta');
+        $manifest = $this->manifest();
+        $manifest['source']['kind'] = 'demo_expanded';
+        app(DatasetImport::class)->apply($manifest, $actor->id);
+        $id = $manifest['equipment'][0]['id'];
+        $delta = ['format' => 'old-equipment-identifiers-v1', 'base_source_version' => 'test-v1', 'source' => [...$manifest['source'], 'version' => 'old-equipment-identifiers-v1'],
+            'records' => [['source_id' => 'EQ0001', 'tag' => 'ППК-1']]];
+        $service = app(DatasetEquipmentIdentifiers::class);
+        $this->assertSame(1, $service->run($delta, $actor->id)['updated']);
+        $this->assertNull(Equipment::findOrFail($id)->passport['tag'] ?? null);
+        $this->assertSame(1, $service->run($delta, $actor->id, false)['updated']);
+        $this->assertSame('ППК-1', Equipment::findOrFail($id)->passport['tag']);
+        $record = Equipment::findOrFail($id);
+        $passport = $record->passport;
+        unset($passport['tag']);
+        app(EquipmentCommands::class)->update($id, ['installation_id' => $record->installation_id, 'version' => $record->version, 'passport' => $passport], $actor->id);
+        $this->assertTrue($service->run($delta, $actor->id, false)['replayed']);
+        $delta['records'][0]['tag'] = 'Другая позиция';
+        $this->assertSame(1, $service->run($delta, $actor->id, false)['skipped']);
+        $this->assertNull(Equipment::findOrFail($id)->passport['tag'] ?? null);
+    }
+
+    public function test_identifier_delta_rolls_back_unknown_owner_and_preserves_explicit_unknown(): void
+    {
+        $actor = User::factory()->create();
+        $this->tenant($actor, 'identifier-delta-protection');
+        $manifest = $this->manifest();
+        $manifest['source']['kind'] = 'demo_expanded';
+        app(DatasetImport::class)->apply($manifest, $actor->id);
+        $delta = ['format' => 'old-equipment-identifiers-v1', 'base_source_version' => 'test-v1', 'source' => [...$manifest['source'], 'version' => 'old-equipment-identifiers-v1'],
+            'records' => [['source_id' => 'EQ0001', 'tag' => 'ППК-1'], ['source_id' => 'missing', 'tag' => 'foreign']]];
+        $service = app(DatasetEquipmentIdentifiers::class);
+        try {
+            $service->run($delta, $actor->id, false);
+            $this->fail('Orphan must roll back preceding writes');
+        } catch (HttpExceptionInterface $error) {
+            $this->assertSame(422, $error->getStatusCode());
+        }
+        $record = Equipment::findOrFail($manifest['equipment'][0]['id']);
+        $this->assertNull($record->passport['tag'] ?? null);
+        app(EquipmentCommands::class)->update($record->id, ['installation_id' => $record->installation_id, 'version' => $record->version, 'passport' => $record->passport, 'passport_qualifiers' => ['tag' => ['state' => 'unknown']]], $actor->id);
+        array_pop($delta['records']);
+        $this->assertSame(1, $service->run($delta, $actor->id, false)['skipped']);
+        $this->assertSame('unknown', Equipment::findOrFail($record->id)->passport_qualifiers['tag']['state']);
+    }
+
+    public function test_schedule_plan_delta_previews_rolls_back_adds_only_pending_and_replays_without_overwriting(): void
+    {
+        $actor = User::factory()->create();
+        $this->tenant($actor, 'schedule-delta');
+        $manifest = $this->manifest();
+        $manifest['source']['kind'] = 'demo_expanded';
+        $manifest['equipment'][0]['create']['passport']['name'] = null;
+        $manifest['equipment'][0]['create']['passport_qualifiers'] = ['name' => ['state' => 'unknown']];
+        app(DatasetImport::class)->apply($manifest, $actor->id);
+        $equipmentId = $manifest['equipment'][0]['id'];
+        $id = (string) Str::uuid();
+        $delta = ['format' => 'old-schedule-plan-delta-v1', 'base_source_version' => 'test-v1',
+            'source' => [...$manifest['source'], 'version' => 'old-schedule-plan-delta-v1'], 'plans' => [
+                ['id' => $id, 'source_id' => 'EQ0001', 'kind' => 'ТО-1', 'planned_on' => '2027-01-01', 'source_path' => 'rendered-schedule/EQ0001/ТО-1', 'generated' => true],
+                ['id' => (string) Str::uuid(), 'source_id' => 'EQ0001', 'kind' => 'ТО-2', 'planned_on' => '2029-01-01', 'source_path' => 'rendered-schedule/EQ0001/ТО-2', 'generated' => true],
+            ]];
+        $service = app(DatasetSchedulePlans::class);
+        $version = Equipment::findOrFail($equipmentId)->version;
+        $preview = $service->run($delta, $actor->id);
+        $this->assertSame(1, $preview['plans']);
+        $this->assertSame(1, $preview['skipped']);
+        $this->assertFalse(DB::connection('tenant')->table('equipment_inspections')->where('id', $id)->exists());
+        $this->assertSame($version, Equipment::findOrFail($equipmentId)->version);
+        $this->assertSame(1, DB::connection('tenant')->table('dataset_import_batches')->count());
+        $applied = $service->run($delta, $actor->id, false);
+        $this->assertSame(1, $applied['plans']);
+        $this->assertNull(Equipment::findOrFail($equipmentId)->passport['name'] ?? null);
+        $this->assertSame('unknown', Equipment::findOrFail($equipmentId)->passport_qualifiers['name']['state']);
+        $row = DB::connection('tenant')->table('equipment_inspections')->where('id', $id)->sole();
+        $this->assertSame('2027-01-01', $row->planned_on);
+        $this->assertNull($row->performed_on);
+        $this->assertNull($row->verified_at);
+        $this->assertStringContainsString('ДЕМО', $row->notes);
+        $plans = app(DiagnosticPlans::class)->read([$equipmentId]);
+        $this->assertSame('2027-01-01', collect($plans[$equipmentId])->firstWhere('kind', 'ТО-1')['planned_on']);
+        DB::connection('tenant')->table('equipment_inspections')->where('id', $id)->update(['planned_on' => '2027-02-01']);
+        $this->assertTrue($service->run($delta, $actor->id, false)['replayed']);
+        $this->assertSame('2027-02-01', DB::connection('tenant')->table('equipment_inspections')->where('id', $id)->value('planned_on'));
+    }
+
+    public function test_schedule_plan_delta_rejects_source_mismatch_and_orphans_atomically_and_preserves_manual_changes(): void
+    {
+        $actor = User::factory()->create();
+        $this->tenant($actor, 'schedule-delta-guards');
+        $manifest = $this->manifest();
+        $manifest['source']['kind'] = 'demo_expanded';
+        app(DatasetImport::class)->apply($manifest, $actor->id);
+        $id = (string) Str::uuid();
+        $delta = ['format' => 'old-schedule-plan-delta-v1', 'base_source_version' => 'test-v1',
+            'source' => [...$manifest['source'], 'version' => 'old-schedule-plan-delta-v1'], 'plans' => [
+                ['id' => $id, 'source_id' => 'EQ0001', 'kind' => 'ЭПБ', 'planned_on' => '2030-01-01', 'source_path' => 'rendered-schedule/EQ0001/ЭПБ', 'generated' => true],
+            ]];
+        $service = app(DatasetSchedulePlans::class);
+        $mismatch = $delta;
+        $mismatch['source']['checksums']['fixture.json'] = str_repeat('b', 64);
+        try {
+            $service->run($mismatch, $actor->id, false);
+            $this->fail('Another old revision must be rejected');
+        } catch (HttpExceptionInterface $exception) {
+            $this->assertSame(422, $exception->getStatusCode());
+        }
+        $orphan = $delta;
+        $orphan['plans'][] = [...$delta['plans'][0], 'id' => (string) Str::uuid(), 'source_id' => 'orphan'];
+        try {
+            $service->run($orphan, $actor->id, false);
+            $this->fail('Orphan must roll back preceding changes');
+        } catch (HttpExceptionInterface $exception) {
+            $this->assertSame(422, $exception->getStatusCode());
+        }
+        $this->assertFalse(DB::connection('tenant')->table('equipment_inspections')->where('id', $id)->exists());
+        $this->assertSame(1, DB::connection('tenant')->table('dataset_import_batches')->count());
+        $equipment = Equipment::findOrFail($manifest['equipment'][0]['id']);
+        app(EquipmentCommands::class)->update($equipment->id, ['installation_id' => $equipment->installation_id, 'passport' => [...$equipment->passport, 'name' => 'Ручная правка'], 'version' => $equipment->version], $actor->id);
+        $report = $service->run($delta, $actor->id, false);
+        $this->assertSame(0, $report['plans']);
+        $this->assertSame(1, $report['skipped']);
+        $this->assertSame('Ручная правка', Equipment::findOrFail($equipment->id)->passport['name']);
+    }
 
     private function tenant(User $actor, string $slug, string $role = 'owner'): Tenant
     {

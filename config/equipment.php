@@ -46,6 +46,7 @@ $config = [
 
 $extension = require __DIR__.'/equipment-passport.php';
 $config['passport'] = array_merge($config['passport'], $extension['fields']);
+$config['passport']['protected_equipment_position'] = ['label' => 'Защищаемое оборудование (позиция)', 'section' => 'Идентификатор', 'groups' => ['ppk'], 'rules' => 'nullable|string|max:255', 'legacy_keys' => ['Идентификатор||защищаемое оборудование (позиция)']];
 foreach ($extension['aliases'] as $key => $paths) {
     $config['passport'][$key]['legacy_keys'] = array_values(array_unique([...($config['passport'][$key]['legacy_keys'] ?? []), ...$paths]));
 }
