@@ -1,0 +1,606 @@
+{
+  "version": "substance-properties-v2",
+  "fields": {
+    "name": {
+      "type": "text",
+      "column": "name",
+      "max": 255
+    },
+    "formula": {
+      "type": "text",
+      "column": "formula",
+      "max": 255
+    },
+    "formulaAlt": {
+      "type": "text",
+      "column": "formula_alt",
+      "max": 255
+    },
+    "cas": {
+      "type": "text",
+      "column": "cas",
+      "max": 255
+    },
+    "icsc": {
+      "type": "text",
+      "column": "icsc",
+      "max": 255
+    },
+    "intlName": {
+      "type": "text",
+      "column": "intl_name",
+      "max": 1000
+    },
+    "intlSyn": {
+      "type": "text",
+      "column": "intl_syn",
+      "max": 4000
+    },
+    "note": {
+      "type": "text",
+      "column": "note",
+      "max": 10000
+    },
+    "comment": {
+      "type": "text",
+      "column": "comment",
+      "max": 10000
+    },
+    "phaseNu": {
+      "type": "choice",
+      "column": "phase_nu",
+      "options": [
+        "газ",
+        "жидкость",
+        "твёрдое"
+      ]
+    },
+    "grpRF": {
+      "type": "choice",
+      "column": "grp_r_f",
+      "options": [
+        "А",
+        "А(а)",
+        "А(б)",
+        "А(в)",
+        "Б",
+        "Б(а)",
+        "Б(б)",
+        "Б(в)",
+        "В",
+        "В(а)",
+        "В(б)",
+        "В(в)",
+        "В(г)"
+      ]
+    },
+    "hazClass": {
+      "type": "choice",
+      "column": "haz_class",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "hazSanpin": {
+      "type": "text",
+      "column": "haz_sanpin",
+      "max": 2000
+    },
+    "api581cls": {
+      "type": "text",
+      "column": "api581cls",
+      "max": 1000
+    },
+    "repEnv": {
+      "type": "text",
+      "column": "rep_env",
+      "max": 1000
+    },
+    "repMethod": {
+      "type": "text",
+      "column": "rep_method",
+      "max": 1000
+    },
+    "nfpaS": {
+      "type": "choice",
+      "column": "nfpa_s",
+      "options": [
+        "-",
+        "ACID",
+        "W",
+        "OX",
+        "SA"
+      ]
+    },
+    "mw": {
+      "type": "number",
+      "column": "mw",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "mw_icsc": {
+      "type": "number",
+      "column": "mw_icsc",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "mw_cameo": {
+      "type": "number",
+      "column": "mw_cameo",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "mw_kor": {
+      "type": "number",
+      "column": "mw_kor",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "mw_nfpa": {
+      "type": "number",
+      "column": "mw_nfpa",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "nbp": {
+      "type": "number",
+      "column": "nbp",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "nbp_icsc": {
+      "type": "number",
+      "column": "nbp_icsc",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "nbp_cameo": {
+      "type": "number",
+      "column": "nbp_cameo",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "nbp_kor": {
+      "type": "number",
+      "column": "nbp_kor",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "nbp_nfpa": {
+      "type": "number",
+      "column": "nbp_nfpa",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "ait": {
+      "type": "number",
+      "column": "ait",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "ait_icsc": {
+      "type": "number",
+      "column": "ait_icsc",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "ait_cameo": {
+      "type": "number",
+      "column": "ait_cameo",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "ait_kor": {
+      "type": "number",
+      "column": "ait_kor",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "ait_nfpa": {
+      "type": "number",
+      "column": "ait_nfpa",
+      "min": -273.15,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "dens": {
+      "type": "number",
+      "column": "dens",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "dens_icsc": {
+      "type": "number",
+      "column": "dens_icsc",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "dens_cameo": {
+      "type": "number",
+      "column": "dens_cameo",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "dens_kor": {
+      "type": "number",
+      "column": "dens_kor",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "dens_nfpa": {
+      "type": "number",
+      "column": "dens_nfpa",
+      "min": 0.000001,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "idlh": {
+      "type": "number",
+      "column": "idlh",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо",
+        "простой асфиксиант"
+      ]
+    },
+    "idlh_icsc": {
+      "type": "number",
+      "column": "idlh_icsc",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "idlh_cameo": {
+      "type": "number",
+      "column": "idlh_cameo",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "idlh_kor": {
+      "type": "number",
+      "column": "idlh_kor",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "idlh_nfpa": {
+      "type": "number",
+      "column": "idlh_nfpa",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "pdk": {
+      "type": "number",
+      "column": "pdk",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "pdk_icsc": {
+      "type": "number",
+      "column": "pdk_icsc",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "pdk_cameo": {
+      "type": "number",
+      "column": "pdk_cameo",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "pdk_kor": {
+      "type": "number",
+      "column": "pdk_kor",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "pdk_nfpa": {
+      "type": "number",
+      "column": "pdk_nfpa",
+      "min": 0,
+      "max": 1000000000,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "flammable": {
+      "type": "boolean",
+      "column": "flammable"
+    },
+    "toxic": {
+      "type": "boolean",
+      "column": "toxic"
+    },
+    "nfnt": {
+      "type": "boolean",
+      "column": "nfnt"
+    },
+    "inert": {
+      "type": "boolean",
+      "column": "inert"
+    },
+    "nfpaH": {
+      "type": "integer",
+      "column": "nfpa_h",
+      "min": 0,
+      "max": 4,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "nfpaF": {
+      "type": "integer",
+      "column": "nfpa_f",
+      "min": 0,
+      "max": 4,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "nfpaI": {
+      "type": "integer",
+      "column": "nfpa_i",
+      "min": 0,
+      "max": 4,
+      "qualifiers": [
+        "не установлено",
+        "не определено",
+        "не применимо"
+      ]
+    },
+    "phaseNu_icsc": {
+      "type": "text",
+      "column": "phase_nu_icsc",
+      "max": 255
+    },
+    "phaseNu_cameo": {
+      "type": "text",
+      "column": "phase_nu_cameo",
+      "max": 255
+    },
+    "phaseNu_kor": {
+      "type": "text",
+      "column": "phase_nu_kor",
+      "max": 255
+    },
+    "mwNote": {
+      "type": "text",
+      "column": "mw_note",
+      "max": 10000
+    },
+    "nbpNote": {
+      "type": "text",
+      "column": "nbp_note",
+      "max": 10000
+    },
+    "aitNote": {
+      "type": "text",
+      "column": "ait_note",
+      "max": 10000
+    },
+    "densNote": {
+      "type": "text",
+      "column": "dens_note",
+      "max": 10000
+    },
+    "idlhNote": {
+      "type": "text",
+      "column": "idlh_note",
+      "max": 10000
+    },
+    "pdkNote": {
+      "type": "text",
+      "column": "pdk_note",
+      "max": 10000
+    },
+    "intlNameNote": {
+      "type": "text",
+      "column": "intl_name_note",
+      "max": 10000
+    },
+    "phaseNuNote": {
+      "type": "text",
+      "column": "phase_nu_note",
+      "max": 10000
+    },
+    "hazSanpinNote": {
+      "type": "text",
+      "column": "haz_sanpin_note",
+      "max": 10000
+    },
+    "hazClassNote": {
+      "type": "text",
+      "column": "haz_class_note",
+      "max": 10000
+    },
+    "ref": {
+      "type": "text",
+      "column": "ref",
+      "max": 4000
+    },
+    "refIcsc": {
+      "type": "text",
+      "column": "ref_icsc",
+      "max": 4000
+    },
+    "refCameo": {
+      "type": "text",
+      "column": "ref_cameo",
+      "max": 4000
+    },
+    "refNfpa": {
+      "type": "text",
+      "column": "ref_nfpa",
+      "max": 4000
+    },
+    "refKor": {
+      "type": "text",
+      "column": "ref_kor",
+      "max": 4000
+    },
+    "refNiosh": {
+      "type": "text",
+      "column": "ref_niosh",
+      "max": 4000
+    },
+    "mix": {
+      "type": "mix",
+      "column": null
+    },
+    "idlhUnit": {
+      "type": "choice",
+      "column": "idlh_unit",
+      "options": [
+        "ppm",
+        "mg/m3"
+      ]
+    }
+  }
+}

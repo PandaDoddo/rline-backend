@@ -41,7 +41,7 @@ class SteelGradeValues
                 if (! is_array($row)) {
                     return $row;
                 } foreach ($row as $key => $cell) {
-                    if (is_string($cell) && $key !== 'note') {
+                    if (is_string($cell) && ! in_array($key, ['note', 'lerp'], true)) {
                         $number = str_replace([' ', ','], ['', '.'], trim($cell));
                         $row[$key] = $number === '' ? null : (is_numeric($number) ? $number + 0 : $cell);
                     }

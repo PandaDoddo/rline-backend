@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Modules\Catalogs\Infrastructure\SteelGradeBaseline;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;
+use App\Modules\Catalogs\Infrastructure\SteelGradeBaseline;
 use App\Tenancy\TenantContext;
 use App\Tenancy\TenantDatabaseManager;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -94,6 +94,39 @@ class SteelGradesTest extends TestCase
         $this->patchJson('/api/steel-grades/'.$id, ['version' => 1, 'verification' => ['stress' => true]])->assertUnprocessable();
         $this->patchJson('/api/steel-grades/'.$id, ['version' => 1, 'values' => ['stress' => null]])->assertOk()->assertJsonPath('data.values.stress', null);
         $this->patchJson('/api/steel-grades/'.$id, ['version' => 2, 'values' => ['stress' => []]])->assertUnprocessable();
+    }
+
+    public function test_interpolation_remains_a_projection_and_cell_checks_follow_stable_identity(): void
+    {
+        $user = $this->login($this->tenant('steel-cell-checks'));
+        $stress = ['columns' => [['id' => 'gost', 'label' => 'Протокол']], 'rows' => [
+            ['t' => 20, 'gost' => 200], ['t' => 50, 'gost' => null, 'lerp' => true], ['t' => 80, 'gost' => 140], ['t' => 100, 'gost' => null, 'lerp' => true],
+        ]];
+        $created = $this->postJson('/api/steel-grades', ['values' => ['name' => 'Интерполяция', 'stress' => $stress, 'hbBase_accepted' => 150, 'matMax_min' => 400, 'matMax_max' => 500]])->assertCreated();
+        $id = $created->json('data.id');
+        $created->assertJsonPath('data.values.stress.rows.1.gost', null)->assertJsonPath('data.assessment.stress_rows.1.gost', 170)
+            ->assertJsonPath('data.assessment.stress_rows.3.gost', null);
+        $target = 'cell:stress:20:gost';
+        $checked = $this->patchJson('/api/steel-grades/'.$id, ['version' => 1, 'cell_verification' => [['target' => $target, 'checked' => true]]])->assertOk();
+        $this->assertSame($user->id, $checked->json('data.checks')[$target]['by']);
+        $this->patchJson('/api/steel-grades/'.$id, ['version' => 2, 'cell_verification' => [['target' => 'cell:stress:50:gost', 'checked' => true]]])->assertUnprocessable();
+        $this->patchJson('/api/steel-grades/'.$id, ['version' => 2, 'cell_verification' => [['target' => 'cell:stress:999:gost', 'checked' => true]]])->assertUnprocessable();
+        $stress['rows'] = array_reverse($stress['rows']);
+        $reordered = $this->patchJson('/api/steel-grades/'.$id, ['version' => 2, 'values' => ['stress' => $stress]])->assertOk();
+        $this->assertArrayHasKey($target, $reordered->json('data.checks'));
+        $stress['columns'][0]['label'] = 'Другой протокол';
+        $updated = $this->patchJson('/api/steel-grades/'.$id, ['version' => 3, 'values' => ['stress' => $stress]])->assertOk();
+        $this->assertArrayNotHasKey($target, $updated->json('data.checks'));
+        $this->patchJson('/api/steel-grades/'.$id, ['version' => 4, 'values' => ['matMax_min' => 600]])->assertUnprocessable();
+        $this->patchJson('/api/steel-grades/'.$id, ['version' => 4, 'values' => ['stress' => ['columns' => $stress['columns'], 'rows' => [['t' => 20, 'lerp' => 'yes']]]]])->assertUnprocessable();
+    }
+
+    public function test_changing_legacy_source_invalidates_the_accepted_property_verification(): void
+    {
+        $this->login($this->tenant('steel-source-verification'));
+        $id = $this->postJson('/api/steel-grades', ['values' => ['name' => 'Проверка источника', 'rm_nom' => 200, 'rm_src' => 'Протокол 1']])->assertCreated()->json('data.id');
+        $this->patchJson('/api/steel-grades/'.$id, ['version' => 1, 'verification' => ['rm_nom' => true]])->assertOk()->assertJsonStructure(['data' => ['checks' => ['rm_nom']]]);
+        $this->patchJson('/api/steel-grades/'.$id, ['version' => 2, 'values' => ['rm_src' => 'Протокол 2']])->assertOk()->assertJsonMissingPath('data.checks.rm_nom');
     }
 
     protected function tearDown(): void

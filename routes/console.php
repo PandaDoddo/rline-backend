@@ -48,6 +48,7 @@ Artisan::command('auth:user-create {email} {--name=} {--provider=local} {--subje
 
 require __DIR__.'/tenancy-console.php';
 require __DIR__.'/data-exchange-console.php';
+require __DIR__.'/catalog-console.php';
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());

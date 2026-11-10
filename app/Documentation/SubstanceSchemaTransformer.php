@@ -23,7 +23,12 @@ class SubstanceSchemaTransformer implements DocumentTransformer
             if (in_array($field['type'], ['number', 'integer'], true)) {
                 $number = $field['type'] === 'integer' ? new IntegerType : new NumberType;
                 $number->setMin($field['min'])->setMax($field['max'])->nullable(true);
-                $type = (new AnyOf)->setItems([$number, (new StringType)->enum([...config('substances.missing_values'), ...($field['qualifiers'] ?? [])])]);
+                $strings = (new StringType)->enum([...config('substances.missing_values'), ...($field['qualifiers'] ?? []), ...($key === 'idlh' ? ['не определено'] : [])]);
+                $items = [$number, $strings];
+                if (preg_match('/^(mw|nbp|ait|dens|idlh|pdk)_(icsc|cameo|kor|nfpa)$/', $key)) {
+                    $items[] = (new StringType)->setDescription('Выражение источника: a..b, a-b, <a, >a, <=a, >=a или varies; не применяется как принятое число.');
+                }
+                $type = (new AnyOf)->setItems($items);
             } elseif ($field['type'] === 'boolean') {
                 $type = (new BooleanType)->nullable(true);
             } elseif ($field['type'] === 'mix') {

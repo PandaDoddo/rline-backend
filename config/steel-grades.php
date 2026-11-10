@@ -10,6 +10,12 @@ foreach (['rm_nom' => 'Временное сопротивление · номи
 foreach (['matMin' => 'Минимальная температура применения', 'matMax' => 'Максимальная температура применения', 'maxApp' => 'Предельная температура таблицы напряжений', 'rbi_dfatt' => 'DFATT'] as $key => $label) {
     $fields[$key] = ['label' => $label, 'section' => $key === 'rbi_dfatt' ? 'Критерии RBI' : 'Общие сведения', 'type' => 'number', 'unit' => '°C', 'min' => -273.15, 'max' => 3000];
 }
+foreach (['hbBase_accepted', 'hbWeld_accepted'] as $key) {
+    $fields[$key] = ['label' => $key === 'hbBase_accepted' ? 'HB основной металл · принятое' : 'HB сварной шов · принятое', 'section' => 'Механические свойства', 'type' => 'number', 'unit' => 'HB', 'min' => 0, 'max' => 100000];
+}
+foreach (['matMin_min', 'matMin_max', 'matMax_min', 'matMax_max'] as $key) {
+    $fields[$key] = ['label' => $key, 'section' => 'Температурные диапазоны', 'type' => 'number', 'unit' => '°C', 'min' => -273.15, 'max' => 3000];
+}
 foreach (['rbi_group' => 'Группа RBI', 'rbi_tref' => 'Кривая исключения ASME', 'rbi_crCO2' => 'Критерий Cr · CO₂', 'rbi_cr885' => 'Критерий Cr · 885 °F', 'rbi_sHIC' => 'Критерий S · HIC', 'rbi_austGroup' => 'Группа аустенитной стали', 'rbi_sigmaContent' => 'Содержание сигма-фазы', 'rbi_hardness' => 'Категория твёрдости', 'rbi_moAust' => 'Критерий Mo', 'sigma_suscept' => 'Восприимчивость к сигма-охрупчиванию', 'sigma_group' => 'Группа сигма-фазы', 'sigma_range' => 'Диапазон сигма-фазы', 'sigma_note' => 'Примечание по сигма-фазе'] as $key => $label) {
     $fields[$key] = ['label' => $label, 'section' => 'Критерии RBI', 'type' => 'text', 'max' => 4000];
 }

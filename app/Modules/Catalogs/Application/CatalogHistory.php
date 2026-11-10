@@ -18,6 +18,11 @@ class CatalogHistory
             $old = array_replace($before['base_values'] ?? [], $before['overrides'] ?? []);
             $new = array_replace($after['base_values'] ?? [], $after['overrides'] ?? []);
             $changes = [];
+            foreach (array_unique([...array_keys($before['checks'] ?? []), ...array_keys($after['checks'] ?? [])]) as $target) {
+                if (str_starts_with($target, 'cell:') && isset($before['checks'][$target]) !== isset($after['checks'][$target])) {
+                    $changes[] = ['key' => $target.'|check', 'label' => 'Проверка ячейки · '.$target, 'from' => isset($before['checks'][$target]) ? 'проверено' : 'не проверено', 'to' => isset($after['checks'][$target]) ? 'проверено' : 'не проверено'];
+                }
+            }
             foreach ($fields as $key => $field) {
                 if ($valueChanges) {
                     array_push($changes, ...$valueChanges($key, $field, $old[$key] ?? null, $new[$key] ?? null));

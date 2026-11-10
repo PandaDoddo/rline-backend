@@ -6,6 +6,7 @@ use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;
 use App\Modules\Catalogs\Application\CatalogRecords;
+use App\Modules\Catalogs\Application\CatalogSnapshotUpdate;
 use App\Modules\Catalogs\Domain\SubstancePropertySchema;
 use App\Modules\Catalogs\Infrastructure\SubstanceBaseline;
 use App\Modules\Catalogs\Infrastructure\SubstanceCardProjection;
@@ -67,6 +68,59 @@ class SubstancesTest extends TestCase
         $this->getJson('/api/substances/'.$id)->assertOk()->assertJsonPath('data.values.mw', 16)->assertJsonPath('data.values.flammable', true)->assertJsonPath('data.version', 1);
     }
 
+    public function test_combined_filters_use_or_for_phases_and_and_for_hazards_and_units_are_typed(): void
+    {
+        $this->login($this->tenant('substance-combined'));
+        $items = [['газ', true, true], ['жидкость', true, true], ['твёрдое', true, true], ['газ', true, false]];
+        foreach ($items as $index => [$phase, $flammable, $toxic]) {
+            $item = $this->postJson('/api/substances', ['values' => ['name' => 'COMBINED-'.$index, 'phaseNu' => $phase, 'flammable' => $flammable, 'toxic' => $toxic, 'idlh' => 10, 'idlhUnit' => 'mg/m3']])->assertCreated()->assertJsonPath('data.values.idlhUnit', 'mg/m3');
+            $id = $item->json('data.id');
+        }
+        $this->getJson('/api/substances?q=COMBINED&phases[]=газ&phases[]=жидкость&criteria[]=flammable&criteria[]=toxic')->assertOk()->assertJsonPath('meta.total', 2);
+        $this->getJson('/api/substances?criteria[]=bad')->assertUnprocessable();
+        $this->getJson('/api/substances?phases[]=bad')->assertUnprocessable();
+        $this->patchJson('/api/substances/'.$id, ['version' => 1, 'verification' => ['idlh' => true]])->assertOk();
+        $this->patchJson('/api/substances/'.$id, ['version' => 2, 'values' => ['idlhUnit' => 'ppm']])->assertOk()->assertJsonMissingPath('data.checks.idlh');
+        $this->patchJson('/api/substances/'.$id, ['version' => 3, 'values' => ['idlhUnit' => 'kg']])->assertUnprocessable();
+    }
+
+    public function test_main_snapshot_update_preserves_divergence_checks_and_is_repeatable(): void
+    {
+        $tenant = $this->tenant('catalog-three-way');
+        $user = $this->login($tenant);
+        $id = $this->getJson('/api/substances?q='.urlencode('Метан'))->json('data.0.id');
+        $card = $this->getJson('/api/substances/'.$id)->json('data');
+        $this->patchJson('/api/substances/'.$id, ['version' => 1, 'values' => ['dens' => 999], 'verification' => ['mw' => true]])->assertOk();
+        $entry = ['code' => 'chem1', 'before' => $card['values'], 'after' => array_replace($card['values'], ['mw' => 17, 'dens' => 500, 'nbp' => -160]), 'archived' => false];
+        $snapshot = ['version' => 'test', 'to' => 'test', 'entries' => [$entry]];
+        app(TenantContext::class)->set($tenant);
+        $service = app(CatalogSnapshotUpdate::class);
+        $report = $service->run($snapshot, $user->id);
+        $this->assertCount(2, $report['conflicts']);
+        $this->assertSame(['nbp'], $report['updated'][0]['fields']);
+        $this->assertSame(2, Substance::findOrFail($id)->version);
+        $service->run($snapshot, $user->id, true);
+        $card = Substance::findOrFail($id);
+        $this->assertSame(999, $card->effective()['dens']);
+        $this->assertSame(16, $card->effective()['mw']);
+        $this->assertSame(-160, $card->effective()['nbp']);
+        $this->assertArrayHasKey('mw', $card->checks);
+        $this->assertSame([], $service->run($snapshot, $user->id, true)['updated']);
+    }
+
+    public function test_source_ranges_are_annotations_and_never_become_accepted_scalar_numbers(): void
+    {
+        $this->login($this->tenant('substance-ranges'));
+        $created = $this->postJson('/api/substances', ['values' => ['name' => 'Диапазоны источников', 'nbp' => 252, 'nbp_icsc' => '252..255', 'dens_cameo' => '>800', 'mw_kor' => 'varies', 'idlh' => 'не определено']])->assertCreated();
+        $id = $created->json('data.id');
+        $created->assertJsonPath('data.values.nbp', 252)->assertJsonPath('data.values.nbp_icsc', '252..255')->assertJsonPath('data.values.dens_cameo', '>800');
+        $this->patchJson('/api/substances/'.$id, ['version' => 1, 'verification' => ['nbp_icsc' => true]])->assertOk()->assertJsonPath('data.checks.nbp_icsc.by', $this->app['auth']->user()->id);
+        foreach ([['nbp' => '252..255'], ['nbp_icsc' => '255..252'], ['mw_cameo' => '<-1'], ['dens_cameo' => str_repeat('0', 150).'1..2']] as $invalid) {
+            $this->patchJson('/api/substances/'.$id, ['version' => 2, 'values' => $invalid])->assertUnprocessable();
+        }
+        $this->patchJson('/api/substances/'.$id, ['version' => 2, 'values' => ['nbp_icsc' => 253]])->assertOk()->assertJsonPath('data.values.nbp_icsc', 253)->assertJsonMissingPath('data.checks.nbp_icsc');
+    }
+
     public function test_custom_values_preserve_zero_false_missing_state_and_verification(): void
     {
         $user = $this->login($this->tenant('substance-custom'));
@@ -117,7 +171,7 @@ class SubstancesTest extends TestCase
                 $this->assertSame([...config('substances.missing_values'), ...($field['qualifiers'] ?? [])], $fields[$key]['qualifiers'], $key);
             }
         }
-        $this->assertSame(SubstanceCardProjection::definition().";\n", file_get_contents(resource_path('schemas/substance-cards-v1.sql')));
+        $this->assertSame(SubstanceCardProjection::definition().";\n", file_get_contents(resource_path('schemas/substance-cards-v2.sql')));
     }
 
     public function test_relational_values_preserve_unknown_zero_false_and_reject_conflicting_sql_states(): void

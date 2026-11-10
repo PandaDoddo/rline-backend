@@ -8,6 +8,24 @@ use Tests\TestCase;
 
 class ApiDocumentationTest extends TestCase
 {
+    public function test_catalog_main_updates_document_units_source_expressions_and_server_owned_cell_checks(): void
+    {
+        $spec = $this->spec();
+        $schemas = $spec['components']['schemas'];
+        $substance = $schemas['SubstanceResource']['properties']['values']['properties'];
+        $this->assertContains('mg/m3', $substance['idlhUnit']['enum']);
+        $this->assertCount(3, $substance['nbp_icsc']['anyOf']);
+        $write = $schemas['UpdateSteelGradeRequest']['properties'];
+        $this->assertArrayHasKey('hbBase_accepted', $write['values']['properties']);
+        $this->assertArrayHasKey('matMax_min', $write['values']['properties']);
+        $cell = $write['cell_verification']['items'];
+        $this->assertSame(['target', 'checked'], $cell['required']);
+        $this->assertArrayNotHasKey('by', $cell['properties']);
+        $this->assertArrayNotHasKey('at', $cell['properties']);
+        $this->assertArrayHasKey('lerp', $write['values']['properties']['stress']['properties']['rows']['items']['properties']);
+        $this->assertArrayHasKey('stress_rows', $schemas['SteelGradeResource']['properties']['assessment']['properties']);
+    }
+
     public function test_registry_navigation_and_facility_filter_are_documented_as_typed_read_contracts(): void
     {
         $spec = $this->spec();

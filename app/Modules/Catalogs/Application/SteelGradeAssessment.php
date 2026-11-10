@@ -3,6 +3,7 @@
 namespace App\Modules\Catalogs\Application;
 
 use App\Modules\Catalogs\Domain\SteelMaterialCost;
+use App\Modules\Catalogs\Domain\SteelStress;
 use App\Modules\Catalogs\Models\MaterialCost;
 use Illuminate\Validation\ValidationException;
 
@@ -11,7 +12,7 @@ class SteelGradeAssessment
     public function describe(array $values): array
     {
         $warnings = [];
-        foreach ([['rm_min', 'rm_max'], ['re_min', 're_max'], ['hbBase_min', 'hbBase_max'], ['hbWeld_min', 'hbWeld_max'], ['matMin', 'matMax']] as [$min, $max]) {
+        foreach ([['rm_min', 'rm_max'], ['re_min', 're_max'], ['hbBase_min', 'hbBase_max'], ['hbWeld_min', 'hbWeld_max'], ['matMin', 'matMax'], ['matMin_min', 'matMin_max'], ['matMax_min', 'matMax_max']] as [$min, $max]) {
             if (is_numeric($values[$min] ?? null) && is_numeric($values[$max] ?? null) && $values[$min] > $values[$max]) {
                 $warnings[] = 'Исходный диапазон «'.config('steel-grades.fields.'.$min.'.label').'» противоречив; уточните источник.';
             }
@@ -24,12 +25,13 @@ class SteelGradeAssessment
 
         return ['warnings' => $warnings, 'accepted_matcost' => $cost['factor'], 'material_cost' => $cost,
             'matcost_notice' => 'matcost принят в справочнике марок; без ручной правки — по действующей таблице 4.16 и составу марки. Историческое значение карточки не применяется.',
-            'stress_policy' => 'Исходные точки в °C / МПа. Пустые значения не заполняются; экстраполяция и расчёт напряжений этим API не выполняются.'];
+            'stress_rows' => SteelStress::rows($values['stress'] ?? null),
+            'stress_policy' => 'Исходные точки в °C / МПа. Для строк с включённой интерполяцией пустая ячейка вычисляется между двумя исходными точками того же источника; экстраполяция запрещена. Расчётные значения не заменяют исходные.'];
     }
 
     public function validateChanged(array $values, array $changed): void
     {
-        foreach ([['rm_min', 'rm_max'], ['re_min', 're_max'], ['hbBase_min', 'hbBase_max'], ['hbWeld_min', 'hbWeld_max'], ['matMin', 'matMax']] as [$min, $max]) {
+        foreach ([['rm_min', 'rm_max'], ['re_min', 're_max'], ['hbBase_min', 'hbBase_max'], ['hbWeld_min', 'hbWeld_max'], ['matMin', 'matMax'], ['matMin_min', 'matMin_max'], ['matMax_min', 'matMax_max']] as [$min, $max]) {
             if (! array_key_exists($min, $changed) && ! array_key_exists($max, $changed)) {
                 continue;
             }

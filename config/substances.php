@@ -41,6 +41,7 @@ foreach (['ref' => 'Общий источник', 'refIcsc' => 'Источник
     $fields[$key] = ['label' => $label, 'section' => 'Источники и условия', 'type' => 'text', 'max' => 4000];
 }
 $fields['mix'] = ['label' => 'Справочный состав смеси', 'section' => 'Состав', 'type' => 'mix', 'readonly' => true];
+$fields['idlhUnit'] = ['label' => 'Единицы IDLH', 'section' => 'Свойства', 'type' => 'choice', 'options' => ['ppm', 'mg/m3']];
 $fields['idlh']['qualifiers'] = ['простой асфиксиант'];
 
 return ['fields' => $fields, 'missing_values' => ['не установлено', 'не определено', 'не применимо']];

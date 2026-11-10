@@ -53,7 +53,7 @@ class SteelGradeRequest extends FormRequest
             }
         }
         $rules = array_replace($rules, ['values.composition' => 'sometimes|nullable|array|max:118', 'values.composition.*' => 'required|array:el,min,max', 'values.composition.*.el' => ['required', 'string', Rule::in(explode(' ', 'H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og')), 'distinct:strict'], 'values.composition.*.min' => 'nullable|numeric|min:0|max:100', 'values.composition.*.max' => 'nullable|numeric|min:0|max:100', 'values.stress' => 'sometimes|nullable|array:columns,rows',
-            'values.stress.columns' => 'required_with:values.stress|array|min:1|max:12', 'values.stress.columns.*' => 'required|array:id,label', 'values.stress.columns.*.id' => ['required', 'string', 'regex:/^[a-z][a-z0-9_]{0,29}$/', 'not_in:t,note,constructor,prototype,__proto__', 'distinct:strict'], 'values.stress.columns.*.label' => 'required|string|max:255', 'values.stress.rows' => 'sometimes|array|max:1000', 'values.stress.rows.*' => 'required|array', 'values.stress.rows.*.t' => 'required|numeric|min:-273.15|max:3000|distinct:strict', 'values.stress.rows.*.note' => 'sometimes|nullable|string|max:2000']);
+            'values.stress.columns' => 'required_with:values.stress|array|min:1|max:12', 'values.stress.columns.*' => 'required|array:id,label', 'values.stress.columns.*.id' => ['required', 'string', 'regex:/^[a-z][a-z0-9_]{0,29}$/', 'not_in:t,note,lerp,constructor,prototype,__proto__', 'distinct:strict'], 'values.stress.columns.*.label' => 'required|string|max:255', 'values.stress.rows' => 'sometimes|array|max:1000', 'values.stress.rows.*' => 'required|array', 'values.stress.rows.*.t' => 'required|numeric|min:-273.15|max:3000|distinct:strict', 'values.stress.rows.*.lerp' => 'sometimes|boolean', 'values.stress.rows.*.note' => 'sometimes|nullable|string|max:2000']);
 
         return $rules;
     }
@@ -90,7 +90,7 @@ class SteelGradeRequest extends FormRequest
                 }
                 $temperatures[$temperature] = true;
                 foreach ($row as $key => $value) {
-                    if (in_array($key, ['t', 'note'], true)) {
+                    if (in_array($key, ['t', 'note', 'lerp'], true)) {
                         continue;
                     }
                     if (! in_array($key, $ids, true)) {

@@ -47,6 +47,12 @@ class SubstanceController extends Controller
         if (isset($data['group'])) {
             $query->whereRaw($effective."->>'grpRF' = ?", [$data['group']]);
         }
+        if (! empty($data['phases'])) {
+            $query->whereIn(DB::raw($effective."->>'phaseNu'"), $data['phases']);
+        }
+        foreach ($data['criteria'] ?? [] as $criterion) {
+            $query->whereRaw($effective."->>'".$criterion."' = 'true'");
+        }
         if (isset($data['criterion'])) {
             $key = $data['criterion'];
             $value = $data['criterion_value'] ?? 'yes';

@@ -3,6 +3,7 @@
 namespace App\Modules\Catalogs\Infrastructure;
 
 use App\Modules\Catalogs\Domain\SubstancePropertySchema;
+use App\Modules\Catalogs\Domain\SubstanceReferenceValue;
 use App\Modules\Catalogs\Models\Substance;
 use Illuminate\Support\Facades\DB;
 use LogicException;
@@ -24,7 +25,7 @@ final class SubstancePropertyRepository
         foreach ($fields as $key => $field) {
             if ($field['column'] !== null) {
                 $value = $values[$key] ?? null;
-                $properties[$field['column']] = in_array($value, $field['qualifiers'] ?? [], true) ? null : $value;
+                $properties[$field['column']] = in_array($value, $field['qualifiers'] ?? [], true) || SubstanceReferenceValue::accepts($key, $value) ? null : $value;
             } elseif (array_key_exists($key, $values)) {
                 throw new LogicException('Read-only baseline property cannot be overridden.');
             }
@@ -34,8 +35,12 @@ final class SubstancePropertyRepository
             $source = $sources[$key] ?? null;
             $check = $checks[$key] ?? null;
             $value = $values[$key] ?? null;
+            if (SubstanceReferenceValue::accepts($key, $value)) {
+                // The existing normalized qualifier/annotation model preserves the exact source expression.
+                $db->table('substance_property_qualifiers')->insertOrIgnore(['field_key' => $key, 'qualifier' => $value]);
+            }
             $annotations[] = ['substance_id' => $substance->id, 'field_key' => $key, 'value_present' => array_key_exists($key, $values),
-                'qualifier' => in_array($value, $fields[$key]['qualifiers'] ?? [], true) ? $value : null,
+                'qualifier' => in_array($value, $fields[$key]['qualifiers'] ?? [], true) || SubstanceReferenceValue::accepts($key, $value) ? $value : null,
                 'source_present' => $source !== null, 'citation' => $source['citation'] ?? null, 'conditions' => $source['conditions'] ?? null,
                 'source_by' => $source['by'] ?? null, 'source_at' => $source['at'] ?? null,
                 'verified_by' => $check['by'] ?? null, 'verified_at' => $check['at'] ?? null];

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Catalogs\Application;
 
+use App\Modules\Catalogs\Domain\SubstanceReferenceValue;
 use App\Modules\Catalogs\Domain\SubstanceValues;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -54,7 +55,10 @@ final class SubstanceInputValidation
             } elseif ($field['type'] === 'choice') {
                 $rules[$property] = [$required, 'nullable', Rule::in($field['options'])];
             } elseif (in_array($field['type'], ['number', 'integer'], true)) {
-                $rules[$property] = [$required, 'nullable', function ($attribute, $value, $fail) use ($field) {
+                $rules[$property] = [$required, 'nullable', function ($attribute, $value, $fail) use ($field, $key) {
+                    if (SubstanceReferenceValue::accepts($key, $value)) {
+                        return;
+                    }
                     if (in_array($value, [...config('substances.missing_values'), ...($field['qualifiers'] ?? [])], true)) {
                         return;
                     }

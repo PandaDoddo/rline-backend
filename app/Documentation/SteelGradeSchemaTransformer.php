@@ -29,8 +29,8 @@ class SteelGradeSchemaTransformer implements DocumentTransformer
                 $type = (new ArrayType)->setItems($item)->nullable(true);
             } elseif ($field['type'] === 'stress') {
                 $column = (new ObjectType)->addProperty('id', new StringType)->addProperty('label', new StringType)->setRequired(['id', 'label']);
-                $row = (new ObjectType)->addProperty('t', new NumberType)->setRequired(['t']);
-                $row->additionalProperties = (new AnyOf)->setItems([(new NumberType)->nullable(true), (new StringType)->nullable(true)]);
+                $row = (new ObjectType)->addProperty('t', new NumberType)->addProperty('lerp', new BooleanType)->setRequired(['t']);
+                $row->additionalProperties = (new AnyOf)->setItems([(new NumberType)->nullable(true), (new StringType)->nullable(true), new BooleanType]);
                 $type = (new ObjectType)->addProperty('columns', (new ArrayType)->setItems($column))->addProperty('rows', (new ArrayType)->setItems($row))->setRequired(['columns', 'rows'])->nullable(true);
             } else {
                 $type = (new StringType)->nullable($key !== 'name');
@@ -75,6 +75,8 @@ class SteelGradeSchemaTransformer implements DocumentTransformer
                 }
                 if ($class === 'UpdateSteelGradeRequest') {
                     $type->setRequired(['version']);
+                    $cell = (new ObjectType)->addProperty('target', new StringType)->addProperty('checked', new BooleanType)->setRequired(['target', 'checked']);
+                    $type->addProperty('cell_verification', (new ArrayType)->setItems($cell));
                     $verification = new ObjectType;
                     foreach (array_keys(config('steel-grades.fields')) as $key) {
                         $verification->addProperty($key, new BooleanType);
@@ -86,6 +88,11 @@ class SteelGradeSchemaTransformer implements DocumentTransformer
                 $type->addProperty('status', (new StringType)->enum(['active', 'archived']));
             }
             if ($class === 'SteelGradeResource') {
+                $interval = (new ObjectType)->addProperty('from', new NumberType)->addProperty('to', new NumberType)->setRequired(['from', 'to']);
+                $interpolated = new ObjectType;
+                $interpolated->additionalProperties = $interval;
+                $stressRow = (new ObjectType)->addProperty('t', new NumberType)->addProperty('lerp', new BooleanType)->addProperty('note', (new StringType)->nullable(true))->addProperty('interpolated', $interpolated)->setRequired(['t', 'interpolated']);
+                $stressRow->additionalProperties = (new NumberType)->nullable(true);
                 $type->addProperty('legacy_code', (new StringType)->nullable(true));
                 $type->addProperty('base_version', (new StringType)->nullable(true));
                 $effective = $values->clone()->setRequired(['name']);
@@ -94,7 +101,7 @@ class SteelGradeSchemaTransformer implements DocumentTransformer
                 $type->addProperty('overrides', $values->clone());
                 $type->addProperty('checks', $checks);
                 $type->addProperty('sources', $sources);
-                $type->addProperty('assessment', (new ObjectType)->addProperty('warnings', (new ArrayType)->setItems(new StringType))->addProperty('accepted_matcost', (new NumberType)->nullable(true))->addProperty('matcost_notice', new StringType)->addProperty('stress_policy', new StringType)->setRequired(['warnings', 'accepted_matcost', 'matcost_notice', 'stress_policy']));
+                $type->addProperty('assessment', (new ObjectType)->addProperty('warnings', (new ArrayType)->setItems(new StringType))->addProperty('accepted_matcost', (new NumberType)->nullable(true))->addProperty('matcost_notice', new StringType)->addProperty('stress_policy', new StringType)->addProperty('stress_rows', (new ArrayType)->setItems($stressRow))->setRequired(['warnings', 'accepted_matcost', 'matcost_notice', 'stress_policy']));
             }
             if ($class === 'SteelGradeEventResource') {
                 $change = (new ObjectType)->addProperty('key', new StringType)->addProperty('label', new StringType)

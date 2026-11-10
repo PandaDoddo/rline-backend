@@ -3,6 +3,7 @@
 namespace App\Modules\Catalogs\Application;
 
 use App\Modules\Catalogs\Domain\CatalogValues;
+use App\Modules\Catalogs\Domain\SteelCellChecks;
 use App\Modules\Catalogs\Infrastructure\SubstancePropertyRepository;
 use App\Modules\Catalogs\Models\Substance;
 use App\Modules\Shared\Infrastructure\TenantWrites;
@@ -64,6 +65,18 @@ class CatalogRecords
             if ($validate) {
                 $validate($effective, $data['values'] ?? []);
             }
+            if ($entity === 'substance' && ! CatalogValues::same($old['idlhUnit'] ?? 'ppm', $effective['idlhUnit'] ?? 'ppm')) {
+                unset($checks['idlh']);
+            }
+            if ($entity === 'steel_grade') {
+                foreach (['rm_src' => ['rm_nom'], 're_src' => ['re_nom'], 'tSrc' => ['matMin', 'matMax']] as $source => $targets) {
+                    if (! CatalogValues::same($old[$source] ?? null, $effective[$source] ?? null)) {
+                        foreach ($targets as $target) {
+                            unset($checks[$target]);
+                        }
+                    }
+                }
+            }
             foreach ($data['verification'] ?? [] as $key => $checked) {
                 if (! $checked) {
                     unset($checks[$key]);
@@ -75,6 +88,9 @@ class CatalogRecords
                     throw ValidationException::withMessages(['verification.'.$key => 'Нельзя проверить незаполненное свойство.']);
                 }
                 $checks[$key] ??= ['by' => $actor, 'at' => now()->toIso8601String()];
+            }
+            if ($entity === 'steel_grade') {
+                $checks = SteelCellChecks::reconcile($old, $effective, $checks, $data['cell_verification'] ?? [], $actor);
             }
             $model->forceFill(['label' => $effective['name'], 'status' => $data['status'] ?? $model->status, 'version' => $model->version + 1, 'updated_by' => $actor]);
             $this->save($model, $overrides, $sources, $checks);
