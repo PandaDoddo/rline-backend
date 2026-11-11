@@ -27,6 +27,7 @@ services:
       - ./deploy/manage-releases.sh:/opt/manage-releases.sh:ro
       - ${STAND_DIST_DIR:-../frontend/dist}:/incoming:ro
   app:
+    restart: unless-stopped
     build:
       context: .
     env_file:
@@ -56,6 +57,7 @@ services:
 
   nginx:
     image: nginx:stable-alpine
+    restart: unless-stopped
     ports:
       - "127.0.0.1:${APP_PORT:-8080}:80"
     depends_on:
@@ -73,6 +75,7 @@ services:
 
   db:
     image: postgres:18
+    restart: unless-stopped
     environment:
       POSTGRES_DB: "${DB_DATABASE:-rline}"
       POSTGRES_USER: "${DB_USERNAME:-rline}"
