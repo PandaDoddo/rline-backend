@@ -63,6 +63,31 @@ class ProcessFlowsTest extends TestCase
         return ['id' => (string) Str::uuid(), 'substance_id' => $id, 'role' => 'main', 'amount' => $amount];
     }
 
+    public function test_tree_orders_numeric_codes_and_processes_before_pagination(): void
+    {
+        $this->login('flow-order');
+        $installation = $this->installation();
+        app(TenantContext::class)->set(Tenant::where('slug', 'flow-order')->firstOrFail());
+        $db = DB::connection('tenant');
+        $stamp = ['created_by' => auth()->id(), 'updated_by' => auth()->id(), 'created_at' => now(), 'updated_at' => now()];
+        // Deliberately reverse names and codes across the page boundary.
+        foreach (range(60, 1) as $index) {
+            $db->table('process_flow_nodes')->insert(['id' => (string) Str::uuid(), 'installation_id' => $installation,
+                'kind' => 'flow', 'category' => 'auxiliary', 'name' => sprintf('Name %02d', 61 - $index), 'code' => 'ВП1.1-'.$index] + $stamp);
+        }
+        foreach (['external', 'repair', 'auxiliary', 'alternative', 'main'] as $category) {
+            $db->table('process_flow_nodes')->insert(['id' => (string) Str::uuid(), 'installation_id' => $installation,
+                'kind' => 'folder', 'category' => $category, 'name' => $category] + $stamp);
+        }
+        $url = '/api/installations/'.$installation.'/flow-nodes?kind=flow';
+        $first = $this->getJson($url)->assertOk()->json('data');
+        $second = $this->getJson($url.'&page=2')->assertOk()->json('data');
+        $this->assertSame(array_map(fn ($n) => 'ВП1.1-'.$n, range(1, 50)), array_column($first, 'code'));
+        $this->assertSame(array_map(fn ($n) => 'ВП1.1-'.$n, range(51, 60)), array_column($second, 'code'));
+        $folders = $this->getJson('/api/installations/'.$installation.'/flow-nodes?kind=folder')->assertOk()->json('data');
+        $this->assertSame(['main', 'alternative', 'auxiliary', 'repair', 'external'], array_column($folders, 'category'));
+    }
+
     public function test_atmosphere_uses_catalog_mixture_but_soil_keeps_material_reference_rows(): void
     {
         $this->login('external-composition');

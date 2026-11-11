@@ -63,7 +63,11 @@ class ProcessFlowController extends Controller
                 ->selectRaw('(SELECT count(*) FROM process_flow_nodes children WHERE children.parent_id = process_flow_nodes.id AND children.status = ?) AS children_count', [$data['status'] ?? 'active']);
             FlowNodeProjection::path($query);
 
-            $page = $query->orderBy('kind')->orderBy('name')->orderBy('id')->paginate($data['per_page'] ?? 50);
+            // Order before pagination: e.g. ВП2 precedes ВП10, and подача (-1) precedes обратная (-2).
+            $page = $query->orderByRaw("CASE category WHEN 'main' THEN 0 WHEN 'alternative' THEN 1 WHEN 'auxiliary' THEN 2 WHEN 'repair' THEN 3 ELSE 4 END")
+                ->orderBy('kind')
+                ->orderByRaw("CASE WHEN code ~ '[0-9]' THEN string_to_array(trim(regexp_replace(code, '[^0-9]+', ' ', 'g')), ' ')::numeric[] END NULLS LAST")
+                ->orderBy('code')->orderBy('name')->orderBy('id')->paginate($data['per_page'] ?? 50);
             app(FlowOrigins::class)->attach($page->getCollection());
 
             return ProcessFlowNodeResource::collection($page)->additional([
